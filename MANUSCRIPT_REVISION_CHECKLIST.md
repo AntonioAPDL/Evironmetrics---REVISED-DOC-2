@@ -865,6 +865,13 @@ Use this as the working order when actually editing the manuscript.
 - [x] Make the application-specific trend and seasonal dimensions explicit so the value of \(p\) is concrete in the San Lorenzo model.
 - [x] Clarify that the compact state-space display is included for computational implementation and to expose the conditionally Gaussian structure used by filtering, smoothing, and FFBS.
 
+### Targeted provenance inventory pass
+- [x] Build a manuscript-side provenance inventory for interpretation-dependent figures and tables.
+- [x] Verify whether the current manuscript figure assets hash-match the workflow repo's recorded gold outputs.
+- [x] Distinguish workflow-linked setup figures from selected-run-dependent interpretation outputs.
+- [x] Record the current strength of table provenance and identify which tables still require run-level regeneration or verification.
+- [x] Write the inventory to `FIGURE_TABLE_PROVENANCE.md` so regeneration decisions can be made safely.
+
 ### Fifth pass: harder review-dependent items
 - [ ] five-cutoff justification after Raquel input
 - [ ] final figure decision for Figures 8 and 9
