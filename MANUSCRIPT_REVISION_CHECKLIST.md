@@ -878,11 +878,18 @@ Use this as the working order when actually editing the manuscript.
 - [ ] recheck `R1-M1`, `R1-M2`, `R1-M3` after full structural rewrite
 - [ ] recheck `R1-m4`, `R1-m7`, `R1-m9` after final section/figure decisions
 
+### Locked regeneration baseline
+- [x] Fix the representative selected-model cutoff for Section 5 at `2022-12-25`.
+- [x] Fix the selected-model workflow family for regeneration at `exdqlm_multivar_keep` (paper label: `exAL-M-T1`).
+- [x] Confirm that recent validated runs exist for all five manuscript cutoffs with forecast precipitation and soil moisture enabled and PCA/GDPC passed through.
+- [x] Confirm that the recent `2022-12-25` selected-model run already produces cutoff-window synthesis figures and quantile CSV exports.
+- [x] Identify the current gap: posterior interpretation tables are not yet emitted by those runs and will require a targeted post-export rerun or export fix.
+
 ### Next coordinated TODOs after the current manuscript pass
 - [ ] Refresh every interpretation-dependent table and figure so it is generated from the same final `exAL-M-T1` run that produced the CRPS values reported in Table~1.
   - This includes the covariate-effects table, the dry/wet regime figures, the predictive-synthesis figure, and any appendix summaries that still depend on an older run.
-- [ ] Decide and state the provenance of the supporting interpretation material.
-  - Recommended decision to verify: keep the five-cutoff CRPS comparison as the main empirical evidence, and keep the supporting interpretation figures/tables tied to one representative final cutoff only, stated explicitly in the text and captions.
+- [x] Decide and state the provenance of the supporting interpretation material.
+  - Locked decision: Section 4 remains the five-cutoff CRPS evidence; Section 5 uses the representative final cutoff `2022-12-25`; appendix figures/tables remain historical summaries of the selected specification unless later demoted or rerun.
 - [ ] Update the predictive-synthesis figure in the main text so it matches the final selected `exAL-M-T1` analysis used in the current manuscript.
   - The current main-text synthesis figure is still tied to an older single-cutoff output and needs to be regenerated from the final selected run.
 - [ ] Recheck whether the dry/wet regime figures are still based on the final cutoff fit and, if so, make that provenance explicit.

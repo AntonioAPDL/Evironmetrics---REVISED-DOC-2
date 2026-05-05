@@ -147,6 +147,59 @@ These can be kept only if we clearly decide whether they are historical summarie
 - `tab:gamma_sigma_intervals1`
 - `tab:gamma_sigma_intervals2`
 
+## Locked provenance policy
+
+The following policy is now adopted for the revised manuscript and should govern the regeneration work that follows.
+
+### Section 4: forecast-validation evidence
+- Section 4 remains the manuscript's five-cutoff forecast-validation evidence.
+- Its benchmark values must continue to come from the validated five-cutoff `exdqlm_multivar_keep` / `exAL-M-T1` comparison workflow.
+- Any rerun used to refresh those values must preserve the same configuration that produced the published CRPS table.
+
+### Section 5: representative selected-model interpretation
+- Section 5 will use one representative final cutoff of the selected specification.
+- The representative cutoff is fixed as `2022-12-25`, because:
+  - it is already the manuscript's current illustrative forecast origin,
+  - a recent validated workflow run exists for it, and
+  - that run already produces publication-facing cutoff-window synthesis artifacts.
+- Therefore, the following Section 5 objects must be regenerated or re-verified from the `2022-12-25` `exdqlm_multivar_keep` run:
+  - `fig:synth1`
+  - `tab:components_23_31`
+  - `fig:synth2` if retained
+
+### Appendix: historical summaries of the selected specification
+- Appendix figures and tables may remain historical summaries of the selected specification rather than representative-cutoff illustrations.
+- This applies, unless later revised, to:
+  - `fig:dry_quantile`
+  - `fig:rainy_quantile`
+  - `fig:80_components`
+  - `tab:gamma_sigma_intervals1`
+  - `tab:gamma_sigma_intervals2`
+- If these remain in that role, the captions and nearby text must say so clearly.
+- If the workflow cannot regenerate them cleanly in that role, they should be rerun or demoted rather than left ambiguous.
+
+## Recent selected-model workflow status
+
+A recent validated family of selected-model runs exists under:
+- `/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_quantile_featurecov_ndlm_discount_probe_20260422/runs/`
+
+For all five manuscript cutoffs, the corresponding `exdqlm_multivar_keep` runs:
+- passed validation,
+- passed deterministic-climate checks,
+- use forecast precipitation after the cutoff,
+- use forecast soil moisture after the cutoff,
+- and keep the PCA/GDPC covariate in passthrough mode rather than forecasting it the same way.
+
+These runs already provide:
+- cutoff-window posterior-synthesis figures,
+- cutoff-window quantile CSV exports,
+- CRPS summary tables,
+- and run-scoped manifests and input hashes.
+
+Current gap from this audit:
+- the April 22 `exdqlm_multivar_keep` runs do not appear to have written the posterior interpretation tables themselves, even though the workflow has the export contract and README for them.
+- In practice, this means the synthesis figures can likely be refreshed directly from the current validated runs, whereas the covariate / `gamma` / `sigma` tables will likely require a targeted post-export rerun or export fix.
+
 ## Recommended next steps
 
 1. Decide the provenance policy for Section 5 and the appendix.
