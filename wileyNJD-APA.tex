@@ -198,7 +198,7 @@ Further details regarding prior specification and discount factors are provided 
 \subsection{Posterior Inference}
 \label{subsec:postinf}
 The posterior distribution of all model parameters is explored using a Markov chain Monte Carlo (MCMC) algorithm.
-Algorithm~\ref{alg1} gives the core MCMC updates in a compact source-indexed notation. During the estimation period, the active source channels are the USGS observations and retrospective products; after the cutoff, the same updates use the active forecast-product channels, with additional bookkeeping for the reduced forecast-window matrices when forecast horizons differ across agencies. All full conditional posteriors are available in closed form except for the skewness parameters $\gamma^j$, $1 \leq j \leq J$. For these, we use a Metropolis--Hastings random walk on an unconstrained reparameterization. Posterior sampling of the state parameters relies on a modified Forward Filtering Backward Sampling (FFBS) algorithm that leverages their conditional normality (see Algorithm~\ref{alg:Alg2}).
+Algorithm~\ref{alg1} gives the core MCMC updates in a compact source-indexed notation. During the estimation period, the active source channels are the USGS observations and retrospective products; after the cutoff, the same updates use the active forecast-product channels, with additional bookkeeping for the reduced forecast-window matrices when forecast horizons differ across agencies. The appendix algorithms use the same state notation \(\boldsymbol{\eta}_t\), the same estimation-period selectors \(\mathbf{h}_{t,j}\), and the same forecast-window selectors \(\mathbf{e}_{T+k,j}\) introduced in Subsection~\ref{subsec:fullmodel}. All full conditional posteriors are available in closed form except for the skewness parameters $\gamma^j$, $1 \leq j \leq J$. For these, we use a Metropolis--Hastings random walk on an unconstrained reparameterization. Posterior sampling of the state parameters relies on a modified Forward Filtering Backward Sampling (FFBS) algorithm that leverages their conditional normality (see Algorithm~\ref{alg:Alg2}).
 
 %\subsubsection{Variational Bayes Implementation} \label{subsec:vb}
 
@@ -603,6 +603,9 @@ Idealized benchmark synthesized posterior predictive distribution for river flow
 Figure~\ref{fig:synth2} provides a historical-only reference for the December 25, 2022 cutoff. It is included to contrast the operational synthesis in Figure~\ref{fig:synth1} with a simpler counterfactual that excludes retrospective and forecast products.
 
 \section{Markov Chain Monte Carlo Algorithms}
+
+The appendix algorithms use the same unified-model notation as Subsection~\ref{subsec:fullmodel}. To keep the displays compact, they work with source-indexed observation vectors during the estimation period and with source-indexed forecast-product vectors during the forecast window. The role of the selector vector is therefore the same throughout: before the cutoff it is \(\mathbf{h}_{t,j}\), whereas after the cutoff it becomes the forecast-window selector \(\mathbf{e}_{T+k,j}\) for the active source \(j\). When the main text distinguishes individual forecast members through \(y_T^{j,i}(k)\), the appendix uses the corresponding source-indexed forecast quantity \(y_{T+k}^{j}\) because the algorithms only need the active source channel at each lead time.
+
 \begin{algorithm}
 \caption{MCMC Algorithm}\label{alg1}
 \begin{algorithmic}
@@ -611,13 +614,13 @@ Figure~\ref{fig:synth2} provides a historical-only reference for the December 25
 \State  \(
 A^j = A(\gamma^j;p_0), \quad B^j = B(\gamma^j;p_0), \quad C^j = C(\gamma^j;p_0), \text{ as defined in Section~\ref{subsec:exal}}
 \)
-\State For compactness, \(y_t^j\) denotes the active observation or product associated with source \(j\), and the corresponding selector vector is written generically as \(\mathbf{h}_{t,j}\); in the forecast window this selector is given by \(\mathbf{e}_{t,j}\) for each active source.
+\State Let \(\mathcal{J}_0=\{0\}\cup\mathcal{J}\), where \(j=0\) denotes the observation channel and \(j\in\mathcal{J}\) denotes an external source. During the estimation period, write \(y_t^0 \equiv y_t^o\) and \(y_t^j \equiv z_t^j\) for \(j\in\mathcal{J}\), with selector vector \(\mathbf{h}_{t,j}\). During the forecast window, write \(y_{T+k}^{j}\) for the active source-indexed forecast quantity from source \(j\) at lead \(k\), with selector \(\mathbf{e}_{T+k,j}\).
 \State \textbf{Step 0: Set initial values} and sample size $N$.
-\State Initialize $\{(v^j)^{(0)}_{1:T}, (s^j)^{(0)}_{1:T}, \boldsymbol{\eta}^{(0)}_{1:T}, (\sigma^j)^{(0)}, (\gamma^j)^{(0)}\}_{j=0}^J$
+\State Initialize $\{(v^j)^{(0)}_{1:T}, (s^j)^{(0)}_{1:T}, \boldsymbol{\eta}^{(0)}_{1:T}, (\sigma^j)^{(0)}, (\gamma^j)^{(0)}\}_{j\in\mathcal{J}_0}$
 \For{$n = 1$ to $N$}
     \State \textbf{Step 1: Update $\boldsymbol{\eta}_t$}
     \State Use Algorithm~\ref{alg:Alg2}
-    \For{$j = 0$ to $J$}
+    \For{$j \in \mathcal{J}_0$}
         \State \textbf{Step 2: Update $v^j_t$}
         \For{$t = 1$ to $T$}
             \State Sample $(v^j_t)^{(n)} \sim \mathcal{GIG}(a^j_t, b^j_t, c^j_t)$
@@ -625,18 +628,20 @@ A^j = A(\gamma^j;p_0), \quad B^j = B(\gamma^j;p_0), \quad C^j = C(\gamma^j;p_0),
             \State $b^j_t = \frac{1}{(\sigma^j)^{(n-1)}}\left[ \frac{((A^j)^2)^{(n-1)}}{(B^j)^{(n-1)}}+2\right]$
             \State $c^j_t = \frac{1}{(\sigma^j)^{(n-1)} (B^j)^{(n-1)}}\left[y_t^j -\textbf{h}_{t,j}' \boldsymbol{\eta}^{(n)}_t -(C^j)^{(n-1)} (\sigma^j)^{(n-1)} |(\gamma^j)^{(n-1)}| (s^j_t)^{(n-1)} \right]^2$
         \EndFor
-        \For{$t = T+1$ to $T+K_{\max}$}
-            \State Sample $(v^j_t)^{(n)} \sim \mathcal{GIG}(a^j_t, b^j_t, c^j_t)$
-            \State $a^j_t = \frac{1}{2}$
-            \State $b^j_t = \frac{1}{(\sigma^j)^{(n-1)}}\left[ \frac{((A^j)^2)^{(n-1)}}{(B^j)^{(n-1)}}+2\right]$
-            \State $c^j_t = \frac{1}{(\sigma^j)^{(n-1)} (B^j)^{(n-1)}}\left[y_t^j -\textbf{h}_{t,j}' \boldsymbol{\eta}^{(n)}_t -(C^j)^{(n-1)} (\sigma^j)^{(n-1)} |(\gamma^j)^{(n-1)}| (s^j_t)^{(n-1)} \right]^2$
+        \If{$j \in \mathcal{J}$}
+        \For{$k = 1$ to $K_{(j)}$}
+            \State Sample $(v^j_{T+k})^{(n)} \sim \mathcal{GIG}(a^j_{T+k}, b^j_{T+k}, c^j_{T+k})$
+            \State $a^j_{T+k} = \frac{1}{2}$
+            \State $b^j_{T+k} = \frac{1}{(\sigma^j)^{(n-1)}}\left[ \frac{((A^j)^2)^{(n-1)}}{(B^j)^{(n-1)}}+2\right]$
+            \State $c^j_{T+k} = \frac{1}{(\sigma^j)^{(n-1)} (B^j)^{(n-1)}}\left[y_{T+k}^j -\mathbf{e}_{T+k,j}' \boldsymbol{\eta}^{(n)}_{T+k} -(C^j)^{(n-1)} (\sigma^j)^{(n-1)} |(\gamma^j)^{(n-1)}| (s^j_{T+k})^{(n-1)} \right]^2$
         \EndFor
+        \EndIf
 
         \State \textbf{Step 3: Update $s^j_t$}
         \For{$t = 1$ to $T$}
             \State Sample $(s^j)^{(n)}_t \sim \mathcal{N}^+(m^j_t, \lambda^j_t)$
-            \State $\lambda^j_t =  \left[\frac{\big((C^j)^{(n-1)}\gamma^{(n-1)} \big)^2(\sigma^j)^{(n-1)}}{(B^j)^{(n-1)}(v^j_t)^{(n)}}+1\right]$
-            \State $m^j_t =  \lambda^j_t \left[\frac{(C^j)^{(n-1)}|\gamma^{n-1}|(y_t^j -\textbf{h}_{t,j}' \boldsymbol{\eta}^{(n)}_t - (A^j)^{(n-1)} (v^j_t)^{(n)})}{(B^j)^{(n-1)}(v^j_t)^{(n)}}\right]$
+            \State $\lambda^j_t =  \left[\frac{\big((C^j)^{(n-1)}(\gamma^j)^{(n-1)} \big)^2(\sigma^j)^{(n-1)}}{(B^j)^{(n-1)}(v^j_t)^{(n)}}+1\right]$
+            \State $m^j_t =  \lambda^j_t \left[\frac{(C^j)^{(n-1)}|(\gamma^j)^{(n-1)}|(y_t^j -\textbf{h}_{t,j}' \boldsymbol{\eta}^{(n)}_t - (A^j)^{(n-1)} (v^j_t)^{(n)})}{(B^j)^{(n-1)}(v^j_t)^{(n)}}\right]$
         \EndFor
 
         \State \textbf{Step 4: Update $\sigma^j$}
@@ -659,8 +664,8 @@ A^j = A(\gamma^j;p_0), \quad B^j = B(\gamma^j;p_0), \quad C^j = C(\gamma^j;p_0),
 \begin{algorithmic}
 
 \State \textbf{Notation:}
-\State  $\mathbf{H}_t = [\mathbf{h}_{t,0}, \mathbf{h}_{t,1}, \ldots, \mathbf{h}_{t,J}]$, $\mathbf{Y}_t = [y_t^o, z_t^1, \ldots, z_t^J]'$, and $\mathbf{D}_t, \boldsymbol{\Lambda}_t$ are as defined in Subsection~\ref{subsec:fullmodel}
-\State  For the source-indexed updates below, let \(y_t^0 \equiv y_t^o\) and \(y_t^j \equiv z_t^j\) for \(1 \le j \le J\).
+\State  During the estimation period, \(\mathbf{H}_t = [\mathbf{h}_{t,0}, \mathbf{h}_{t,1}, \ldots, \mathbf{h}_{t,J}]\), \(\mathbf{Y}_t = [y_t^o, z_t^1, \ldots, z_t^J]'\), and \(\mathbf{D}_t, \boldsymbol{\Lambda}_t\) are as defined in Subsection~\ref{subsec:fullmodel}.
+\State  Equivalently, \(y_t^0 \equiv y_t^o\) and \(y_t^j \equiv z_t^j\) for \(j\in\mathcal{J}\), so the filtering recursion can be written in source-indexed form.
 \State $\mathbf{M}_t= \mathbf{C} \odot  \mathbf{\sigma} \odot | \mathbf{\gamma} | \odot \mathbf{s}_t + \mathbf{A} \odot \mathbf{v}_t$, \quad $\mathbf{O}_t= \sqrt{\mathbf{B} \odot \mathbf{v}_t} \odot Diag
 (\mathbf{\sigma}) \sqrt{\mathbf{B} \odot \mathbf{v}_t} \odot \mathbf{\sigma}$
 \State  \(
@@ -715,27 +720,27 @@ s^j_t  \big] , \quad \mathbf{\sigma} = \big[ \sigma^j  \big]
 \State  \(
 A^j = A(\gamma^j;p_0), \quad B^j = B(\gamma^j;p_0), \quad C^j = C(\gamma^j;p_0), \text{ as defined in Section~\ref{subsec:exal}}
 \)
-\State  For the source-indexed updates below, let \(y_t^0 \equiv y_t^o\) and \(y_t^j \equiv z_t^j\) for \(1 \le j \le J\).
+\State  Let \(\mathcal{J}_0=\{0\}\cup\mathcal{J}\). During the estimation period, let \(y_t^0 \equiv y_t^o\) and \(y_t^j \equiv z_t^j\) for \(j\in\mathcal{J}\), with selector \(\mathbf{h}_{t,j}\). This is the same source-indexed notation used in Algorithm~\ref{alg1}.
 \State \textbf{Step 0: Set initial values}
 
 \While{$\text{ELBO}_k > \text{tol}$}
     \State \textbf{Step 1: Update $r(\boldsymbol{\eta}_t)=\mathcal{N}(m^{(k)}_t,C^{(k)}_t)$}
     \State Use Algorithm~\ref{alg:Alg4}
 
-    \For{$j = 0$ to $J$}
+    \For{$j \in \mathcal{J}_0$}
         \State \textbf{Step 2: Update $r(v^j_t)=\mathcal{GIG}(a_t^{j,(k)},b_t^{j,(k)},c_t^{j,(k)})$}
         \For{$t = 1$ to $T$}
             \State $a_t^{j,(k)} = \frac{1}{2}$
             \State $b_t^{j,(k)} = \left\langle \frac{A^2}{\sigma^j B^j} \right\rangle^{(k-1)} + 2 \left\langle \frac{1}{\sigma^j} \right\rangle^{(k-1)}$
-            \State $c_t^{j,(k)} = \left\langle \frac{1}{\sigma^j B^j} \right\rangle^{(k-1)} \Big[ (y_t^j)^2 - 2y_t^j \left\langle  \mathbf{h}_{t,j} \boldsymbol{\eta}_t \right\rangle^{(k)} + \left\langle (  \mathbf{h}_{t,j} \boldsymbol{\eta}_t )^2 \right\rangle^{(k)} \Big]$
-            \State $\quad \quad -2 \left\langle s^j_t \right\rangle^{(k-1)} \left\langle \frac{C^j|\gamma^j|}{B^j} \right\rangle^{(k-1)} \Big[ y_t^j - \left\langle  \mathbf{h}_{t,j} \boldsymbol{\eta}_t \right\rangle^{(k)} \Big]$
+            \State $c_t^{j,(k)} = \left\langle \frac{1}{\sigma^j B^j} \right\rangle^{(k-1)} \Big[ (y_t^j)^2 - 2y_t^j \left\langle  \mathbf{h}_{t,j}' \boldsymbol{\eta}_t \right\rangle^{(k)} + \left\langle (  \mathbf{h}_{t,j}' \boldsymbol{\eta}_t )^2 \right\rangle^{(k)} \Big]$
+            \State $\quad \quad -2 \left\langle s^j_t \right\rangle^{(k-1)} \left\langle \frac{C^j|\gamma^j|}{B^j} \right\rangle^{(k-1)} \Big[ y_t^j - \left\langle  \mathbf{h}_{t,j}' \boldsymbol{\eta}_t \right\rangle^{(k)} \Big]$
             \State $\quad \quad + \left\langle (s^j_t)^2 \right\rangle^{(k-1)} \left\langle \frac{(C^j)^2\sigma^j|\gamma^j|^2}{B^j} \right\rangle^{(k-1)}$
         \EndFor
 
         \State \textbf{Step 3: Update $r(s^j_t)=\mathcal{N}^+(\eta^{j,(k)},\lambda^{j,(k)})$}
         \For{$t = 1$ to $T$}
             \State $\lambda^{j,(k)} = \Big[ 1+\left\langle \frac{(C^j)^2 \sigma^j |(\gamma^j)|^2}{B^j} \right\rangle^{(k-1)} \left\langle \frac{1}{v^j_t} \right\rangle^{(k)} \Big]^{-1}$
-            \State $\eta^{j,(k)} = \lambda^{j,(k)}  \Big[ \left\langle \frac{C^j |\gamma^j|}{B^j} \right\rangle^{(k-1)} \left\langle \frac{1}{v^j_t} \right\rangle^{(k)} \Big( y_t^j - \left\langle  \mathbf{h}_{t,j} \boldsymbol{\eta}_t \right\rangle^{(k)} \Big) - \left\langle \frac{C^j |\gamma^j| A^j}{B^j} \right\rangle^{(k-1)} \Big]$
+            \State $\eta^{j,(k)} = \lambda^{j,(k)}  \Big[ \left\langle \frac{C^j |\gamma^j|}{B^j} \right\rangle^{(k-1)} \left\langle \frac{1}{v^j_t} \right\rangle^{(k)} \Big( y_t^j - \left\langle  \mathbf{h}_{t,j}' \boldsymbol{\eta}_t \right\rangle^{(k)} \Big) - \left\langle \frac{C^j |\gamma^j| A^j}{B^j} \right\rangle^{(k-1)} \Big]$
         \EndFor
 
         \State \textbf{Step 4: Update $r(\gamma^j, \sigma^j )$}
@@ -753,8 +758,8 @@ A^j = A(\gamma^j;p_0), \quad B^j = B(\gamma^j;p_0), \quad C^j = C(\gamma^j;p_0),
 
 \State \textbf{Notation:}
 \State $\left\langle g(\xi) \right\rangle = \mathbb{E}_\xi\left[ g(\xi) \right]$
-\State  $\mathbf{H}_t = [\mathbf{h}_{t,0}, \mathbf{h}_{t,1}, \ldots, \mathbf{h}_{t,J}]$, $\mathbf{Y}_t = [y_t^o, z_t^1, \ldots, z_t^J]'$, and $\mathbf{D}_t, \boldsymbol{\Lambda}_t$ are as defined in Subsection~\ref{subsec:fullmodel}
-\State  For the source-indexed updates below, let \(y_t^0 \equiv y_t^o\) and \(y_t^j \equiv z_t^j\) for \(1 \le j \le J\).
+\State  During the estimation period, \(\mathbf{H}_t = [\mathbf{h}_{t,0}, \mathbf{h}_{t,1}, \ldots, \mathbf{h}_{t,J}]\), \(\mathbf{Y}_t = [y_t^o, z_t^1, \ldots, z_t^J]'\), and \(\mathbf{D}_t, \boldsymbol{\Lambda}_t\) are as defined in Subsection~\ref{subsec:fullmodel}.
+\State  Equivalently, let \(y_t^0 \equiv y_t^o\) and \(y_t^j \equiv z_t^j\) for \(j\in\mathcal{J}\). This algorithm is the variational analogue of Algorithm~\ref{alg:Alg2}.
 \State $\mathbf{M}_t= \mathbf{C} \odot  \mathbf{\sigma} \odot | \mathbf{\gamma} | \odot \mathbf{s}_t + \mathbf{A} \odot \mathbf{v}_t$, \quad $\mathbf{O}_t= \sqrt{\mathbf{B} \odot \mathbf{v}_t} \odot Diag
 (\mathbf{\sigma}) \sqrt{\mathbf{B} \odot \mathbf{v}_t} \odot \mathbf{\sigma}$
 \State  \(

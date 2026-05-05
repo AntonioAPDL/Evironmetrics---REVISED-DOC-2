@@ -844,6 +844,15 @@ Use this as the working order when actually editing the manuscript.
 - [x] Replace the expectation form of CRPS with the integrated quantile-score representation and state explicitly that deterministic forecasts reduce to MAE.
 - [x] Recheck that the revised notation remains standard, mathematically equivalent, and easier for a first-time reader to parse.
 
+### Targeted appendix-algorithm readability pass
+- [x] Align the appendix algorithms explicitly with the unified-model notation from the main text.
+- [x] Clarify the source-indexed notation used in the algorithms, including the role of \(j=0\), \(\mathcal{J}\), and \(\mathcal{J}_0\).
+- [x] Distinguish clearly between estimation-period selectors \(\mathbf{h}_{t,j}\) and forecast-window selectors \(\mathbf{e}_{T+k,j}\).
+- [x] Rewrite the forecast-window algorithm steps so they use the same \(T+k\) notation as the main text.
+- [x] Remove stale or ambiguous notation residue that no longer matches the cleaned unified-model exposition.
+- [x] Add short continuity cues so a reader can move from `Posterior Inference` into the appendix algorithms without reconstructing old notation.
+- [x] Recheck the appendix as a reader-facing continuation of the main text rather than as an implementation note.
+
 ### Fifth pass: harder review-dependent items
 - [ ] five-cutoff justification after Raquel input
 - [ ] final figure decision for Figures 8 and 9
