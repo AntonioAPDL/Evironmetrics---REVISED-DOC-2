@@ -1,0 +1,767 @@
+# Manuscript Revision Checklist
+
+Purpose: organize the article rewrite so it stays aligned with the current rebuttal letter in `Corrections---Project-1` and can be executed one item at a time without losing track of dependencies.
+
+Status at creation:
+- Manuscript repo: `/data/muscat_data/jaguir26/Environmetrics_paper_repo`
+- Main article file: `wileyNJD-APA.tex`
+- Current manuscript HEAD: `26e8a7f`
+- Rebuttal repo: `/data/muscat_data/jaguir26/Corrections---Project-1`
+- Current rebuttal HEAD: `2bbcd39`
+- Rebuttal internal TODO block: `Corrections---Project-1/main.tex:96-120`
+
+Important guardrails:
+- Do not edit the manuscript blindly. Every substantive manuscript change should remain consistent with the current rebuttal wording.
+- If the manuscript strategy changes materially, re-check the corresponding rebuttal response before final submission.
+- Keep a distinction between:
+  - analyses/results already completed,
+  - manuscript exposition/organization still to be rewritten.
+- Do not delete important material before deciding where it will reappear in the revised paper.
+
+---
+
+## 1. Source-of-truth crosswalk
+
+### Rebuttal commitments that already drive the manuscript rewrite
+- `HE-1`: add computational cost, refitting, and operational feasibility.
+- `HE-2`: rebuild forecast validation around five version-consistent rolling-origin cutoffs; compare against simpler Bayesian alternatives and raw forecast products.
+- `HE-3`: add an ablation study for the best model.
+- `HE-4`: report CRPS plus targeted quantile diagnostics.
+- `HE-5`: clarify code/reproducibility availability.
+- `HE-6`: clarify what is fit-time information vs forecast-time inputs vs verification data.
+- `HE-7`: latest-forecast-only protocol.
+- `R1-M1`: separate meteorological vs hydrological uncertainty in the motivation.
+- `R1-M2`: link model formulation to results more directly.
+- `R1-M3`: reduce mathematical detail; remove PIT development from the main text; shorten posterior predictive synthesis exposition.
+- `R1-M4`: expanded forecast evidence beyond one event.
+- `R1-M5`: make the rolling-origin evaluation/cross-validation logic explicit.
+- `R1-m1` to `R1-m9`: wording, organization, data-role clarity, table-caption fixes, and figure-interpretation clarifications.
+
+### Remaining open rebuttal TODOs that must be respected while revising the manuscript
+From `Corrections---Project-1/main.tex:96-120`:
+- `HE-2`: justify why only five cutoffs were retained after archive/version screening; pending Raquel.
+- `HE-3` / `HE-4`: optional exact section-number references later.
+- `HE-6`: mirror the forecast-input timing clarification explicitly in the manuscript, and possibly move it earlier.
+- `R1-M1`, `R1-M2`, `R1-M3`: recheck after the manuscript structure is rewritten.
+- `R1-m4`, `R1-m7`, `R1-m9`: recheck after final section/figure decisions.
+
+---
+
+## 2. Current manuscript areas that clearly require revision
+
+### Introduction
+Current location:
+- `wileyNJD-APA.tex:58-76`
+
+Main issues already acknowledged in the rebuttal:
+- mixes meteorological and hydrological uncertainty too early
+- overemphasizes ensemble-generation details relative to the actual paper contribution
+- still frames part of the contribution too broadly as dynamical error correction
+
+### Methodology
+Current location:
+- `wileyNJD-APA.tex:78-245`
+
+Main issues already acknowledged:
+- PIT discussion is too long and should be removed from the main text (`216-245`)
+- posterior predictive synthesis section is too long and too technical (`540-610`)
+- quantile-crossing correction is developed at dissertation-level detail, even though no crossing occurs in the application
+
+### Forecasting / application / results section
+Current location:
+- `wileyNJD-APA.tex:247-610`
+
+Main issues already acknowledged:
+- Section title and organization still mix data/application setup, model specification, historical fit, and forecasting results
+- current paper still contains the old single-event framing and weighted multi-issuance forecast aggregation (`293-300`)
+- `General Results` heading is too vague (`350`)
+- current figure pair (`fig:synth1`, `fig:synth2`) still reflects the old illustrative setup and may need replacement or reframing
+
+### Conclusions
+Current location:
+- `wileyNJD-APA.tex:612-623`
+
+Main issues already acknowledged:
+- needs to match the revised forecasting emphasis
+- should not rely on claims that are tied only to the old single-cutoff presentation
+- should reflect the final protocol and the forecasting-validation evidence actually retained in the manuscript
+
+---
+
+## 3. Writing standard for all manuscript changes
+
+This section is the default style guide for every manuscript edit. If a later change is unclear, return here first.
+
+### 3.1 Target voice
+- Neutral, factual, and submission-ready.
+- Clear enough for a statistically trained reader who is not an expert in the local forecast archive.
+- Professional and restrained: no sales language, no rebuttal-letter tone, no internal workflow narration.
+- Readable across statistics and hydrology audiences.
+
+### 3.2 What the current manuscript already does well
+- It has a technically serious core and usually names the modeled objects precisely.
+- It gives the reader real hydrological context rather than presenting the paper as a purely abstract methods exercise.
+- It includes concrete quantitative material that can support a strong final paper once the exposition is tightened.
+
+### 3.3 Main tone/style problems in the current draft
+- The introduction is too expansive and repeatedly uses broad “importance/challenge” language before reaching the actual contribution.
+- Some sections sound more like dissertation exposition than article exposition.
+- Several paragraphs do too many jobs at once: motivation, background, justification, and contribution all in one block.
+- Some language is more promotional than evidentiary, especially around novelty, interpretability, and practical value.
+- Some manuscript text still contains operational or local-audit detail that is more appropriate for internal validation notes, supplementary documentation, or the rebuttal letter than for the main paper.
+- The results section mixes forecasting evidence with descriptive or historical interpretation in a way that obscures what is truly out-of-sample.
+- Certain terms are not yet used with full consistency across the paper.
+
+### 3.4 Core writing rules
+
+#### A. Prefer factual claims over rhetorical framing
+Use:
+- direct statements of what the paper does
+- direct statements of what the data show
+- direct statements of what changed in the modeling or evaluation setup
+
+Avoid:
+- inflated importance language unless it is genuinely needed
+- generic problem-framing repeated across multiple paragraphs
+- phrases that sound like promotion rather than analysis
+
+Examples to avoid or reduce:
+- `crucial`, `vital`, `promising avenue`, `significant focus`, `open problem and active area of research`
+- `A key contribution of this work lies in...`
+- `Not surprisingly...`
+- `This highlights the practical value...`
+
+Preferred replacements:
+- `We study...`
+- `We use...`
+- `The model includes...`
+- `The revised forecasting evaluation compares...`
+- `Table X shows...`
+- `These results indicate...`
+
+#### B. One paragraph, one job
+Each paragraph should primarily do one of the following:
+- motivate a modeling choice
+- define a model component
+- describe a data source
+- report a result
+- interpret a result
+
+If a paragraph is doing more than one of these, it is a candidate for splitting or trimming.
+
+#### C. Results should follow a claim -> evidence -> interpretation order
+Preferred order:
+1. state the result plainly
+2. point to the relevant table/figure/pattern
+3. interpret the result briefly
+
+Avoid:
+- interpretation before the reader knows the result
+- broad takeaways not anchored to visible evidence
+- “best/strongest/clear” language without specifying what comparison is being made
+
+#### D. Keep explanations article-length, not dissertation-length
+When choosing between two valid levels of detail, prefer the shorter one unless the longer one is essential for:
+- identifiability
+- reproducibility
+- model interpretation
+- understanding a key empirical result
+
+Material that often needs shortening or relocation:
+- long derivational walkthroughs
+- sensitivity-check narration
+- algorithmic detail not used in the main argument
+- implementation detail that matters only for local audit/reconstruction
+
+#### E. Avoid local-audit and workflow language in the main article
+Do not write the manuscript as if the reader needs to know:
+- how the revision was discovered
+- the internal history of a rerun
+- local repository logic
+- operational archive debugging details
+
+Only keep such detail if it is scientifically necessary to explain:
+- why certain cutoffs are feasible
+- why certain products are comparable
+- why the validation design is constrained
+
+Even then, explain it briefly and in reader-facing language.
+
+#### F. Use terminology consistently
+Use one term for each concept and keep it stable.
+
+Terms to standardize carefully:
+- `USGS observations`
+- `retrospective products`
+- `forecast products`
+- `forecast covariates`
+- `forecast-window`
+- `raw forecast products`
+
+Avoid unnecessary alternation among near-synonyms if they create ambiguity.
+
+#### G. Keep interpretive claims calibrated
+Only use stronger language when the evidence directly supports it.
+
+Prefer:
+- `suggests`
+- `indicates`
+- `is consistent with`
+- `supports`
+
+Use stronger terms only when justified:
+- `shows`
+- `demonstrates`
+- `dominates`
+
+Avoid stacking evaluative adjectives such as:
+- `robust`, `coherent`, `practical`, `interpretable`, `scalable`
+
+unless each one is needed and supported in context.
+
+### 3.5 Preferred sentence style
+- Prefer shorter declarative sentences over multi-clause build-ups.
+- Put the main subject early in the sentence.
+- Avoid excessive opening dependent clauses.
+- Use transitions only when they clarify logic; do not add them to “smooth” the prose artificially.
+- Keep notation-heavy sentences especially short.
+
+### 3.6 Section-specific guidance
+
+#### Introduction
+- Move quickly from problem context to the actual paper contribution.
+- Do not let broad hydrology/weather background dominate the introduction.
+- Separate meteorological uncertainty from hydrological uncertainty clearly.
+- Keep literature review selective and functional.
+
+#### Methodology
+- Define the model clearly, but do not defend every choice at full length in the main text.
+- If a justification is not central, compress it or move it later.
+- Prefer concise interpretation of components over repeated notation restatement.
+
+#### Data / application section
+- Introduce the role of each data source explicitly.
+- Make the observational target clear before discussing retrospective or forecast products.
+- Keep operational data-processing detail only when it affects scientific interpretation.
+
+#### Results
+- Separate:
+  - forecasting evidence
+  - historical fit / parameter interpretation
+  - synthesis illustrations
+- Lead with the evaluated comparison, not with setup reminders.
+- Keep table discussion concrete and comparison-based.
+
+#### Conclusions
+- Summarize what the paper actually establishes after revision.
+- Do not revert to broader claims that the results section no longer supports.
+- End with restrained future-work statements.
+
+### 3.7 Submission-ready quality check for every edit
+Before accepting a revised paragraph, ask:
+
+1. Is this written for a journal reader rather than for a coauthor or reviewer?
+2. Is the main point stated directly?
+3. Is there any repeated idea that appeared in the previous paragraph or subsection?
+4. Is any sentence carrying local audit/process detail that the main paper does not need?
+5. Is the level of detail proportional to the importance of the point?
+6. Is the wording neutral and evidence-based?
+7. Are the terms consistent with the rest of the manuscript and the rebuttal?
+8. If this paragraph were read in isolation, would it still sound submission-ready?
+
+### 3.8 Fast red-flag checklist
+Revise immediately if a paragraph contains:
+- broad motivational language with no new information
+- more than one “importance/challenge” sentence in a row
+- unexplained local jargon
+- internal audit history
+- a claim of practical value without evidence
+- heavy derivation that the results do not use
+- multiple near-synonyms for the same data source or forecasting object
+
+---
+
+## 4. Structural blueprint for the revised manuscript
+
+This is the working architectural decision for the manuscript. Do not begin the large section rewrite without checking new edits against this map.
+
+### 4.1 Main structural decision
+The revised paper should be organized around one central contribution:
+- a Bayesian quantile-based correction-and-synthesis framework for river-flow forecasting
+
+The manuscript should no longer be organized around:
+- `Model A`
+- `Model B`
+- `Model C`
+
+Instead, the main text should present:
+- one shared latent quantile process
+- one source-linking structure for observations and agency products
+- one forecast-window extension
+- one main forecasting-validation result section
+
+### 4.2 What is central versus supporting
+
+#### Central in the main article
+- one compact final model description
+- one clear statement of the roles of USGS observations, retrospective products, forecast products, and forecast covariates
+- one clear rolling-origin forecasting design
+- one central comparative forecasting result
+- one concise interpretation block for the selected specification
+
+#### Supporting, not central
+- the pedagogical `Model A / Model B / Model C` build-up
+- long developmental explanations of nested variants
+- parameter-heavy source-specific tables
+- extended historical-fit illustrations
+- multiple synthesis illustrations
+
+#### Best candidates for supplement or appendix
+- ablation study
+- quantile-level scoring diagnostics
+- the second synthesis figure
+- one or both source-specific `gamma / sigma` tables
+- any figure or table that is informative but not needed to understand the main forecasting result
+
+Rule for these materials:
+- if moved out of the main article, they still need a clear home in the submission package and their placement must remain consistent with the rebuttal
+
+### 4.3 Final target section map
+
+#### Section 1. Introduction
+- keep as the problem-and-contribution entry point
+- update the closing roadmap paragraph only after the new structure is in place
+
+#### Section 2. Methodology
+Recommended subsection logic:
+1. Extended asymmetric Laplace likelihood
+2. Shared latent quantile process
+3. Source-specific observation equations
+4. Forecast-window extension
+5. Prior specification, inference, and tuning
+6. Posterior predictive synthesis
+
+Key rule:
+- benchmark variants such as `N / AL / exAL`, `U / M`, and `T0 / T1` should appear as restricted variants of the same framework, not as the conceptual backbone of the paper
+- the abstract model exposition should foreground the shared quantile process, its trend/seasonal/transfer components, and the source-specific discrepancy structure before introducing any benchmark simplifications
+
+#### Section 3. Application Data and Forecasting Design
+Recommended subsection logic:
+1. Study setting and target observations
+2. External data sources and forecast covariates
+3. Application-specific state specification
+4. Rolling-origin forecast evaluation design
+
+Key rule:
+- this section must explicitly distinguish USGS observations, retrospective products, forecast products, and forecast covariates before the main results section begins
+
+#### Section 4. Forecast Validation Results
+Recommended subsection logic:
+1. Comparative forecasting performance across model families
+
+Key rule:
+- the CRPS-based five-cutoff comparison should be the first major empirical result the reader sees
+
+#### Section 5. Interpretation of the Selected Specification
+Recommended subsection logic:
+1. Covariate effects and source-specific behavior
+2. Historical behavior across representative regimes
+3. Optional synthesized predictive illustration
+
+Key rule:
+- this section is supporting interpretation, not the paper's primary empirical evidence
+
+#### Section 6. Conclusions
+- rewrite only after the new body structure is stable
+
+### 4.4 Block-by-block migration map
+
+#### Methodology block map
+- `wileyNJD-APA.tex:77-80` exAL likelihood:
+  - keep in main text
+  - compress lightly later if needed
+- `wileyNJD-APA.tex:86-117` current `Model A`:
+  - rewrite into the new `Shared latent quantile process` subsection
+- `wileyNJD-APA.tex:119-149` current `Model B`:
+  - rewrite into the new `Source-specific observation equations` subsection
+- `wileyNJD-APA.tex:151-181` current `Model C`:
+  - rewrite into the new `Forecast-window extension` subsection
+- `wileyNJD-APA.tex:183-193` priors and discounting:
+  - keep
+  - compress where possible
+- `wileyNJD-APA.tex:195-208` posterior inference and VB:
+  - keep
+  - compress where possible
+- `wileyNJD-APA.tex:210-223` model selection:
+  - keep as revised
+
+#### Application/setup block map
+- `wileyNJD-APA.tex:228-241` study setting and target observations:
+  - keep
+  - compress
+  - lead explicitly with USGS as the target series
+- `wileyNJD-APA.tex:243-249` covariates and GDPC setup:
+  - keep
+  - compress substantially
+- `wileyNJD-APA.tex:251-258` covariates figure:
+  - keep in main text
+- `wileyNJD-APA.tex:260-262` retrospective and forecast-source description:
+  - keep
+  - rewrite for clearer data-role separation
+- `wileyNJD-APA.tex:264-269` retrospective-products figure:
+  - optional keep
+  - remove first if space becomes tight
+- `wileyNJD-APA.tex:271-278` old weighted multi-issuance protocol:
+  - delete from the main paper
+  - replace with the latest-forecast-only rolling-origin design
+- `wileyNJD-APA.tex:280-287` ensemble illustration figure:
+  - optional keep
+  - only as a setup illustration, not as core forecasting evidence
+- `wileyNJD-APA.tex:289-325` application-specific state specification:
+  - keep in main text
+  - rewrite lightly for clarity and centrality
+
+#### Forecast-results block map
+- `wileyNJD-APA.tex:331-362` benchmark comparison text and CRPS table:
+  - keep in main text
+  - this becomes the core empirical result
+- `wileyNJD-APA.tex:333` compact label explanation:
+  - keep with the benchmark table, not in the methods section
+
+#### Interpretation/supporting block map
+- `wileyNJD-APA.tex:364-431` `gamma / sigma` tables:
+  - move to supplement or appendix
+  - keep only a short prose summary in the main paper if needed
+- `wileyNJD-APA.tex:434-436` `gamma / sigma` interpretation:
+  - compress heavily
+  - retain only if needed to motivate source-specific parameters
+- `wileyNJD-APA.tex:438-475` regime figures and no-crossing discussion:
+  - compress heavily
+  - keep at most one compact interpretive figure block in the main paper
+- `wileyNJD-APA.tex:477-515` covariate-effects table and discussion:
+  - keep in main text if one interpretive table is retained
+  - this is a stronger candidate for the main paper than the `gamma / sigma` tables
+- `wileyNJD-APA.tex:518-540` synthesis definition:
+  - move conceptually to the methods section
+  - do not keep as a late results subsection
+- `wileyNJD-APA.tex:542-550` `fig:synth1`:
+  - optional keep as a single operational illustration
+- `wileyNJD-APA.tex:552-561` `fig:synth2`:
+  - move to supplement or delete
+- `wileyNJD-APA.tex:563-576` conclusions:
+  - full rewrite after the structure is stable
+
+### 4.5 Structural decisions that are now considered locked
+- remove the `Model A / Model B / Model C` progression from the main text as the organizing device
+- make the five-cutoff CRPS comparison the first major empirical result
+- remove the old weighted multi-issuance forecast-aggregation protocol
+- treat ablation and quantile-level scoring as supplement/appendix candidates rather than required main-text sections
+- keep at most one synthesis figure in the main text
+- split the current combined Section 3 into setup, forecast validation, and supporting interpretation
+
+### 4.6 Structural recheck after the planning pass
+This blueprint was rechecked against the current manuscript and rebuttal, and it remains the best high-quality option for the revised submission for five reasons:
+
+1. It matches the revised rebuttal without forcing every rebuttal artifact into the main article.
+2. It gives the paper one dominant narrative: forecasting with one unified framework.
+3. It separates out-of-sample evidence from historical interpretation, which is the main readability problem in the current draft.
+4. It removes the strongest source of conceptual clutter: the `Model A / B / C` staging.
+5. It preserves interpretive material, but only after the main forecasting evidence is established.
+
+If a later manuscript change conflicts with any of these five points, revisit this section before editing further.
+
+---
+
+## 5. Implementation order for the structural rewrite
+
+Use this order when the large section rewrite begins.
+
+### Stage 1. Replace the section skeleton first [completed]
+- update the roadmap sentence in the introduction only after the new section map is in place
+- replace the current combined Section 3 plan with the new Section 3 / Section 4 / Section 5 split
+- remove `General Results`
+- create the new subsection headings before rewriting local prose
+
+### Stage 2. Rebuild the methods around one framework [completed]
+- replace the `Model A / B / C` presentation with:
+  - shared latent quantile process
+  - source-specific observation equations
+  - forecast-window extension
+- keep benchmark-variant labeling out of the core methods exposition
+
+### Stage 3. Rewrite the application/setup section
+- lead with USGS as the target series
+- rewrite the source-role paragraphs
+- compress the GDPC and local covariate exposition
+- insert the rolling-origin forecast-design subsection
+- remove the old weighted forecast-aggregation text
+
+### Stage 4. Rebuild the main results flow
+- make the CRPS benchmark comparison the first result
+- keep the model-family label explanation with the benchmark table
+- move secondary result blocks out of the way before rewriting result prose
+
+### Stage 5. Rebuild the supporting interpretation section
+- decide which interpretive table stays in the main paper
+- decide which hydrological figure block stays in the main paper
+- decide whether one synthesis figure remains
+
+### Stage 6. Final consistency pass after the structure is in place
+- update the introduction roadmap
+- rewrite the conclusions
+- recheck manuscript vs rebuttal consistency
+- recheck all supplement candidates
+
+---
+
+## 6. Revision order: easiest first, hardest last
+
+This order is designed to reduce risk and keep the rebuttal and manuscript synchronized.
+
+### Phase A. Fast factual/editorial fixes
+Goal: clean low-risk issues first.
+
+- [x] Fix `Flexile` -> `Flexible` in the subsection title.
+  - Source: `R1-m2`
+  - Current location: `83`
+
+- [x] Update the introduction sentence on hydrological models to include conceptual models.
+  - Source: `R1-m1`
+  - Current location: `62`
+
+- [x] Replace deterministic language around retrospective/reanalysis products and note ERA5 forecast components explicitly.
+  - Source: `R1-m3`
+  - Current locations: `250-290`, especially data/product descriptions
+
+- [x] Fix Table 1 and Table 2 captions/notes so they consistently say posterior medians where appropriate.
+  - Source: `R1-m8`
+  - Current locations: `387`, `422`, text at `456`
+
+- [x] Normalize baseline terminology in the manuscript to `raw forecast products` or another final consistent term.
+  - Source: final rebuttal cleanup and `HE-2`
+  - Current locations: `355`, `384`, any table captions/text that still say `raw physical ensembles`
+
+- [x] Add/clarify code availability and reproducibility statement.
+  - Source: `HE-5`
+  - Likely location: acknowledgments / data-availability / supplementary note area
+
+### Phase B. Shorten math and trim nonessential exposition
+Goal: reduce obvious overlength before structural rewrites.
+
+- [x] Remove PIT development from the main text.
+  - Source: `R1-M3`
+  - Current location: `216-245`
+  - Keep only what is truly needed, if anything, outside the main text.
+
+- [x] Shorten the model-selection discussion so CRPS is the main criterion without a long PIT-centered setup.
+  - Source: `HE-4`, `R1-M3`
+  - Current location: `216-245`
+
+- [x] Shorten the posterior predictive synthesis section.
+  - Source: `R1-M3`
+  - Current location: `540-610`
+  - Keep a concise description because it remains part of the contribution.
+
+- [x] Reduce the quantile-crossing discussion to a brief robustness note unless it is still essential for the final paper.
+  - Source: `R1-M3`
+  - Current locations: `562-589`
+
+### Phase C. Introduction rewrite
+Goal: fix the motivation before touching results structure.
+
+- [x] Separate meteorological uncertainty from hydrological uncertainty early in the introduction.
+  - Source: `R1-M1`
+  - Current location: `58-76`
+
+- [x] Shorten the ensemble-generation discussion so it supports the paper’s actual scope rather than becoming a parallel weather-forecasting introduction.
+  - Source: `R1-M1`
+  - Current location: `62-66`
+
+- [x] Reframe the contribution more clearly around:
+  - Bayesian quantile-based correction-and-synthesis
+  - forecasting performance in this application
+  rather than generic `dynamical error correction`.
+  - Source: Reviewer 1 overview + `R1-M1`/`R1-M2`
+  - Current locations: `68-76`, abstract as well when manuscript editing begins
+
+- [ ] Recheck this section against the rebuttal after the rewrite.
+  - Source: rebuttal TODO `R1-M1[BRUNO-REVIEW]`
+
+### Phase D. Data / application / section-organization rewrite
+Goal: fix the architecture that Reviewer 1 found confusing.
+
+- [x] Decide the new section layout before editing prose.
+  - Source: `R1-m4`, `R1-m7`, `R1-M2`
+  - Current problem area: `247-610`
+  - Final blueprint recorded in Section 4 of this checklist
+
+- [x] Introduce USGS observations earlier and more explicitly as the target series.
+  - Source: `R1-m4`
+  - Current locations: `250-290`
+
+- [x] Make the distinction among:
+  - USGS observations,
+  - retrospective products,
+  - forecast products,
+  - forecast covariates
+  explicit and early.
+  - Source: `R1-m4`, `HE-6`
+
+- [x] Replace the vague subsection title `General Results`.
+  - Source: `R1-m7`
+  - Current location: `350`
+
+- [ ] Recheck this whole structure after the rewrite against rebuttal TODOs:
+  - `R1-M2[BRUNO-REVIEW]`
+  - `R1-m4[BRUNO-REVIEW]`
+  - `R1-m7[BRUNO-REVIEW]`
+
+### Phase E. Forecast protocol rewrite
+Goal: align the manuscript with the revised final forecasting protocol.
+
+- [x] Remove or rewrite the old weighted multi-issuance forecast aggregation protocol.
+  - Source: `HE-7`, `R1-m6`
+  - Current location: `293-300`
+  - Replace with latest-forecast-only protocol.
+
+- [x] Clarify that the forecasting evaluation is rolling-origin and out-of-sample.
+  - Source: `HE-2`, `HE-6`, `R1-M5`
+
+- [x] State clearly what is available at each cutoff:
+  - observed discharge through the cutoff,
+  - retrospective products available through the cutoff,
+  - forecast products issued at or before the cutoff,
+  - forecast covariates available at the cutoff.
+  - Source: `HE-6`
+
+- [x] State clearly that post-cutoff USGS observations are used only for verification.
+  - Source: `HE-6`
+
+- [ ] Decide where to place the explanation for why only five cutoffs were retained.
+  - Source: `HE-2` TODO pending Raquel
+
+- [x] Make the cross-validation logic explicit as rolling-origin cutoff-based folds.
+  - Source: `R1-M5`
+
+### Phase F. Forecast validation/results overhaul
+Goal: this is the main substantive rewrite.
+
+- [x] Replace the old single-window forecasting emphasis with the five-cutoff validation design.
+  - Source: `HE-2`, `R1-M4`
+
+- [x] Insert the final benchmark table and text consistent with the rebuttal.
+  - Source: `HE-2`
+  - Current manuscript already has an updated table at `360-383`, but the surrounding framing should be rechecked against the final rebuttal wording.
+
+- [x] Ensure the text states correctly that `exAL-M-T1` is best in all five cutoffs.
+  - Source: `HE-2`, `HE-7`
+
+- [x] Keep the comparison against simpler Bayesian alternatives and raw forecast products visible and easy to interpret.
+  - Source: `HE-2`
+
+- [ ] Decide whether the ablation study will appear in the supplement or appendix rather than in the main article.
+  - Source: `HE-3`
+  - Current structural decision: supplementary candidate by default
+
+- [ ] Decide whether quantile-diagnostic reporting will appear in the supplement or appendix rather than in the main article.
+  - Source: `HE-4`
+  - Current structural decision: supplementary candidate by default
+
+### Phase G. Interpretation and synthesis-material decision
+Goal: defer until the main forecasting rewrite is settled.
+
+- [x] Decide whether `fig:synth1` and `fig:synth2` remain in the final paper.
+  - Source: `R1-m9[BRUNO-REVIEW]`
+  - Decision: keep `fig:synth1` in the main text as the operational illustration; move `fig:synth2` to the appendix as a historical-only counterfactual.
+
+If retained:
+- [x] rewrite the surrounding discussion so their different roles are explicit
+- [x] avoid letting them carry the main validation burden
+
+If replaced:
+- [ ] update the manuscript and then recheck the rebuttal wording for `R1-m9`
+
+- [x] Decide whether the `gamma / sigma` tables remain in the main paper or move to supplement.
+  - Source: structural blueprint Section 4
+  - Decision: move to appendix and reference briefly from the main text.
+
+- [x] Decide whether the historical-regime figures remain as a compact main-text block or move to supplement.
+  - Source: structural blueprint Section 4
+  - Decision: keep the dry/wet regime pair in the main text; move the 80-month seasonal figure to the appendix.
+
+### Phase H. Conclusions and final consistency pass
+Goal: only after the body is stable.
+
+- [x] Rewrite the conclusions so they match the revised paper rather than the old single-cutoff manuscript.
+  - Source: global consistency with `HE-2` to `HE-7`
+
+- [x] Make sure the conclusion reflects:
+  - five-cutoff validation
+  - simpler Bayesian comparisons
+  - raw forecast-product comparisons
+  - latest-forecast-only protocol
+  - supporting interpretation from the selected specification
+  - supplementary diagnostics only if they are retained elsewhere in the submission package
+
+- [x] Final terminology sweep:
+  - `raw forecast products`
+  - `retrospective products`
+  - `forecast products`
+  - `USGS observations`
+  - `forecast-window`
+
+- [ ] Final rebuttal/manuscript coherence check.
+  - Every manuscript change promised in the rebuttal should either be present in the article or the rebuttal should be updated.
+
+---
+
+## 7. Easy-to-hard execution checklist
+
+Use this as the working order when actually editing the manuscript.
+
+### First pass: low-risk manuscript fixes
+- [x] `Flexile` -> `Flexible`
+- [x] conceptual-model wording in introduction
+- [x] ERA5 / retrospective wording precision
+- [x] Table 1 / Table 2 caption fixes
+- [x] baseline terminology normalization
+- [x] code/reproducibility note
+
+### Second pass: delete/shorten obvious excess
+- [x] PIT section from main text
+- [x] long CRPS derivation trimmed
+- [x] synthesis section shortened
+- [x] quantile-crossing correction reduced
+
+### Third pass: introduction and section architecture
+- [x] introduction rewritten
+- [x] section architecture decided
+- [x] data/application ordering rewritten
+- [x] `General Results` renamed/replaced
+- [x] methods reframed around one unified framework
+- [x] full state-space model presented directly, with simpler formulations treated as restrictions rather than separate models
+
+### Fourth pass: forecasting protocol and validation
+- [x] latest-forecast-only protocol in text
+- [x] five-cutoff rolling-origin design stated clearly
+- [x] fit-time vs forecast-time vs verification distinction stated clearly
+- [x] benchmark comparison fully aligned with rebuttal
+- [ ] supplement/appended placement for ablation and quantile diagnostics finalized
+
+### Fifth pass: harder review-dependent items
+- [ ] five-cutoff justification after Raquel input
+- [ ] final figure decision for Figures 8 and 9
+- [ ] recheck `R1-M1`, `R1-M2`, `R1-M3` after full structural rewrite
+- [ ] recheck `R1-m4`, `R1-m7`, `R1-m9` after final section/figure decisions
+
+---
+
+## 8. Practical workflow note
+
+When actual manuscript editing starts, work in this loop:
+1. update one coherent block of the manuscript,
+2. compare it immediately with the matching rebuttal response,
+3. note any mismatch,
+4. only then move to the next block.
+
+This will keep the article and the response letter synchronized and reduce the risk of introducing a contradiction late in the revision.
