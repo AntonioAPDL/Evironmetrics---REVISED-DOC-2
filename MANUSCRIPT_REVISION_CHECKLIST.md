@@ -742,6 +742,55 @@ Use this as the working order when actually editing the manuscript.
 - [x] full state-space model presented directly, with simpler formulations treated as restrictions rather than separate models
 - [x] unified model rewritten as one readable single-model presentation, with line-by-line equations, a compact form, and explicit A/B/C equivalence
 
+### Targeted audit: unified-model exposition
+- [ ] Verify mathematical equivalence between the current single-model presentation and the old A/B/C setup.
+  - Confirm that the line-by-line equations recover:
+    - the USGS-only case (`Model A`)
+    - the estimation-period multivariate case (`Model B`)
+    - the forecast-window continuation (`Model C`)
+  - Confirm that the T0 restriction is described only as a benchmark restriction, not as a second main model.
+- [ ] Verify notation and indexing consistency within Subsection `Unified State-Space Model`.
+  - Every symbol appearing in the equations should be either defined locally or already standard from earlier text.
+  - Check especially:
+    - `T`, `t`, `k`, `j`, `i`, `J`, `K_{(j)}`, `I_j`
+    - `\boldsymbol{\eta}_t`, `\boldsymbol{\theta}_t`, `\boldsymbol{\delta}_t^j`, `\zeta_t`, `\boldsymbol{\psi}_t`
+    - `\mathbf{F}_t`, `\mathbf{G}_t`, `\mathbf{G}^{\text{trans}}_t`, `\boldsymbol{D}_t`, `\boldsymbol{M}_t`
+    - `\mathbf{h}_{t,j}`, `\mathbf{e}_{t,j}`
+- [ ] Verify internal consistency between the line-by-line and compact forms.
+  - The compact equations should be a faithful restatement of the readable display, not a modified variant.
+  - No quantity should appear in the compact form with a meaning that differs from the line-by-line form.
+- [ ] Audit the reader flow for a first-time statistics reader.
+  - The subsection should answer in order:
+    1. What is the state?
+    2. What is observed before the cutoff?
+    3. What is observed after the cutoff?
+    4. How does the state evolve?
+    5. How do the compact matrices encode the same structure?
+    6. How does this recover the old A/B/C setup?
+- [ ] Audit for undefined or weakly motivated transitions.
+  - Remove any sentence that sounds like internal refactoring commentary.
+  - Replace any sentence that asks the reader to infer too much from notation alone.
+- [ ] Audit the formatting of the displays for readability.
+  - Keep the line labels informative but brief.
+  - Avoid overcrowded lines where both interpretation and indexing compete for space.
+  - Prefer one display per conceptual step when a combined display becomes visually heavy.
+  - Keep the compact form as a reference block, not the main explanatory burden.
+- [ ] Audit for redundancy.
+  - Remove repeated explanations of:
+    - source-specific parameters
+    - the meaning of the cutoff
+    - the role of forecast covariates
+  - Keep each explanation once, at the place where a new reader most needs it.
+- [ ] Audit subsection-to-subsection continuity.
+  - The transition from exAL to the unified model should feel natural.
+  - The transition from the unified model to priors/discount factors should not reintroduce the old staged-model logic.
+  - The transition from the unified model to posterior inference should use the same single-model framing.
+- [ ] Final style pass for the unified-model subsection.
+  - Neutral, factual tone
+  - No AI-sounding scaffolding
+  - No unnecessary reassurance or meta language
+  - Sentences should be short enough to parse on first read, especially after displayed equations
+
 ### Fourth pass: forecasting protocol and validation
 - [x] latest-forecast-only protocol in text
 - [x] five-cutoff rolling-origin design stated clearly
