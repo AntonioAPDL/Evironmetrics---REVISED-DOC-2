@@ -871,6 +871,27 @@ Use this as the working order when actually editing the manuscript.
 - [ ] recheck `R1-M1`, `R1-M2`, `R1-M3` after full structural rewrite
 - [ ] recheck `R1-m4`, `R1-m7`, `R1-m9` after final section/figure decisions
 
+### Next coordinated TODOs after the current manuscript pass
+- [ ] Refresh every interpretation-dependent table and figure so it is generated from the same final `exAL-M-T1` run that produced the CRPS values reported in Table~1.
+  - This includes the covariate-effects table, the dry/wet regime figures, the predictive-synthesis figure, and any appendix summaries that still depend on an older run.
+- [ ] Decide and state the provenance of the supporting interpretation material.
+  - Recommended decision to verify: keep the five-cutoff CRPS comparison as the main empirical evidence, and keep the supporting interpretation figures/tables tied to one representative final cutoff only, stated explicitly in the text and captions.
+- [ ] Update the predictive-synthesis figure in the main text so it matches the final selected `exAL-M-T1` analysis used in the current manuscript.
+  - The current main-text synthesis figure is still tied to an older single-cutoff output and needs to be regenerated from the final selected run.
+- [ ] Recheck whether the dry/wet regime figures are still based on the final cutoff fit and, if so, make that provenance explicit.
+  - If they are not based on the final selected run, regenerate them or revise the surrounding text so the interpretation remains coherent.
+- [ ] Clarify forecast-covariate availability in both the manuscript and the corrections letter.
+  - Make explicit that forecast precipitation and forecast soil moisture are used after the cutoff, whereas the large-scale climate factor (GDPC / PCA-based summary) is not forecasted in the same way.
+- [ ] Add an explicit justification for why only five cutoffs were retained after the archive/version screening.
+  - This justification must appear in the corrections letter and may also need a short manuscript sentence once the wording is settled.
+- [ ] Synchronize the corrections letter with the current manuscript before the final crosswalk audit.
+  - Update older CRPS values, figure/table references, and any stale terminology that no longer matches the revised manuscript.
+  - Recheck source naming carefully; the corrections letter still contains older labels in places and must match the manuscript exactly.
+- [ ] Decide the final status and location of the ablation and quantile-diagnostic material.
+  - Finalize whether these stay only in the corrections letter, move to an appendix/supplement, or receive a brief manuscript-side pointer.
+- [ ] Do a full response-letter/manuscript crosswalk audit once the refreshed figures, tables, and corrections-letter updates are complete.
+  - Verify that every promised revision is actually present, that every cited number matches the final manuscript, and that the response letter points to the correct sections, tables, and figures.
+
 ---
 
 ## 8. Practical workflow note
