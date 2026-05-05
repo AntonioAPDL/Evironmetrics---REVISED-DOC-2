@@ -825,6 +825,16 @@ Use this as the working order when actually editing the manuscript.
 - [x] benchmark comparison fully aligned with rebuttal
 - [ ] supplement/appended placement for ablation and quantile diagnostics finalized
 
+### Targeted baseline-recovery pass
+- [x] Recover a small amount of application motivation from the baseline without restoring the old narrative scale.
+- [x] Recover clearer post-equation explanatory rhythm in the unified-model section without reintroducing staged A/B/C exposition.
+- [x] Recover a more intuitive explanation of why retrospective products are useful for discrepancy learning.
+- [x] Recover a short explanation of why forecast products from different agencies are not directly exchangeable.
+- [x] Make the GDPC description slightly more intuitive for a first-time reader.
+- [x] Improve the transition from external data description to application-specific specification.
+- [x] Sharpen the benchmark-table interpretation so the role of `U/M` and `T0/T1` is easier to read from the text.
+- [x] Clarify the purpose of the regime figures and synthesized predictive illustration so they remain supporting, not central, evidence.
+
 ### Fifth pass: harder review-dependent items
 - [ ] five-cutoff justification after Raquel input
 - [ ] final figure decision for Figures 8 and 9
