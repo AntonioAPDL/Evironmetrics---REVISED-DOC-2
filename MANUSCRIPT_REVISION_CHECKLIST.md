@@ -860,6 +860,11 @@ Use this as the working order when actually editing the manuscript.
 - [x] Trim the explanatory text around the compact form so it motivates filtering, smoothing, and FFBS without overexplaining equivalence.
 - [x] Recheck subsection cross-references after the heading changes.
 
+### Targeted dimension and computational-notation pass
+- [x] Add missing dimensions for matrices, vectors, and scalar variance terms in the main state-space specification.
+- [x] Make the application-specific trend and seasonal dimensions explicit so the value of \(p\) is concrete in the San Lorenzo model.
+- [x] Clarify that the compact state-space display is included for computational implementation and to expose the conditionally Gaussian structure used by filtering, smoothing, and FFBS.
+
 ### Fifth pass: harder review-dependent items
 - [ ] five-cutoff justification after Raquel input
 - [ ] final figure decision for Figures 8 and 9
