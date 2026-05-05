@@ -742,7 +742,9 @@ Use this as the working order when actually editing the manuscript.
 - [x] full state-space model presented directly, with simpler formulations treated as restrictions rather than separate models
 - [x] unified model rewritten as one readable single-model presentation, with line-by-line equations, a compact form, and explicit A/B/C equivalence
 
-### Targeted audit: unified-model exposition
+### Targeted audit: unified-model and results-table readability
+
+#### Unified-model exposition
 - [x] Verify mathematical equivalence between the current single-model presentation and the old A/B/C setup.
   - Confirm that the line-by-line equations recover:
     - the USGS-only case (`Model A`)
@@ -766,7 +768,10 @@ Use this as the working order when actually editing the manuscript.
     3. What is observed after the cutoff?
     4. How does the state evolve?
     5. How do the compact matrices encode the same structure?
-    6. How does this recover the old A/B/C setup?
+    6. What are the natural special cases of the unified formulation?
+- [x] Remove dependence on the older staged-model narrative.
+  - Do not refer to `Model A`, `Model B`, or `Model C` in the main exposition.
+  - If restrictions are mentioned, describe them as special cases of the unified formulation.
 - [x] Audit for undefined or weakly motivated transitions.
   - Remove any sentence that sounds like internal refactoring commentary.
   - Replace any sentence that asks the reader to infer too much from notation alone.
@@ -790,6 +795,28 @@ Use this as the working order when actually editing the manuscript.
   - No AI-sounding scaffolding
   - No unnecessary reassurance or meta language
   - Sentences should be short enough to parse on first read, especially after displayed equations
+
+#### Results tables and label definitions
+- [x] Verify that all benchmark labels are defined before or at the benchmark table.
+  - `L-S-T`
+  - `T0` and `T1`
+  - `RAW-GLOFAS` and `RAW-NWS`
+  - univariate vs multivariate synthesis
+- [x] Verify consistency between the data section and the benchmark table.
+  - Raw baselines should match the forecast-product sources actually introduced in Section 3.
+  - No table row should use an undefined or inconsistent source name.
+- [x] Make the benchmark table more self-contained.
+  - Add a table note that decodes the model-label shorthand.
+  - State explicitly what the raw baselines refer to.
+- [x] Verify that covariate-effect tables do not introduce undefined shorthand.
+  - Replace or explain any label that depends on prior local knowledge.
+  - In particular, clarify the GDPC-based covariate label.
+- [x] Verify that appendix tables remain readable as stand-alone references.
+  - Expand source abbreviations in table notes where useful.
+  - Keep source naming consistent with the main text.
+- [x] Verify results-to-table continuity.
+  - The running text should define the comparison before the table appears.
+  - The interpretation after the table should use the same labels and terminology as the table itself.
 
 ### Fourth pass: forecasting protocol and validation
 - [x] latest-forecast-only protocol in text
