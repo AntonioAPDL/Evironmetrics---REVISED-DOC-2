@@ -95,7 +95,7 @@ For a fixed target quantile \(p_0\), we write the forecasting framework as a sin
 \boldsymbol{\psi}_t
 \end{bmatrix},
 \]
-where \(\boldsymbol{\theta}_t \in \mathbb{R}^p\) contains the trend and seasonal states, \(\boldsymbol{\delta}_t^j \in \mathbb{R}^p\) is the discrepancy state for source \(j\), \(\zeta_t \in \mathbb{R}\) is the transfer state, and \(\boldsymbol{\psi}_t \in \mathbb{R}^m\) contains the time-varying covariate effects. Thus, the full state consists of one latent trend-and-seasonal block, \(J\) discrepancy blocks, and one transfer block. The transfer block evolves through
+where \(\boldsymbol{\eta}_t \in \mathbb{R}^{q}\) with \(q = (J+1)p + m + 1\), \(\boldsymbol{\theta}_t \in \mathbb{R}^p\) contains the trend and seasonal states, \(\boldsymbol{\delta}_t^j \in \mathbb{R}^p\) is the discrepancy state for source \(j\), \(\zeta_t \in \mathbb{R}\) is the transfer state, and \(\boldsymbol{\psi}_t \in \mathbb{R}^m\) contains the time-varying covariate effects. Thus, the full state consists of one latent trend-and-seasonal block, \(J\) discrepancy blocks, and one transfer block. The transfer block evolves through
 \[
 \mathbf{G}^{\text{trans}}_t =
 \begin{bmatrix}
@@ -103,11 +103,11 @@ where \(\boldsymbol{\theta}_t \in \mathbb{R}^p\) contains the trend and seasonal
 \mathbf{0}_m & \mathbf{I}_m
 \end{bmatrix},
 \]
-with \(\lambda\) governing persistence in the transfer state and \(\mathbf{x}_t\) denoting the external covariates.
+where \(\mathbf{G}^{\text{trans}}_t \in \mathbb{R}^{(m+1)\times(m+1)}\), \(\lambda \in \mathbb{R}\) governs persistence in the transfer state, and \(\mathbf{x}_t \in \mathbb{R}^{m}\) denotes the external covariates.
 
 We first write the full T1 specification in expanded form, where T1 denotes the version in which the transfer component remains active after the cutoff:
 \begin{align}
-\text{USGS observations:}&&
+\text{Observed measurements:}&&
 y_t^o \mid \boldsymbol{\eta}_t, \sigma^o, \gamma^o
 &\sim \text{exAL}_{p_0}\!\left(\mathbf{F}_t' \boldsymbol{\theta}_t + \zeta_t, \sigma^o, \gamma^o\right),
 \quad 1 \le t \le T, \label{eq:unified_usgs}
@@ -152,13 +152,13 @@ y_T^{j,i}(k) \mid \boldsymbol{\eta}_{T+k}, \sigma^j, \gamma^j
 \right). \label{eq:unified_transfer}
 \end{align}
 
-The source-specific parameters are \((\sigma^o,\gamma^o)\) for the USGS series and \((\sigma^j,\gamma^j)\) for all channels associated with source \(j\), whether retrospective or forecast-based. Here \(J\) denotes the number of external product families, \(I_j\) is the number of forecast members available from source \(j\), and \(K_{(j)}\) is the forecast horizon for that source. We write \(K_{\max} = \max_{1 \le j \le J} K_{(j)}\) for the longest forecast horizon across sources. The symbol \(T\) denotes the cutoff or forecast origin, so \(y_T^{j,i}(k)\) is the \(k\)-step-ahead member issued at that origin by member \(i\) of source \(j\).
+Here \(\mathbf{F}_t \in \mathbb{R}^{p}\), \(\mathbf{G}_t \in \mathbb{R}^{p\times p}\), \(\mathbf{W}_t^\theta \in \mathbb{R}^{p\times p}\), \(\mathbf{W}_t^{\delta^j} \in \mathbb{R}^{p\times p}\), and \(\mathbf{W}_t^\psi \in \mathbb{R}^{m\times m}\). The source-specific parameters are \((\sigma^o,\gamma^o)\) for the observed river-flow series and \((\sigma^j,\gamma^j)\) for all channels associated with source \(j\), whether retrospective or forecast-based. Here \(J\) denotes the number of external product families, \(I_j\) is the number of forecast members available from source \(j\), and \(K_{(j)}\) is the forecast horizon for that source. We write \(K_{\max} = \max_{1 \le j \le J} K_{(j)}\) for the longest forecast horizon across sources. The symbol \(T\) denotes the cutoff or forecast origin, so \(y_T^{j,i}(k)\) is the \(k\)-step-ahead member issued at that origin by member \(i\) of source \(j\).
 
-The first two lines correspond to the estimation period, where the available observations are the USGS series and the retrospective products. The third line corresponds to the forecast window, where those channels are replaced by the forecast products issued at or before the cutoff.
+The first two lines correspond to the estimation period, where the available channels are the observed river-flow series and the retrospective products. The third line corresponds to the forecast window, where those channels are replaced by the forecast products issued at or before the cutoff.
 
 The last three lines define the block structure of the state evolution. In the compact form below, these blocks are assembled into \(\boldsymbol{D}_t\) and \(\boldsymbol{\Lambda}_t\) before the cutoff and into \(\boldsymbol{M}_t\) and \(\mathbf{W}_t\) after the cutoff. In the T1 specification, the transfer block remains active after the cutoff, with \(\mathbf{x}_t\) given by the forecast covariates available at that origin. The benchmark label T0, introduced in Section~\ref{subsec:benchmarkresults}, denotes the corresponding restriction in which the forecast-window transfer block is suppressed after the cutoff.
 
-For later reference, the same model admits a compact matrix form. In the estimation period, the active channels are the USGS series and the retrospective products:
+For later reference, the same model admits the following compact matrix form:
 \begin{align}
 y_{t,s} \mid \boldsymbol{\eta}_t, \sigma_s, \gamma_s
 &\sim \text{exAL}_{p_0}\!\left(\mathbf{h}_{t,s}' \boldsymbol{\eta}_t, \sigma_s, \gamma_s\right),
@@ -167,8 +167,17 @@ y_{t,s} \mid \boldsymbol{\eta}_t, \sigma_s, \gamma_s
 \boldsymbol{\eta}_t \mid \boldsymbol{\eta}_{t-1}
 &\sim \mathcal{N}\!\left(\boldsymbol{D}_t \boldsymbol{\eta}_{t-1}, \boldsymbol{\Lambda}_t\right),
 \qquad 1 \le t \le T, \label{eq:compact_est_state}
+\\
+y_{t,(j,i)} \mid \boldsymbol{\eta}_t, \sigma^j, \gamma^j
+&\sim \text{exAL}_{p_0}\!\left(\mathbf{e}_{t,j}' \boldsymbol{\eta}_t, \sigma^j, \gamma^j\right),
+\quad 1 \le j \le J,\ 1 \le i \le I_j,\ T < t \le T + K_{(j)}, \label{eq:compact_fc_obs}
+\\
+\boldsymbol{\eta}_t \mid \boldsymbol{\eta}_{t-1}
+&\sim \mathcal{N}\!\left(\boldsymbol{M}_t \boldsymbol{\eta}_{t-1}, \mathbf{W}_t\right),
+\qquad T < t \le T + K_{\max}. \label{eq:compact_fc_state}
 \end{align}
-where
+The first two lines describe the estimation period, whereas the last two lines describe the forecast window. Thus, \eqref{eq:compact_est_obs}--\eqref{eq:compact_fc_state} restate the expanded model above in one unified notation.
+Here
 \[
 \mathbf{h}_{t,0} =
 \begin{bmatrix}
@@ -189,26 +198,16 @@ where
 \end{bmatrix},
 \quad 1 \le j \le J,
 \]
-and
+with \(\mathbf{h}_{t,0}, \mathbf{h}_{t,j} \in \mathbb{R}^{q}\), and
 \[
 \boldsymbol{D}_t = \text{BlockDiag}\!\left(\mathbf{G}_t, \mathbf{G}_t, \ldots, \mathbf{G}_t, \mathbf{G}^{\text{trans}}_t\right), \qquad
 \boldsymbol{\Lambda}_t = \text{BlockDiag}\!\left(\mathbf{W}^{\theta}_t, \mathbf{W}^{\delta^1}_t, \ldots, \mathbf{W}^{\delta^J}_t, w_t^{\zeta}, \mathbf{W}^{\psi}_t\right).
 \]
-Here \(\mathbf{G}_t\) is repeated once for the latent trend-and-seasonal block and once for each discrepancy block. Thus, \(\mathbf{h}_{t,0}' \boldsymbol{\eta}_t = \mathbf{F}_t' \boldsymbol{\theta}_t + \zeta_t\) and \(\mathbf{h}_{t,j}' \boldsymbol{\eta}_t = \mathbf{F}_t'(\boldsymbol{\theta}_t + \boldsymbol{\delta}_t^j) + \zeta_t\).
+Here \(\boldsymbol{D}_t, \boldsymbol{\Lambda}_t \in \mathbb{R}^{q\times q}\), and \(\mathbf{G}_t\) is repeated once for the latent trend-and-seasonal block and once for each discrepancy block. Thus, \(\mathbf{h}_{t,0}' \boldsymbol{\eta}_t = \mathbf{F}_t' \boldsymbol{\theta}_t + \zeta_t\) and \(\mathbf{h}_{t,j}' \boldsymbol{\eta}_t = \mathbf{F}_t'(\boldsymbol{\theta}_t + \boldsymbol{\delta}_t^j) + \zeta_t\).
 
-In the forecast window, the active channels are the forecast products:
-\begin{align}
-y_{t,(j,i)} \mid \boldsymbol{\eta}_t, \sigma^j, \gamma^j
-&\sim \text{exAL}_{p_0}\!\left(\mathbf{e}_{t,j}' \boldsymbol{\eta}_t, \sigma^j, \gamma^j\right),
-\quad 1 \le j \le J,\ 1 \le i \le I_j,\ T < t \le T + K_{(j)}, \label{eq:compact_fc_obs}
-\\
-\boldsymbol{\eta}_t \mid \boldsymbol{\eta}_{t-1}
-&\sim \mathcal{N}\!\left(\boldsymbol{M}_t \boldsymbol{\eta}_{t-1}, \mathbf{W}_t\right),
-\qquad T < t \le T + K_{\max}. \label{eq:compact_fc_state}
-\end{align}
-Here \(\mathbf{e}_{t,j}\) is the forecast-window analogue of \(\mathbf{h}_{t,j}\): it extracts the latent trend-and-seasonal block, the discrepancy block for source \(j\), and, in the T1 specification, the transfer block. The matrix \(\boldsymbol{M}_t\) preserves the same block ordering as \(\boldsymbol{D}_t\) while propagating the state through the forecast window. In computation, we use reduced forecast-window matrices that retain only the forecasters whose horizons remain active at each lead time; this reduction is computational only and does not change the underlying model.
+For the forecast window, \(\mathbf{e}_{t,j} \in \mathbb{R}^{q}\) is the analogue of \(\mathbf{h}_{t,j}\): it extracts the latent trend-and-seasonal block, the discrepancy block for source \(j\), and, in the T1 specification, the transfer block. The matrices \(\boldsymbol{M}_t, \mathbf{W}_t \in \mathbb{R}^{q\times q}\) preserve the same block ordering as \(\boldsymbol{D}_t\) while propagating the state through the forecast window. In computation, we use reduced forecast-window matrices that retain only the forecasters whose horizons remain active at each lead time; this reduction is computational only and does not change the underlying model.
 
-This single formulation also contains familiar special cases. Suppressing the discrepancy states and retaining only the USGS observation channel yields an observation-only specification. Keeping the USGS and retrospective channels but restricting attention to \(1 \le t \le T\) yields an estimation-period multivariate specification. The full model in \eqref{eq:unified_usgs}--\eqref{eq:compact_fc_state} continues the same latent state into the forecast window while changing the active observation channels after the cutoff.
+This single formulation also contains familiar special cases. Suppressing the discrepancy states and retaining only the observation channel yields an observation-only specification. Keeping the observation and retrospective channels but restricting attention to \(1 \le t \le T\) yields an estimation-period multivariate specification. The full model in \eqref{eq:unified_usgs}--\eqref{eq:compact_fc_state} continues the same latent state into the forecast window while changing the active observation channels after the cutoff.
 
 \subsection{Prior Specification and Discount Factors}
 \label{subsec:prioranddisc}
