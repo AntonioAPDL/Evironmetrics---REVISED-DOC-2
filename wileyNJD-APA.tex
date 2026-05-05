@@ -83,7 +83,7 @@ The use of the Asymmetric Laplace (AL) distribution for quantile inference withi
 \subsection{Unified State-Space Model}
 \label{subsec:fullmodel}
 
-We write the full framework as one state-space model with time-dependent observation channels. Let
+We write the forecasting framework directly as one state-space model. The same latent state is used throughout the estimation period and the forecast window; what changes after the cutoff is the set of observation channels that remains available, together with the forecast-window covariance specification used to propagate the state. Let
 \[
 \boldsymbol{\eta}_t =
 \begin{bmatrix}
@@ -105,46 +105,66 @@ where \(\boldsymbol{\theta}_t \in \mathbb{R}^p\) contains the trend and seasonal
 \]
 with \(\lambda\) governing persistence in the transfer state and \(\mathbf{x}_t\) denoting the external covariates.
 
-Let \(\mathcal{A}_t\) denote the set of active observation channels at time \(t\). We take channel \(0\) to be the USGS series, channels \(1,\ldots,J\) to be the retrospective products during the estimation period, and channels \((j,i)\) to be the \(i\)th forecast member from source \(j\) after the cutoff. The full model is
+Using this notation, the full T1 specification can be written line by line as follows:
 \begin{align}
-\mathcal{A}_t &=
-\begin{cases}
-\{0,1,\ldots,J\}, & 1 \le t \le T,\\
-\{(j,i): 1 \le j \le J,\ 1 \le i \le I_j,\ t-T \le K_{(j)}\}, & T < t \le T+K_{(1)},
-\end{cases}
-\label{eq:activechannels}
+\text{USGS observations:}&&
+y_t^o \mid \boldsymbol{\eta}_t, \sigma^o, \gamma^o
+&\sim \text{exAL}_{p_0}\!\left(\mathbf{F}_t' \boldsymbol{\theta}_t + \zeta_t, \sigma^o, \gamma^o\right),
+\quad 1 \le t \le T, \label{eq:unified_usgs}
 \\
+\text{Retrospective products:}&&
+z_t^j \mid \boldsymbol{\eta}_t, \sigma^j, \gamma^j
+&\sim \text{exAL}_{p_0}\!\left(\mathbf{F}_t'(\boldsymbol{\theta}_t + \boldsymbol{\delta}_t^j) + \zeta_t, \sigma^j, \gamma^j\right),
+\quad 1 \le j \le J,\ 1 \le t \le T, \label{eq:unified_retro}
+\\
+\text{Forecast products:}&&
+y_T^{j,i}(k) \mid \boldsymbol{\eta}_{T+k}, \sigma^j, \gamma^j
+&\sim \text{exAL}_{p_0}\!\left(\mathbf{F}_{T+k}'(\boldsymbol{\theta}_{T+k} + \boldsymbol{\delta}_{T+k}^j) + \zeta_{T+k}, \sigma^j, \gamma^j\right), \nonumber\\
+&&&
+\qquad 1 \le j \le J,\ 1 \le i \le I_j,\ 1 \le k \le K_{(j)}, \label{eq:unified_forecast}
+\\
+\text{Trend and seasonal states:}&&
+\boldsymbol{\theta}_t \mid \boldsymbol{\theta}_{t-1}
+&\sim \mathcal{N}\!\left(\mathbf{G}_t \boldsymbol{\theta}_{t-1}, \mathbf{W}_t^\theta\right), \label{eq:unified_theta}
+\\
+\text{Discrepancy states:}&&
+\boldsymbol{\delta}_t^j \mid \boldsymbol{\delta}_{t-1}^j
+&\sim \mathcal{N}\!\left(\mathbf{G}_t \boldsymbol{\delta}_{t-1}^j, \mathbf{W}_t^{\delta^j}\right),
+\quad 1 \le j \le J, \label{eq:unified_delta}
+\\
+\text{Transfer-function states:}&&
+\begin{bmatrix}
+\zeta_t \\
+\boldsymbol{\psi}_t
+\end{bmatrix}
+\Bigg|
+\begin{bmatrix}
+\zeta_{t-1} \\
+\boldsymbol{\psi}_{t-1}
+\end{bmatrix}
+&\sim \mathcal{N}\!\left(
+\mathbf{G}^{\text{trans}}_t
+\begin{bmatrix}
+\zeta_{t-1} \\
+\boldsymbol{\psi}_{t-1}
+\end{bmatrix},
+\text{BlockDiag}\!\left(w_t^\zeta, \mathbf{W}_t^\psi\right)
+\right). \label{eq:unified_transfer}
+\end{align}
+
+The source-specific parameters are \((\sigma^o,\gamma^o)\) for the USGS series and \((\sigma^j,\gamma^j)\) for all channels associated with source \(j\), whether retrospective or forecast-based. Here \(T\) denotes the cutoff or forecast origin, so \(y_T^{j,i}(k)\) is the \(k\)-step-ahead member issued at that origin. The first two lines describe the estimation period, where the available observations are the USGS series and the retrospective products. The third line describes the forecast window, where those channels are replaced by the forecast products issued at or before the cutoff. The same state components persist throughout, so the forecast window is treated as a continuation of the same latent process rather than as a separate model. In the T1 specification, the transfer block remains active after the cutoff, with \(\mathbf{x}_t\) given by the forecast covariates available at that origin. The T0 benchmark used in Section~\ref{subsec:benchmarkresults} is obtained by suppressing the forecast-window transfer block after the cutoff.
+
+For later reference, the same model can be written in compact form. During the estimation period,
+\begin{align}
 y_{t,s} \mid \boldsymbol{\eta}_t, \sigma_s, \gamma_s
-&\sim \text{exAL}_{p_0}\!\left(\mathbf{u}_{t,s}' \boldsymbol{\eta}_t, \sigma_s, \gamma_s\right),
-\qquad s \in \mathcal{A}_t,
-\label{eq:fullobs}
-\\
-\mathbf{u}_{t,s} &=
-\begin{cases}
-\mathbf{h}_{t,0}, & s = 0,\\
-\mathbf{h}_{t,j}, & s = j,\ 1 \le j \le J,\ 1 \le t \le T,\\
-\mathbf{e}_{t,j}, & s = (j,i),\ T < t \le T+K_{(1)},
-\end{cases}
-\label{eq:fullselector}
+&\sim \text{exAL}_{p_0}\!\left(\mathbf{h}_{t,s}' \boldsymbol{\eta}_t, \sigma_s, \gamma_s\right),
+\quad s \in \{0,1,\ldots,J\}, \label{eq:compact_est_obs}
 \\
 \boldsymbol{\eta}_t \mid \boldsymbol{\eta}_{t-1}
-&\sim \mathcal{N}\!\left(\widetilde{\mathbf{D}}_t \boldsymbol{\eta}_{t-1}, \widetilde{\mathbf{W}}_t\right),
-\label{eq:fullstate}
-\\
-(\widetilde{\mathbf{D}}_t,\widetilde{\mathbf{W}}_t) &=
-\begin{cases}
-(\boldsymbol{D}_t,\boldsymbol{\Lambda}_t), & 1 \le t \le T,\\
-(\boldsymbol{M}_t,\mathbf{W}_t), & T < t \le T+K_{(1)}.
-\end{cases}
-\label{eq:fulltransition}
+&\sim \mathcal{N}\!\left(\boldsymbol{D}_t \boldsymbol{\eta}_{t-1}, \boldsymbol{\Lambda}_t\right),
+\qquad 1 \le t \le T, \label{eq:compact_est_state}
 \end{align}
-The observation-specific parameters are \((\sigma^o,\gamma^o)\) for the USGS series and \((\sigma^j,\gamma^j)\) for all channels associated with source \(j\), whether retrospective or forecast-based.
-
-During the estimation period, the USGS observations and retrospective products are treated as source-specific views of the same latent quantile process. Their selectors are
-\[
-\mathbf{u}_{t,0} = \mathbf{h}_{t,0}, \qquad \mathbf{u}_{t,j} = \mathbf{h}_{t,j}, \quad 1 \le j \le J,
-\]
-with
+where
 \[
 \mathbf{h}_{t,0} =
 \begin{bmatrix}
@@ -165,17 +185,26 @@ with
 \end{bmatrix},
 \quad 1 \le j \le J,
 \]
-so the USGS mean is the latent quantile \(\mathbf{F}_t' \boldsymbol{\theta}_t + \zeta_t\), whereas the \(j\)th retrospective source adds its discrepancy term \(\mathbf{F}_t' \boldsymbol{\delta}_t^j\). The estimation-period state evolution matrix and covariance are
+and
 \[
-\boldsymbol{D}_t = \text{BlockDiag}\!\left(\mathbf{G}_t, \mathbf{G}_t, \ldots, \mathbf{G}_t, \mathbf{G}^{\text{trans}}_t\right),
-\]
-with \(\mathbf{G}_t\) repeated once for the latent trend/seasonal block and once for each discrepancy block, and
-\[
+\boldsymbol{D}_t = \text{BlockDiag}\!\left(\mathbf{G}_t, \mathbf{G}_t, \ldots, \mathbf{G}_t, \mathbf{G}^{\text{trans}}_t\right), \qquad
 \boldsymbol{\Lambda}_t = \text{BlockDiag}\!\left(\mathbf{W}^{\theta}_t, \mathbf{W}^{\delta^1}_t, \ldots, \mathbf{W}^{\delta^J}_t, w_t^{\zeta}, \mathbf{W}^{\psi}_t\right).
 \]
-After the cutoff, the same state vector is propagated forward and the active channels switch from retrospective products to forecast-product ensemble members. The selector \(\mathbf{e}_{t,j}\) is the forecast-window analogue of \(\mathbf{h}_{t,j}\): it extracts the latent trend-and-seasonal block, the discrepancy block for source \(j\), and, when active, the transfer block. The matrix \(\boldsymbol{M}_t\) propagates these same components through the forecast window. In the full T1 specification, the transfer states \((\zeta_t,\boldsymbol{\psi}_t)\) remain active and the forecast covariates available at the cutoff are propagated through the transition block. The reduced T0 specification is obtained by suppressing that forecast-window transfer block after the cutoff.
+Thus, \(\mathbf{h}_{t,0}' \boldsymbol{\eta}_t = \mathbf{F}_t' \boldsymbol{\theta}_t + \zeta_t\) and \(\mathbf{h}_{t,j}' \boldsymbol{\eta}_t = \mathbf{F}_t'(\boldsymbol{\theta}_t + \boldsymbol{\delta}_t^j) + \zeta_t\).
 
-This single model is algebraically equivalent to the earlier Models A, B, and C. Model A is obtained by suppressing the discrepancy states and retaining only channel \(0\). Model B is obtained by keeping channels \(0,1,\ldots,J\) and restricting attention to \(1 \le t \le T\). Model C is the full specification in \eqref{eq:activechannels}--\eqref{eq:fulltransition}, where the active channel set and transition pair switch after the cutoff. In implementation, we work with reduced forecast-window matrices that retain only the forecasters whose horizons remain active at each lead time, but that reduction is only computational and does not change the model itself.
+During the forecast window,
+\begin{align}
+y_{t,(j,i)} \mid \boldsymbol{\eta}_t, \sigma^j, \gamma^j
+&\sim \text{exAL}_{p_0}\!\left(\mathbf{e}_{t,j}' \boldsymbol{\eta}_t, \sigma^j, \gamma^j\right),
+\quad 1 \le j \le J,\ 1 \le i \le I_j,\ t-T \le K_{(j)}, \label{eq:compact_fc_obs}
+\\
+\boldsymbol{\eta}_t \mid \boldsymbol{\eta}_{t-1}
+&\sim \mathcal{N}\!\left(\boldsymbol{M}_t \boldsymbol{\eta}_{t-1}, \mathbf{W}_t\right),
+\qquad T < t \le T + K_{(1)}. \label{eq:compact_fc_state}
+\end{align}
+Here \(\mathbf{e}_{t,j}\) is the forecast-window analogue of \(\mathbf{h}_{t,j}\): it extracts the latent trend-and-seasonal block, the discrepancy block for source \(j\), and, in the T1 specification, the transfer block. The matrix \(\boldsymbol{M}_t\) preserves the same block structure as \(\boldsymbol{D}_t\) while propagating the state through the forecast window. In computation, we use reduced forecast-window matrices that retain only the forecasters whose horizons remain active at each lead time; this reduction is computational only and does not change the underlying model.
+
+This single formulation recovers the earlier Models A, B, and C as restrictions. Model A is obtained by suppressing the discrepancy states and retaining only the USGS observation channel. Model B is obtained by keeping the USGS and retrospective channels but restricting attention to \(1 \le t \le T\). Model C is the full specification in \eqref{eq:unified_usgs}--\eqref{eq:compact_fc_state}, where the same latent state is continued into the forecast window and the active observation channels change after the cutoff.
 
 \subsection{Prior Specification and Discount Factors}
 \label{subsec:prioranddisc}
@@ -194,7 +223,7 @@ Further details regarding prior specification and discount factors are provided 
 \subsection{Posterior Inference}
 \label{subsec:postinf}
 The posterior distribution of all model parameters is explored using a Markov chain Monte Carlo (MCMC) algorithm.
-Algorithm~\ref{alg1} gives the core MCMC updates in a compact source-indexed notation. During the estimation period, the active source channels are the USGS observations and retrospective products; after the cutoff, the same updates use the active forecast-product channels, with additional bookkeeping to handle the trans-dimensional state vector when forecast horizons differ across agencies. All full conditional posteriors are available in closed form except for the skewness parameters $\gamma^j$, $1 \leq j \leq J$. For these, we use a Metropolis--Hastings random walk on an unconstrained reparameterization. Posterior sampling of the state parameters relies on a modified Forward Filtering Backward Sampling (FFBS) algorithm that leverages their conditional normality (see Algorithm~\ref{alg:Alg2}).
+Algorithm~\ref{alg1} gives the core MCMC updates in a compact source-indexed notation. During the estimation period, the active source channels are the USGS observations and retrospective products; after the cutoff, the same updates use the active forecast-product channels, with additional bookkeeping for the reduced forecast-window matrices when forecast horizons differ across agencies. All full conditional posteriors are available in closed form except for the skewness parameters $\gamma^j$, $1 \leq j \leq J$. For these, we use a Metropolis--Hastings random walk on an unconstrained reparameterization. Posterior sampling of the state parameters relies on a modified Forward Filtering Backward Sampling (FFBS) algorithm that leverages their conditional normality (see Algorithm~\ref{alg:Alg2}).
 
 %\subsubsection{Variational Bayes Implementation} \label{subsec:vb}
 
