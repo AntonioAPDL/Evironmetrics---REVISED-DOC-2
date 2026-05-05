@@ -141,7 +141,7 @@ The first two lines correspond to the estimation period, where the available cha
 
 The last three lines define the block structure of the state evolution. The latent block \(\boldsymbol{\theta}_t\) carries the underlying river-flow level and seasonal structure, the source-specific blocks \(\boldsymbol{\delta}_t^j\) absorb systematic departures between each external product family and the observed river-flow series, and the transfer block \((\zeta_t,\boldsymbol{\psi}_t)\) maps the external covariates into the quantile process. In the compact form below, these blocks are assembled into \(\boldsymbol{D}_t\) and \(\boldsymbol{\Lambda}_t\) before the cutoff and into \(\boldsymbol{M}_t\) and \(\mathbf{W}_t\) after the cutoff. In the formulation used throughout this section, the transfer block remains active after the cutoff, with \(\mathbf{x}_t\) given by the forecast covariates available at that origin.
 
-For computational implementation, the same model can be written in the following compact matrix form:
+For its computational implementation, the model can be written in the following compact matrix form:
 \begin{align}
 y_{t,s} \mid \boldsymbol{\eta}_t, \sigma_s, \gamma_s
 &\sim \text{exAL}_{p_0}\!\left(\mathbf{h}_{t,s}' \boldsymbol{\eta}_t, \sigma_s, \gamma_s\right),
