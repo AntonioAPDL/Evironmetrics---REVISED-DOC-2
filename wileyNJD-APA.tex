@@ -83,7 +83,7 @@ The use of the Asymmetric Laplace (AL) distribution for quantile inference withi
 \subsection{Unified State-Space Model}
 \label{subsec:fullmodel}
 
-We write the forecasting framework directly as one state-space model. The same latent state is used throughout the estimation period and the forecast window; what changes after the cutoff is the set of observation channels that remains available, together with the forecast-window covariance specification used to propagate the state. Let
+For a fixed target quantile \(p_0\), we write the forecasting framework as a single state-space model. The same latent state is used throughout the estimation period and the forecast window; what changes after the cutoff is the set of observation channels that remains available and the forecast-window covariance used to propagate that state forward. Let
 \[
 \boldsymbol{\eta}_t =
 \begin{bmatrix}
@@ -95,7 +95,7 @@ We write the forecasting framework directly as one state-space model. The same l
 \boldsymbol{\psi}_t
 \end{bmatrix},
 \]
-where \(\boldsymbol{\theta}_t \in \mathbb{R}^p\) contains the trend and seasonal states, \(\boldsymbol{\delta}_t^j \in \mathbb{R}^p\) is the discrepancy state for source \(j\), \(\zeta_t \in \mathbb{R}\) is the transfer state, and \(\boldsymbol{\psi}_t \in \mathbb{R}^m\) contains the time-varying covariate effects. The transfer block evolves through
+where \(\boldsymbol{\theta}_t \in \mathbb{R}^p\) contains the trend and seasonal states, \(\boldsymbol{\delta}_t^j \in \mathbb{R}^p\) is the discrepancy state for source \(j\), \(\zeta_t \in \mathbb{R}\) is the transfer state, and \(\boldsymbol{\psi}_t \in \mathbb{R}^m\) contains the time-varying covariate effects. Thus, the full state consists of one latent trend-and-seasonal block, \(J\) discrepancy blocks, and one transfer block. The transfer block evolves through
 \[
 \mathbf{G}^{\text{trans}}_t =
 \begin{bmatrix}
@@ -105,7 +105,7 @@ where \(\boldsymbol{\theta}_t \in \mathbb{R}^p\) contains the trend and seasonal
 \]
 with \(\lambda\) governing persistence in the transfer state and \(\mathbf{x}_t\) denoting the external covariates.
 
-Using this notation, the full T1 specification can be written line by line as follows:
+We first write the full T1 specification in expanded form:
 \begin{align}
 \text{USGS observations:}&&
 y_t^o \mid \boldsymbol{\eta}_t, \sigma^o, \gamma^o
@@ -152,9 +152,13 @@ y_T^{j,i}(k) \mid \boldsymbol{\eta}_{T+k}, \sigma^j, \gamma^j
 \right). \label{eq:unified_transfer}
 \end{align}
 
-The source-specific parameters are \((\sigma^o,\gamma^o)\) for the USGS series and \((\sigma^j,\gamma^j)\) for all channels associated with source \(j\), whether retrospective or forecast-based. Here \(T\) denotes the cutoff or forecast origin, so \(y_T^{j,i}(k)\) is the \(k\)-step-ahead member issued at that origin. The first two lines describe the estimation period, where the available observations are the USGS series and the retrospective products. The third line describes the forecast window, where those channels are replaced by the forecast products issued at or before the cutoff. The same state components persist throughout, so the forecast window is treated as a continuation of the same latent process rather than as a separate model. In the T1 specification, the transfer block remains active after the cutoff, with \(\mathbf{x}_t\) given by the forecast covariates available at that origin. The T0 benchmark used in Section~\ref{subsec:benchmarkresults} is obtained by suppressing the forecast-window transfer block after the cutoff.
+The source-specific parameters are \((\sigma^o,\gamma^o)\) for the USGS series and \((\sigma^j,\gamma^j)\) for all channels associated with source \(j\), whether retrospective or forecast-based. Here \(T\) denotes the cutoff or forecast origin, so \(y_T^{j,i}(k)\) is the \(k\)-step-ahead member issued at that origin.
 
-For later reference, the same model can be written in compact form. During the estimation period,
+The first two lines correspond to the estimation period, where the available observations are the USGS series and the retrospective products. The third line corresponds to the forecast window, where those channels are replaced by the forecast products issued at or before the cutoff.
+
+The last three lines define the block structure of the state evolution. In the compact form below, these blocks are assembled into \(\boldsymbol{D}_t\) and \(\boldsymbol{\Lambda}_t\) before the cutoff and into \(\boldsymbol{M}_t\) and \(\mathbf{W}_t\) after the cutoff. In the T1 specification, the transfer block remains active after the cutoff, with \(\mathbf{x}_t\) given by the forecast covariates available at that origin. The T0 benchmark used in Section~\ref{subsec:benchmarkresults} is obtained by suppressing the forecast-window transfer block after the cutoff.
+
+For later reference, the same model admits a compact matrix form. In the estimation period, the active channels are the USGS series and the retrospective products:
 \begin{align}
 y_{t,s} \mid \boldsymbol{\eta}_t, \sigma_s, \gamma_s
 &\sim \text{exAL}_{p_0}\!\left(\mathbf{h}_{t,s}' \boldsymbol{\eta}_t, \sigma_s, \gamma_s\right),
@@ -190,19 +194,19 @@ and
 \boldsymbol{D}_t = \text{BlockDiag}\!\left(\mathbf{G}_t, \mathbf{G}_t, \ldots, \mathbf{G}_t, \mathbf{G}^{\text{trans}}_t\right), \qquad
 \boldsymbol{\Lambda}_t = \text{BlockDiag}\!\left(\mathbf{W}^{\theta}_t, \mathbf{W}^{\delta^1}_t, \ldots, \mathbf{W}^{\delta^J}_t, w_t^{\zeta}, \mathbf{W}^{\psi}_t\right).
 \]
-Thus, \(\mathbf{h}_{t,0}' \boldsymbol{\eta}_t = \mathbf{F}_t' \boldsymbol{\theta}_t + \zeta_t\) and \(\mathbf{h}_{t,j}' \boldsymbol{\eta}_t = \mathbf{F}_t'(\boldsymbol{\theta}_t + \boldsymbol{\delta}_t^j) + \zeta_t\).
+Here \(\mathbf{G}_t\) is repeated once for the latent trend-and-seasonal block and once for each discrepancy block. Thus, \(\mathbf{h}_{t,0}' \boldsymbol{\eta}_t = \mathbf{F}_t' \boldsymbol{\theta}_t + \zeta_t\) and \(\mathbf{h}_{t,j}' \boldsymbol{\eta}_t = \mathbf{F}_t'(\boldsymbol{\theta}_t + \boldsymbol{\delta}_t^j) + \zeta_t\).
 
-During the forecast window,
+In the forecast window, the active channels are the forecast products:
 \begin{align}
 y_{t,(j,i)} \mid \boldsymbol{\eta}_t, \sigma^j, \gamma^j
 &\sim \text{exAL}_{p_0}\!\left(\mathbf{e}_{t,j}' \boldsymbol{\eta}_t, \sigma^j, \gamma^j\right),
-\quad 1 \le j \le J,\ 1 \le i \le I_j,\ t-T \le K_{(j)}, \label{eq:compact_fc_obs}
+\quad 1 \le j \le J,\ 1 \le i \le I_j,\ T < t \le T + K_{(j)}, \label{eq:compact_fc_obs}
 \\
 \boldsymbol{\eta}_t \mid \boldsymbol{\eta}_{t-1}
 &\sim \mathcal{N}\!\left(\boldsymbol{M}_t \boldsymbol{\eta}_{t-1}, \mathbf{W}_t\right),
 \qquad T < t \le T + K_{(1)}. \label{eq:compact_fc_state}
 \end{align}
-Here \(\mathbf{e}_{t,j}\) is the forecast-window analogue of \(\mathbf{h}_{t,j}\): it extracts the latent trend-and-seasonal block, the discrepancy block for source \(j\), and, in the T1 specification, the transfer block. The matrix \(\boldsymbol{M}_t\) preserves the same block structure as \(\boldsymbol{D}_t\) while propagating the state through the forecast window. In computation, we use reduced forecast-window matrices that retain only the forecasters whose horizons remain active at each lead time; this reduction is computational only and does not change the underlying model.
+Here \(\mathbf{e}_{t,j}\) is the forecast-window analogue of \(\mathbf{h}_{t,j}\): it extracts the latent trend-and-seasonal block, the discrepancy block for source \(j\), and, in the T1 specification, the transfer block. The matrix \(\boldsymbol{M}_t\) preserves the same block ordering as \(\boldsymbol{D}_t\) while propagating the state through the forecast window. In computation, we use reduced forecast-window matrices that retain only the forecasters whose horizons remain active at each lead time; this reduction is computational only and does not change the underlying model.
 
 This single formulation recovers the earlier Models A, B, and C as restrictions. Model A is obtained by suppressing the discrepancy states and retaining only the USGS observation channel. Model B is obtained by keeping the USGS and retrospective channels but restricting attention to \(1 \le t \le T\). Model C is the full specification in \eqref{eq:unified_usgs}--\eqref{eq:compact_fc_state}, where the same latent state is continued into the forecast window and the active observation channels change after the cutoff.
 
@@ -631,7 +635,7 @@ Figure~\ref{fig:synth2} provides a historical-only reference for the December 25
 \State  \(
 A^j = A(\gamma^j;p_0), \quad B^j = B(\gamma^j;p_0), \quad C^j = C(\gamma^j;p_0), \text{ as defined in Section~\ref{subsec:exal}}
 \)
-\State For compactness, \(y_t^j\) denotes the active observation or product associated with source \(j\), and \(\mathbf{h}_{t,j}\) denotes the corresponding active selector vector.
+\State For compactness, \(y_t^j\) denotes the active observation or product associated with source \(j\), and the corresponding selector vector is written generically as \(\mathbf{h}_{t,j}\); in the forecast window this selector is given by \(\mathbf{e}_{t,j}\) for each active source.
 \vspace{0.1cm}
 \hline
 \vspace{0.1cm}
@@ -684,7 +688,8 @@ A^j = A(\gamma^j;p_0), \quad B^j = B(\gamma^j;p_0), \quad C^j = C(\gamma^j;p_0),
 \begin{algorithmic}
 
 \State \textbf{Notation:}
-\State  $\mathbf{H}_t = [\mathbf{h}_{t,0}, \mathbf{h}_{t,1}, \ldots, \mathbf{h}_{t,J}]$, $\mathbf{Y}_t = [y_t^0, y_t^1, \ldots, y_t^J]'$, and $\mathbf{D}_t, \boldsymbol{\Lambda}_t$ are as defined in Subsection~\ref{subsec:fullmodel}
+\State  $\mathbf{H}_t = [\mathbf{h}_{t,0}, \mathbf{h}_{t,1}, \ldots, \mathbf{h}_{t,J}]$, $\mathbf{Y}_t = [y_t^o, z_t^1, \ldots, z_t^J]'$, and $\mathbf{D}_t, \boldsymbol{\Lambda}_t$ are as defined in Subsection~\ref{subsec:fullmodel}
+\State  For the source-indexed updates below, let \(y_t^0 \equiv y_t^o\) and \(y_t^j \equiv z_t^j\) for \(1 \le j \le J\).
 \State $\mathbf{M}_t= \mathbf{C} \odot  \mathbf{\sigma} \odot | \mathbf{\gamma} | \odot \mathbf{s}_t + \mathbf{A} \odot \mathbf{v}_t$, \quad $\mathbf{O}_t= \sqrt{\mathbf{B} \odot \mathbf{v}_t} \odot Diag
 (\mathbf{\sigma}) \sqrt{\mathbf{B} \odot \mathbf{v}_t} \odot \mathbf{\sigma}$
 \State  \(
@@ -743,6 +748,7 @@ s^j_t  \big] , \quad \mathbf{\sigma} = \big[ \sigma^j  \big]
 \State  \(
 A^j = A(\gamma^j;p_0), \quad B^j = B(\gamma^j;p_0), \quad C^j = C(\gamma^j;p_0), \text{ as defined in Section~\ref{subsec:exal}}
 \)
+\State  For the source-indexed updates below, let \(y_t^0 \equiv y_t^o\) and \(y_t^j \equiv z_t^j\) for \(1 \le j \le J\).
 \vspace{0.1cm}
 \hline
 \vspace{0.1cm}
@@ -784,7 +790,8 @@ A^j = A(\gamma^j;p_0), \quad B^j = B(\gamma^j;p_0), \quad C^j = C(\gamma^j;p_0),
 
 \State \textbf{Notation:}
 \State $\left\langle g(\xi) \right\rangle = \mathbb{E}_\xi\left[ g(\xi) \right]$
-\State  $\mathbf{H}_t = [\mathbf{h}_{t,0}, \mathbf{h}_{t,1}, \ldots, \mathbf{h}_{t,J}]$, $\mathbf{Y}_t = [y_t^0, y_t^1, \ldots, y_t^J]'$, and $\mathbf{D}_t, \boldsymbol{\Lambda}_t$ are as defined in Subsection~\ref{subsec:fullmodel}
+\State  $\mathbf{H}_t = [\mathbf{h}_{t,0}, \mathbf{h}_{t,1}, \ldots, \mathbf{h}_{t,J}]$, $\mathbf{Y}_t = [y_t^o, z_t^1, \ldots, z_t^J]'$, and $\mathbf{D}_t, \boldsymbol{\Lambda}_t$ are as defined in Subsection~\ref{subsec:fullmodel}
+\State  For the source-indexed updates below, let \(y_t^0 \equiv y_t^o\) and \(y_t^j \equiv z_t^j\) for \(1 \le j \le J\).
 \State $\mathbf{M}_t= \mathbf{C} \odot  \mathbf{\sigma} \odot | \mathbf{\gamma} | \odot \mathbf{s}_t + \mathbf{A} \odot \mathbf{v}_t$, \quad $\mathbf{O}_t= \sqrt{\mathbf{B} \odot \mathbf{v}_t} \odot Diag
 (\mathbf{\sigma}) \sqrt{\mathbf{B} \odot \mathbf{v}_t} \odot \mathbf{\sigma}$
 \State  \(
