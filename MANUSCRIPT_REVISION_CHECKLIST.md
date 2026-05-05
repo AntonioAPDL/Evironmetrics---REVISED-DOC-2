@@ -835,6 +835,15 @@ Use this as the working order when actually editing the manuscript.
 - [x] Sharpen the benchmark-table interpretation so the role of `U/M` and `T0/T1` is easier to read from the text.
 - [x] Clarify the purpose of the regime figures and synthesized predictive illustration so they remain supporting, not central, evidence.
 
+### Targeted notation and layout refinement pass
+- [x] Reduce vertical space in the unified-model subsection where a row-vector display is clearer than a tall column-vector display.
+- [x] Introduce a compact transfer-state notation that keeps the model equivalent while reducing display height.
+- [x] Normalize the main source/member/lead indices through index sets rather than repeated inequality strings.
+- [x] Rewrite the compact forecast-window equations so the lead index is carried explicitly by \(T+k\), reducing notation drift between expanded and compact forms.
+- [x] Make repeated block-diagonal structure more explicit, including the number and role of the repeated \(\mathbf{G}_t\) blocks.
+- [x] Replace the expectation form of CRPS with the integrated quantile-score representation and state explicitly that deterministic forecasts reduce to MAE.
+- [x] Recheck that the revised notation remains standard, mathematically equivalent, and easier for a first-time reader to parse.
+
 ### Fifth pass: harder review-dependent items
 - [ ] five-cutoff justification after Raquel input
 - [ ] final figure decision for Figures 8 and 9

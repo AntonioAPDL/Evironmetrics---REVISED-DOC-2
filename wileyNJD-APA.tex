@@ -72,7 +72,7 @@ The remainder of the paper is organized as follows. Section~\ref{sec:methodology
 \section{METHODOLOGY}
 \label{sec:methodology}
 
-We first introduce some notation to be used throughout the article. We use bold uppercase letters (e.g., $\mathbf{W}, \mathbf{F}, \mathbf{G}$) to denote matrices, and bold lowercase letters (e.g., $\mathbf{x}, \mathbf{\psi}, \mathbf{\theta}$) to denote vectors. We denote the identity matrix of dimension $m \times m$ as $\mathbf{I}_m$, a vector of zeros of dimension $m \times 1$ as $\mathbf{0}_m$, and a vector of ones of dimension $m \times 1$ as $\mathbf{1}_m$.
+We first introduce some notation to be used throughout the article. We use bold uppercase letters (e.g., $\mathbf{W}, \mathbf{F}, \mathbf{G}$) to denote matrices, and bold lowercase letters (e.g., $\mathbf{x}, \mathbf{\psi}, \mathbf{\theta}$) to denote vectors. We denote the identity matrix of dimension $r \times r$ as $\mathbf{I}_r$, a vector of zeros of dimension $r \times 1$ as $\mathbf{0}_r$, and a vector of ones of dimension $r \times 1$ as $\mathbf{1}_r$.
 
 \subsection{Flexible Quantile Estimation: The Extended Asymmetric Laplace}
 \label{subsec:exal}
@@ -85,17 +85,10 @@ The use of the Asymmetric Laplace (AL) distribution for quantile inference withi
 
 For a fixed target quantile \(p_0\), we write the forecasting framework as a single state-space model. The same latent state is used throughout the estimation period and the forecast window; what changes after the cutoff is the set of observation channels that remains available and the forecast-window covariance used to propagate that state forward. Let
 \[
-\boldsymbol{\eta}_t =
-\begin{bmatrix}
-\boldsymbol{\theta}_t \\
-\boldsymbol{\delta}_t^1 \\
-\vdots \\
-\boldsymbol{\delta}_t^J \\
-\zeta_t \\
-\boldsymbol{\psi}_t
-\end{bmatrix},
+\boldsymbol{\omega}_t' = [\zeta_t,\ \boldsymbol{\psi}_t'], \qquad
+\boldsymbol{\eta}_t' = [\boldsymbol{\theta}_t',\ (\boldsymbol{\delta}_t^1)',\ \ldots,\ (\boldsymbol{\delta}_t^J)',\ \boldsymbol{\omega}_t'],
 \]
-where \(\boldsymbol{\eta}_t \in \mathbb{R}^{q}\) with \(q = (J+1)p + m + 1\), \(\boldsymbol{\theta}_t \in \mathbb{R}^p\) contains the trend and seasonal states, \(\boldsymbol{\delta}_t^j \in \mathbb{R}^p\) is the discrepancy state for source \(j\), \(\zeta_t \in \mathbb{R}\) is the transfer state, and \(\boldsymbol{\psi}_t \in \mathbb{R}^m\) contains the time-varying covariate effects. Thus, the full state consists of one latent trend-and-seasonal block, \(J\) discrepancy blocks, and one transfer block. The transfer block evolves through
+where \(\boldsymbol{\omega}_t \in \mathbb{R}^{m+1}\) contains the transfer state and the time-varying covariate effects, \(\boldsymbol{\eta}_t \in \mathbb{R}^{q}\) with \(q = (J+1)p + m + 1\), \(\boldsymbol{\theta}_t \in \mathbb{R}^p\) contains the trend and seasonal states, and \(\boldsymbol{\delta}_t^j \in \mathbb{R}^p\) is the discrepancy state for source \(j\). Thus, the full state consists of one latent trend-and-seasonal block, \(J\) discrepancy blocks, and one transfer block. Let \(\mathcal{J}=\{1,\ldots,J\}\) index the external product families. For each \(j\in\mathcal{J}\), let \(\mathcal{I}_j=\{1,\ldots,I_j\}\) index the forecast members and \(\mathcal{K}_j=\{1,\ldots,K_{(j)}\}\) index the forecast leads available from that source. We write \(K_{\max}=\max_{j\in\mathcal{J}} K_{(j)}\) for the longest forecast horizon across sources. The transfer block evolves through
 \[
 \mathbf{G}^{\text{trans}}_t =
 \begin{bmatrix}
@@ -115,44 +108,34 @@ y_t^o \mid \boldsymbol{\eta}_t, \sigma^o, \gamma^o
 \text{Retrospective products:}&&
 z_t^j \mid \boldsymbol{\eta}_t, \sigma^j, \gamma^j
 &\sim \text{exAL}_{p_0}\!\left(\mathbf{F}_t'(\boldsymbol{\theta}_t + \boldsymbol{\delta}_t^j) + \zeta_t, \sigma^j, \gamma^j\right),
-\quad 1 \le j \le J,\ 1 \le t \le T, \label{eq:unified_retro}
+\quad j \in \mathcal{J},\ 1 \le t \le T, \label{eq:unified_retro}
 \\
 \text{Forecast products:}&&
 y_T^{j,i}(k) \mid \boldsymbol{\eta}_{T+k}, \sigma^j, \gamma^j
 &\sim \text{exAL}_{p_0}\!\left(\mathbf{F}_{T+k}'(\boldsymbol{\theta}_{T+k} + \boldsymbol{\delta}_{T+k}^j) + \zeta_{T+k}, \sigma^j, \gamma^j\right), \nonumber\\
 &&&
-\qquad 1 \le j \le J,\ 1 \le i \le I_j,\ 1 \le k \le K_{(j)}, \label{eq:unified_forecast}
+\qquad j \in \mathcal{J},\ i \in \mathcal{I}_j,\ k \in \mathcal{K}_j, \label{eq:unified_forecast}
 \\
 \text{Trend and seasonal states:}&&
 \boldsymbol{\theta}_t \mid \boldsymbol{\theta}_{t-1}
-&\sim \mathcal{N}\!\left(\mathbf{G}_t \boldsymbol{\theta}_{t-1}, \mathbf{W}_t^\theta\right), \label{eq:unified_theta}
+&\sim \mathcal{N}\!\left(\mathbf{G}_t \boldsymbol{\theta}_{t-1}, \mathbf{W}_t^\theta\right),
+\quad 1 \le t \le T+K_{\max}, \label{eq:unified_theta}
 \\
 \text{Discrepancy states:}&&
 \boldsymbol{\delta}_t^j \mid \boldsymbol{\delta}_{t-1}^j
 &\sim \mathcal{N}\!\left(\mathbf{G}_t \boldsymbol{\delta}_{t-1}^j, \mathbf{W}_t^{\delta^j}\right),
-\quad 1 \le j \le J, \label{eq:unified_delta}
+\quad j \in \mathcal{J},\ 1 \le t \le T+K_{\max}, \label{eq:unified_delta}
 \\
 \text{Transfer-function states:}&&
-\begin{bmatrix}
-\zeta_t \\
-\boldsymbol{\psi}_t
-\end{bmatrix}
-\Bigg|
-\begin{bmatrix}
-\zeta_{t-1} \\
-\boldsymbol{\psi}_{t-1}
-\end{bmatrix}
+\boldsymbol{\omega}_t \mid \boldsymbol{\omega}_{t-1}
 &\sim \mathcal{N}\!\left(
-\mathbf{G}^{\text{trans}}_t
-\begin{bmatrix}
-\zeta_{t-1} \\
-\boldsymbol{\psi}_{t-1}
-\end{bmatrix},
+\mathbf{G}^{\text{trans}}_t \boldsymbol{\omega}_{t-1},
 \text{BlockDiag}\!\left(w_t^\zeta, \mathbf{W}_t^\psi\right)
-\right). \label{eq:unified_transfer}
+\right),
+\quad 1 \le t \le T+K_{\max}. \label{eq:unified_transfer}
 \end{align}
 
-Here \(\mathbf{F}_t \in \mathbb{R}^{p}\), \(\mathbf{G}_t \in \mathbb{R}^{p\times p}\), \(\mathbf{W}_t^\theta \in \mathbb{R}^{p\times p}\), \(\mathbf{W}_t^{\delta^j} \in \mathbb{R}^{p\times p}\), and \(\mathbf{W}_t^\psi \in \mathbb{R}^{m\times m}\). The source-specific parameters are \((\sigma^o,\gamma^o)\) for the observed river-flow series and \((\sigma^j,\gamma^j)\) for all channels associated with source \(j\), whether retrospective or forecast-based. Here \(J\) denotes the number of external product families, \(I_j\) is the number of forecast members available from source \(j\), and \(K_{(j)}\) is the forecast horizon for that source. We write \(K_{\max} = \max_{1 \le j \le J} K_{(j)}\) for the longest forecast horizon across sources. The symbol \(T\) denotes the cutoff or forecast origin, so \(y_T^{j,i}(k)\) is the \(k\)-step-ahead member issued at that origin by member \(i\) of source \(j\).
+Here \(\mathbf{F}_t \in \mathbb{R}^{p}\), \(\mathbf{G}_t \in \mathbb{R}^{p\times p}\), \(\mathbf{W}_t^\theta \in \mathbb{R}^{p\times p}\), \(\mathbf{W}_t^{\delta^j} \in \mathbb{R}^{p\times p}\), and \(\mathbf{W}_t^\psi \in \mathbb{R}^{m\times m}\). The source-specific parameters are \((\sigma^o,\gamma^o)\) for the observed river-flow series and \((\sigma^j,\gamma^j)\) for all channels associated with source \(j\), whether retrospective or forecast-based. The symbol \(T\) denotes the cutoff or forecast origin, so \(y_T^{j,i}(k)\) is the \(k\)-step-ahead member issued at that origin by member \(i\) of source \(j\).
 
 The first two lines correspond to the estimation period, where the available channels are the observed river-flow series and the retrospective products. The third line corresponds to the forecast window, where those channels are replaced by the forecast products issued at or before the cutoff.
 
@@ -162,50 +145,39 @@ For later reference, the same model admits the following compact matrix form:
 \begin{align}
 y_{t,s} \mid \boldsymbol{\eta}_t, \sigma_s, \gamma_s
 &\sim \text{exAL}_{p_0}\!\left(\mathbf{h}_{t,s}' \boldsymbol{\eta}_t, \sigma_s, \gamma_s\right),
-\quad s \in \{0,1,\ldots,J\}, \label{eq:compact_est_obs}
+\quad s \in \{0\}\cup\mathcal{J}, \label{eq:compact_est_obs}
 \\
 \boldsymbol{\eta}_t \mid \boldsymbol{\eta}_{t-1}
 &\sim \mathcal{N}\!\left(\boldsymbol{D}_t \boldsymbol{\eta}_{t-1}, \boldsymbol{\Lambda}_t\right),
 \qquad 1 \le t \le T, \label{eq:compact_est_state}
 \\
-y_{t,(j,i)} \mid \boldsymbol{\eta}_t, \sigma^j, \gamma^j
-&\sim \text{exAL}_{p_0}\!\left(\mathbf{e}_{t,j}' \boldsymbol{\eta}_t, \sigma^j, \gamma^j\right),
-\quad 1 \le j \le J,\ 1 \le i \le I_j,\ T < t \le T + K_{(j)}, \label{eq:compact_fc_obs}
+y_T^{j,i}(k) \mid \boldsymbol{\eta}_{T+k}, \sigma^j, \gamma^j
+&\sim \text{exAL}_{p_0}\!\left(\mathbf{e}_{T+k,j}' \boldsymbol{\eta}_{T+k}, \sigma^j, \gamma^j\right),
+\quad j \in \mathcal{J},\ i \in \mathcal{I}_j,\ k \in \mathcal{K}_j, \label{eq:compact_fc_obs}
 \\
-\boldsymbol{\eta}_t \mid \boldsymbol{\eta}_{t-1}
-&\sim \mathcal{N}\!\left(\boldsymbol{M}_t \boldsymbol{\eta}_{t-1}, \mathbf{W}_t\right),
-\qquad T < t \le T + K_{\max}. \label{eq:compact_fc_state}
+\boldsymbol{\eta}_{T+k} \mid \boldsymbol{\eta}_{T+k-1}
+&\sim \mathcal{N}\!\left(\boldsymbol{M}_{T+k} \boldsymbol{\eta}_{T+k-1}, \mathbf{W}_{T+k}\right),
+\qquad 1 \le k \le K_{\max}. \label{eq:compact_fc_state}
 \end{align}
 The first two lines describe the estimation period, whereas the last two lines describe the forecast window. Thus, \eqref{eq:compact_est_obs}--\eqref{eq:compact_fc_state} restate the expanded model above in one unified notation.
 Here
 \[
-\mathbf{h}_{t,0} =
-\begin{bmatrix}
-\mathbf{F}_t \\
-\mathbf{0}_{pJ} \\
-1 \\
-\mathbf{0}_m
-\end{bmatrix},
+\big(\mathbf{F}_t^{\text{trans}}\big)' = [1,\ \mathbf{0}_m'], \qquad
+\mathbf{h}_{t,0}' =
+\big[\mathbf{F}_t',\ \mathbf{0}_{pJ}',\ \big(\mathbf{F}_t^{\text{trans}}\big)'\big],
 \qquad
-\mathbf{h}_{t,j} =
-\begin{bmatrix}
-\mathbf{F}_t \\
-\mathbf{0}_{p(j-1)} \\
-\mathbf{F}_t \\
-\mathbf{0}_{p(J-j)} \\
-1 \\
-\mathbf{0}_m
-\end{bmatrix},
-\quad 1 \le j \le J,
+\mathbf{h}_{t,j}' =
+\big[\mathbf{F}_t',\ \mathbf{0}_{p(j-1)}',\ \mathbf{F}_t',\ \mathbf{0}_{p(J-j)}',\ \big(\mathbf{F}_t^{\text{trans}}\big)'\big],
+\quad j \in \mathcal{J},
 \]
-with \(\mathbf{h}_{t,0}, \mathbf{h}_{t,j} \in \mathbb{R}^{q}\), and
+with \(\mathbf{F}_t^{\text{trans}} \in \mathbb{R}^{m+1}\), \(\mathbf{h}_{t,0}, \mathbf{h}_{t,j} \in \mathbb{R}^{q}\), and
 \[
-\boldsymbol{D}_t = \text{BlockDiag}\!\left(\mathbf{G}_t, \mathbf{G}_t, \ldots, \mathbf{G}_t, \mathbf{G}^{\text{trans}}_t\right), \qquad
-\boldsymbol{\Lambda}_t = \text{BlockDiag}\!\left(\mathbf{W}^{\theta}_t, \mathbf{W}^{\delta^1}_t, \ldots, \mathbf{W}^{\delta^J}_t, w_t^{\zeta}, \mathbf{W}^{\psi}_t\right).
+\boldsymbol{D}_t = \text{BlockDiag}\!\left(\mathbf{G}_t,\ \underbrace{\mathbf{G}_t,\ldots,\mathbf{G}_t}_{J\ \text{discrepancy blocks}},\ \mathbf{G}^{\text{trans}}_t\right), \qquad
+\boldsymbol{\Lambda}_t = \text{BlockDiag}\!\left(\mathbf{W}^{\theta}_t,\ \underbrace{\mathbf{W}^{\delta^1}_t,\ldots,\mathbf{W}^{\delta^J}_t}_{J\ \text{source-specific discrepancy blocks}},\ \text{BlockDiag}\!\left(w_t^{\zeta}, \mathbf{W}^{\psi}_t\right)\right).
 \]
-Here \(\boldsymbol{D}_t, \boldsymbol{\Lambda}_t \in \mathbb{R}^{q\times q}\), and \(\mathbf{G}_t\) is repeated once for the latent trend-and-seasonal block and once for each discrepancy block. Thus, \(\mathbf{h}_{t,0}' \boldsymbol{\eta}_t = \mathbf{F}_t' \boldsymbol{\theta}_t + \zeta_t\) and \(\mathbf{h}_{t,j}' \boldsymbol{\eta}_t = \mathbf{F}_t'(\boldsymbol{\theta}_t + \boldsymbol{\delta}_t^j) + \zeta_t\).
+Here \(\boldsymbol{D}_t, \boldsymbol{\Lambda}_t \in \mathbb{R}^{q\times q}\). The matrix \(\mathbf{G}_t\) appears \(J+1\) times in \(\boldsymbol{D}_t\): once for the latent trend-and-seasonal block and once for each discrepancy block. The covariance \(\boldsymbol{\Lambda}_t\) has the same block ordering, with one latent covariance block, \(J\) source-specific discrepancy blocks, and one transfer block. Thus, \(\mathbf{h}_{t,0}' \boldsymbol{\eta}_t = \mathbf{F}_t' \boldsymbol{\theta}_t + \zeta_t\) and \(\mathbf{h}_{t,j}' \boldsymbol{\eta}_t = \mathbf{F}_t'(\boldsymbol{\theta}_t + \boldsymbol{\delta}_t^j) + \zeta_t\).
 
-For the forecast window, \(\mathbf{e}_{t,j} \in \mathbb{R}^{q}\) is the analogue of \(\mathbf{h}_{t,j}\): it extracts the latent trend-and-seasonal block, the discrepancy block for source \(j\), and, in the T1 specification, the transfer block. The matrices \(\boldsymbol{M}_t, \mathbf{W}_t \in \mathbb{R}^{q\times q}\) preserve the same block ordering as \(\boldsymbol{D}_t\) while propagating the state through the forecast window. In computation, we use reduced forecast-window matrices that retain only the forecasters whose horizons remain active at each lead time; this reduction is computational only and does not change the underlying model.
+For the forecast window, \(\mathbf{e}_{T+k,j} \in \mathbb{R}^{q}\) is the analogue of \(\mathbf{h}_{t,j}\): it extracts the latent trend-and-seasonal block, the discrepancy block for source \(j\), and, in the T1 specification, the transfer block. The matrices \(\boldsymbol{M}_{T+k}, \mathbf{W}_{T+k} \in \mathbb{R}^{q\times q}\) preserve the same block ordering as \(\boldsymbol{D}_t\) while propagating the state through the forecast window. In computation, we use reduced forecast-window matrices that retain only the forecasters whose horizons remain active at each lead time; this reduction is computational only and does not change the underlying model.
 
 This compact form is intended as a bookkeeping device rather than a second model presentation. It preserves the same three ingredients as the expanded display above: one latent quantile process, one family of source-specific discrepancy channels, and one transfer block that can continue into the forecast window. Suppressing the discrepancy states and retaining only the observation channel yields an observation-only specification. Keeping the observation and retrospective channels but restricting attention to \(1 \le t \le T\) yields an estimation-period multivariate specification. The full model in \eqref{eq:unified_usgs}--\eqref{eq:compact_fc_state} continues the same latent state into the forecast window while changing the active observation channels after the cutoff.
 
@@ -249,9 +221,11 @@ where \(p_t^{\lambda}\) denotes the predictive distribution at time \(t\) under 
 
 We use CRPS because it scores the full predictive distribution and accounts jointly for calibration and sharpness. For a predictive distribution \(\mathbf{G}\) and an observation \(y\), the CRPS is
 \[
-\text{CRPS}(y, \mathbf{G}) = \mathbb{E}_{Y \sim \mathbf{G}}|Y - y| - \frac{1}{2}\mathbb{E}_{Y,Y'\sim \mathbf{G}}|Y - Y'|.
+\text{CRPS}(y, \mathbf{G}) = 2 \int_0^1 \rho_\tau\!\left(y - \mathbf{G}^{-1}(\tau)\right)\, d\tau,
+\qquad
+\rho_\tau(u) = u\big(\tau - \mathbf{1}\{u<0\}\big),
 \]
-It also reduces to the mean absolute error for deterministic forecasts, which makes it a natural criterion for comparing the candidate predictive specifications considered below.
+where \(\rho_\tau\) is the quantile score and \(\mathbf{G}^{-1}\) is the predictive quantile function. This representation is natural here because the framework is fit separately across target quantile levels. For a deterministic forecast \(x\), the predictive distribution collapses to a point mass at \(x\), and the CRPS reduces to \(|y-x|\), that is, the mean absolute error (MAE).
 
 \section{APPLICATION DATA AND FORECASTING DESIGN}
 \label{sec:data}
