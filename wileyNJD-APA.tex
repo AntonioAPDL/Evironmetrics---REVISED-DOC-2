@@ -74,13 +74,13 @@ The remainder of the paper is organized as follows. Section~\ref{sec:methodology
 
 We first introduce some notation to be used throughout the article. We use bold uppercase letters (e.g., $\mathbf{W}, \mathbf{F}, \mathbf{G}$) to denote matrices, and bold lowercase letters (e.g., $\mathbf{x}, \mathbf{\psi}, \mathbf{\theta}$) to denote vectors. We denote the identity matrix of dimension $r \times r$ as $\mathbf{I}_r$, a vector of zeros of dimension $r \times 1$ as $\mathbf{0}_r$, and a vector of ones of dimension $r \times 1$ as $\mathbf{1}_r$.
 
-\subsection{Flexible Quantile Estimation: The Extended Asymmetric Laplace}
+\subsection{Extended Asymmetric Laplace Likelihood}
 \label{subsec:exal}
 
 The use of the Asymmetric Laplace (AL) distribution for quantile inference within a Bayesian framework is well-established with both empirical and theoretical justifications \citep{yu2001bayesian, sriram2013theoretical}. We use the extended asymmetric Laplace (exAL) distribution, which addresses limitations of the AL working likelihood, particularly its restricted skewness. \citet{yan2025new} proposed the exAL distribution, $\text{exAL}_{p_0}(\mu, \sigma, \gamma)$, where $\mu$ represents the $p_0$th quantile of interest, $\sigma$ is a positive scale parameter, and $\gamma$ is the skewness parameter. The parameter $\gamma$ has bounded support over the interval $(L, U)$, where $L$ is the negative root of $g(\gamma) = 1 - p_0$ and $U$ is the positive root of $g(\gamma) = p_0$, with $g(\gamma) = 2 \Phi(-|\gamma|) \exp(\gamma^2 / 2)$ and $\Phi$ denoting the standard normal cumulative distribution function. For posterior computation, we use the extended stochastic representation of an exAL random variable described in \citet{yan2025new}. That is, if $y \sim \text{exAL}(\mu, \sigma, \gamma)$, then there exist independent random variables $\epsilon \sim \mathcal{N}(0, 1)$, $z \sim \text{Exp}(1)$, and $s \sim \mathcal{N}^+(0, 1)$, (where $\mathcal{N}^+(0, 1)$ denotes the standard normal distribution truncated to the positive real line), such that  \( y = \mu + C(\gamma; p_0)\sigma |\gamma| s + A(\gamma; p_0) \sigma z + \sqrt{B(\gamma; p_0) \sigma^2 z} \cdot \epsilon, \) where $A(\gamma; p_0) = \frac{1 - 2 p(\gamma; p_0)}{p(\gamma; p_0) \, [1 - p(\gamma; p_0)]}$, $B(\gamma; p_0) = \frac{2}{p(\gamma; p_0) \, [1 - p(\gamma; p_0)]}$, $C(\gamma; p_0) = [I(\gamma > 0) - p(\gamma; p_0)]^{-1}$, and $p(\gamma; p_0) = I(\gamma < 0) + \{p_0 - I(\gamma < 0)\} / g(\gamma)$.
 
 
-\subsection{Unified State-Space Model}
+\subsection{State-Space Model Specification}
 \label{subsec:fullmodel}
 
 For a fixed target quantile \(p_0\), we write the forecasting framework as a single state-space model. The same latent state is used throughout the estimation period and the forecast window; what changes after the cutoff is the set of observation channels that remains available and the forecast-window covariance used to propagate that state forward. Let
@@ -139,9 +139,9 @@ Here \(\mathbf{F}_t \in \mathbb{R}^{p}\), \(\mathbf{G}_t \in \mathbb{R}^{p\times
 
 The first two lines correspond to the estimation period, where the available channels are the observed river-flow series and the retrospective products. The third line corresponds to the forecast window, where those channels are replaced by the forecast products issued at or before the cutoff.
 
-The last three lines define the block structure of the state evolution. The latent block \(\boldsymbol{\theta}_t\) carries the underlying river-flow level and seasonal structure, the source-specific blocks \(\boldsymbol{\delta}_t^j\) absorb systematic departures between each external product family and the observed river-flow series, and the transfer block \((\zeta_t,\boldsymbol{\psi}_t)\) maps the external covariates into the quantile process. In the compact form below, these blocks are assembled into \(\boldsymbol{D}_t\) and \(\boldsymbol{\Lambda}_t\) before the cutoff and into \(\boldsymbol{M}_t\) and \(\mathbf{W}_t\) after the cutoff. In the T1 specification, the transfer block remains active after the cutoff, with \(\mathbf{x}_t\) given by the forecast covariates available at that origin. The benchmark label T0, introduced in Section~\ref{subsec:benchmarkresults}, denotes the corresponding restriction in which the forecast-window transfer block is suppressed after the cutoff.
+The last three lines define the block structure of the state evolution. The latent block \(\boldsymbol{\theta}_t\) carries the underlying river-flow level and seasonal structure, the source-specific blocks \(\boldsymbol{\delta}_t^j\) absorb systematic departures between each external product family and the observed river-flow series, and the transfer block \((\zeta_t,\boldsymbol{\psi}_t)\) maps the external covariates into the quantile process. In the compact form below, these blocks are assembled into \(\boldsymbol{D}_t\) and \(\boldsymbol{\Lambda}_t\) before the cutoff and into \(\boldsymbol{M}_t\) and \(\mathbf{W}_t\) after the cutoff. In the T1 specification, the transfer block remains active after the cutoff, with \(\mathbf{x}_t\) given by the forecast covariates available at that origin. The benchmark label T0, introduced in Subsection~\ref{subsec:benchmarkresults}, denotes the corresponding restriction in which the forecast-window transfer block is suppressed after the cutoff.
 
-For later reference, the same model admits the following compact matrix form:
+For posterior computation, it is useful to rewrite the same model in the following compact matrix form:
 \begin{align}
 y_{t,s} \mid \boldsymbol{\eta}_t, \sigma_s, \gamma_s
 &\sim \text{exAL}_{p_0}\!\left(\mathbf{h}_{t,s}' \boldsymbol{\eta}_t, \sigma_s, \gamma_s\right),
@@ -159,7 +159,7 @@ y_T^{j,i}(k) \mid \boldsymbol{\eta}_{T+k}, \sigma^j, \gamma^j
 &\sim \mathcal{N}\!\left(\boldsymbol{M}_{T+k} \boldsymbol{\eta}_{T+k-1}, \mathbf{W}_{T+k}\right),
 \qquad 1 \le k \le K_{\max}. \label{eq:compact_fc_state}
 \end{align}
-The first two lines describe the estimation period, whereas the last two lines describe the forecast window. Thus, \eqref{eq:compact_est_obs}--\eqref{eq:compact_fc_state} restate the expanded model above in one unified notation.
+The first two lines describe the estimation period, whereas the last two lines describe the forecast window.
 Here
 \[
 \big(\mathbf{F}_t^{\text{trans}}\big)' = [1,\ \mathbf{0}_m'], \qquad
@@ -179,9 +179,9 @@ Here \(\boldsymbol{D}_t, \boldsymbol{\Lambda}_t \in \mathbb{R}^{q\times q}\). Th
 
 For the forecast window, \(\mathbf{e}_{T+k,j} \in \mathbb{R}^{q}\) is the analogue of \(\mathbf{h}_{t,j}\): it extracts the latent trend-and-seasonal block, the discrepancy block for source \(j\), and, in the T1 specification, the transfer block. The matrices \(\boldsymbol{M}_{T+k}, \mathbf{W}_{T+k} \in \mathbb{R}^{q\times q}\) preserve the same block ordering as \(\boldsymbol{D}_t\) while propagating the state through the forecast window. In computation, we use reduced forecast-window matrices that retain only the forecasters whose horizons remain active at each lead time; this reduction is computational only and does not change the underlying model.
 
-This compact form is intended as a bookkeeping device rather than a second model presentation. It preserves the same three ingredients as the expanded display above: one latent quantile process, one family of source-specific discrepancy channels, and one transfer block that can continue into the forecast window. Suppressing the discrepancy states and retaining only the observation channel yields an observation-only specification. Keeping the observation and retrospective channels but restricting attention to \(1 \le t \le T\) yields an estimation-period multivariate specification. The full model in \eqref{eq:unified_usgs}--\eqref{eq:compact_fc_state} continues the same latent state into the forecast window while changing the active observation channels after the cutoff.
+The compact form is included to highlight the computational structure of the model. Under the stochastic representation in Subsection~\ref{subsec:exal}, the observation equations are conditionally Gaussian given the latent augmentation variables, while the state evolution remains Gaussian. Standard state-space tools, including filtering, smoothing, and FFBS recursions, can therefore be applied directly in posterior computation. The compact display is intended to make that structure transparent, rather than to introduce a second formulation of the model.
 
-\subsection{Prior Specification and Discount Factors}
+\subsection{Prior Specification and Discounting}
 \label{subsec:prioranddisc}
 Following \citet{barata2021_flex_quantile}, for each skewness parameter, we assign a truncated Student-t prior: \(\gamma^j \sim t_{(L, U)}(0, \phi^j, \nu^j)\), where $\phi^j$ and $\nu^j$ denote the scale and degrees of freedom hyperparameters, respectively, for \(1 \leq j \leq J\). For the scale parameters, we use inverse gamma priors: \(\sigma^j \sim IG(a_{\sigma^j}, b_{\sigma^j})\), with $a_{\sigma^j}$ and $b_{\sigma^j}$ as shape and scale hyperparameters. The latent trend-and-seasonal block is initialized as \(\boldsymbol{\theta}_0 \sim \mathcal{N}(\mathbf{m}_0, \mathbf{C}_0)\), with $\mathbf{m}_0$ and $\mathbf{C}_0$ as location and scale hyperparameters.
 
@@ -195,7 +195,7 @@ This specification yields a convex combination between a scaled version of the l
  
 Further details regarding prior specification and discount factors are provided in Subsection~\ref{subsec:specification}.
 
-\subsection{Posterior Inference}
+\subsection{Posterior Computation}
 \label{subsec:postinf}
 The posterior distribution of all model parameters is explored using a Markov chain Monte Carlo (MCMC) algorithm.
 Algorithm~\ref{alg1} gives the core MCMC updates in a compact source-indexed notation. During the estimation period, the active source channels are the USGS observations and retrospective products; after the cutoff, the same updates use the active forecast-product channels, with additional bookkeeping for the reduced forecast-window matrices when forecast horizons differ across agencies. The appendix algorithms use the same state notation \(\boldsymbol{\eta}_t\), the same estimation-period selectors \(\mathbf{h}_{t,j}\), and the same forecast-window selectors \(\mathbf{e}_{T+k,j}\) introduced in Subsection~\ref{subsec:fullmodel}. All full conditional posteriors are available in closed form except for the skewness parameters $\gamma^j$, $1 \leq j \leq J$. For these, we use a Metropolis--Hastings random walk on an unconstrained reparameterization. Posterior sampling of the state parameters relies on a modified Forward Filtering Backward Sampling (FFBS) algorithm that leverages their conditional normality (see Algorithm~\ref{alg:Alg2}).
@@ -210,7 +210,7 @@ To illustrate our VB-LD strategy, consider a generic joint distribution \( p(D,\
 
 We present the pseudocode for the VB algorithm associated with our model in Algorithm~\ref{alg:Alg3} and Algorithm~\ref{alg:Alg4}.
 
-\subsection{Model Selection}
+\subsection{Model Selection by CRPS}
 \label{subsec:modelselection}
 
 For model selection, we use the Continuous Ranked Probability Score (CRPS) rather than probability integral transform (PIT) diagnostics. Following \citet{barata2021_flex_quantile}, we treat the discount-factor specification as fixed within a candidate model and select the transfer rate \(\lambda\) by minimizing the average one-step-ahead CRPS. In particular,
@@ -230,7 +230,7 @@ where \(\rho_\tau\) is the quantile score and \(\mathbf{G}^{-1}\) is the predict
 \section{APPLICATION DATA AND FORECASTING DESIGN}
 \label{sec:data}
 
-\subsection{Study Setting and Target Observations}
+\subsection{Study Setting and Observations}
 
 Our target series is the average daily natural water flow (in cubic feet per second) of the San Lorenzo River at the Big Trees U.S. Geological Survey (USGS) gauging station in Santa Cruz, California. The Big Trees location is characterized by minimal human intervention, so the recorded flow closely reflects natural river dynamics. The dataset covers May 29, 1987, through December 25, 2022, and contains 12,986 daily USGS observations (Figure~\ref{fig:sanlorenzo}).
 
@@ -279,7 +279,7 @@ The operational forecast products are used only after a cutoff date. The NWS ens
 \label{fig:retrospectives}
 \end{figure*}
 
-\subsection{Application-Specific State Specification}
+\subsection{Application-Specific Model Specification}
 \label{subsec:specification}
 
 For the San Lorenzo application, the shared latent quantile process combines a local level, three seasonal harmonics, and the transfer component defined in Section~\ref{sec:methodology}. The discrepancy states use the same dynamic backbone as the latent trend-and-seasonal block through the repeated \(\mathbf{G}_t\) blocks in the full state evolution. This subsection specifies how the general model is instantiated for this basin: first through the latent trend-and-seasonal structure, then through the transfer covariates, and finally through the componentwise discount choices. We first specify the trend and seasonal structure. The matrix \(\mathbf{G}_t\) is composed of a trend component and a seasonal component. For the trend component, we include a constant term to represent the long-term average level of the quantile of interest. This component is defined by the evolution matrix and observational vector:
@@ -335,7 +335,7 @@ GloFAS issues forecast products daily, whereas NWS issues them hourly. To mainta
 \section{FORECAST VALIDATION RESULTS}
 \label{sec:forecastvalidation}
 
-\subsection{Comparative Forecasting Performance Across Model Families}
+\subsection{Comparative Forecast Performance}
 \label{subsec:benchmarkresults}
 
 We fit the framework separately at the seven target quantile levels \(0.05\), \(0.20\), \(0.35\), \(0.50\), \(0.65\), \(0.80\), and \(0.95\). Forecast skill is then evaluated over each forecast window by the mean continuous ranked probability score (CRPS), using the variational Bayes procedure described in Subsection~\ref{subsec:postinf}.
@@ -445,7 +445,7 @@ Figures~\ref{fig:dry_quantile} and \ref{fig:rainy_quantile} show clear differenc
 
 The contrast between these periods is most visible in the spread between the 5th and 95th quantiles. That spread remains relatively tight under dry conditions but expands during wet-season peaks, indicating that the selected specification allocates greater predictive spread when hydrological variability increases.
 
-\subsection{Synthesized Predictive Illustration}
+\subsection{Predictive Synthesis Illustration}
 \label{subsec:synthillustration}
 
 Figure~\ref{fig:synth1} shows the synthesized predictive distribution for the December 25, 2022 cutoff. Its role is illustrative: it shows how the fitted quantile-specific forecasts combine into one predictive distribution for a single forecast origin, whereas the comparative forecast evaluation remains the main empirical evidence of the paper.
@@ -498,7 +498,7 @@ The reusable estimation routines for the extended dynamic quantile linear model 
 
 \appendix
 
-\section{Additional Parameter and Illustrative Summaries}
+\section{Supplementary Parameter Summaries and Illustrations}
 \label{app:extras}
 
 \subsection{Source-Specific Shape and Scale Parameters}
@@ -588,7 +588,7 @@ Posterior mean and 95\% credible intervals for the 80-month seasonal component o
 
 Figure~\ref{fig:80_components} shows that the 80-month seasonal component is broadly aligned across the three representative quantiles and captures multi-year wet and dry phases in the historical record.
 
-\subsection{Idealized Historical-Only Synthesis}
+\subsection{Historical-Only Predictive Synthesis}
 \label{app:historicalsynth}
 
 \begin{figure}[h]
@@ -604,7 +604,7 @@ Figure~\ref{fig:synth2} provides a historical-only reference for the December 25
 
 \section{Markov Chain Monte Carlo Algorithms}
 
-The appendix algorithms use the same unified-model notation as Subsection~\ref{subsec:fullmodel}. To keep the displays compact, they work with source-indexed observation vectors during the estimation period and with source-indexed forecast-product vectors during the forecast window. The role of the selector vector is therefore the same throughout: before the cutoff it is \(\mathbf{h}_{t,j}\), whereas after the cutoff it becomes the forecast-window selector \(\mathbf{e}_{T+k,j}\) for the active source \(j\). When the main text distinguishes individual forecast members through \(y_T^{j,i}(k)\), the appendix uses the corresponding source-indexed forecast quantity \(y_{T+k}^{j}\) because the algorithms only need the active source channel at each lead time.
+The appendix algorithms use the same state-space notation as Subsection~\ref{subsec:fullmodel}. To keep the displays compact, they work with source-indexed observation vectors during the estimation period and with source-indexed forecast-product vectors during the forecast window. The role of the selector vector is therefore the same throughout: before the cutoff it is \(\mathbf{h}_{t,j}\), whereas after the cutoff it becomes the forecast-window selector \(\mathbf{e}_{T+k,j}\) for the active source \(j\). When the main text distinguishes individual forecast members through \(y_T^{j,i}(k)\), the appendix uses the corresponding source-indexed forecast quantity \(y_{T+k}^{j}\) because the algorithms only need the active source channel at each lead time.
 
 \begin{algorithm}
 \caption{MCMC Algorithm}\label{alg1}
@@ -612,7 +612,7 @@ The appendix algorithms use the same unified-model notation as Subsection~\ref{s
 
 \State \textbf{Notation:}
 \State  \(
-A^j = A(\gamma^j;p_0), \quad B^j = B(\gamma^j;p_0), \quad C^j = C(\gamma^j;p_0), \text{ as defined in Section~\ref{subsec:exal}}
+A^j = A(\gamma^j;p_0), \quad B^j = B(\gamma^j;p_0), \quad C^j = C(\gamma^j;p_0), \text{ as defined in Subsection~\ref{subsec:exal}}
 \)
 \State Let \(\mathcal{J}_0=\{0\}\cup\mathcal{J}\), where \(j=0\) denotes the observation channel and \(j\in\mathcal{J}\) denotes an external source. During the estimation period, write \(y_t^0 \equiv y_t^o\) and \(y_t^j \equiv z_t^j\) for \(j\in\mathcal{J}\), with selector vector \(\mathbf{h}_{t,j}\). During the forecast window, write \(y_{T+k}^{j}\) for the active source-indexed forecast quantity from source \(j\) at lead \(k\), with selector \(\mathbf{e}_{T+k,j}\).
 \State \textbf{Step 0: Set initial values} and sample size $N$.
@@ -669,7 +669,7 @@ A^j = A(\gamma^j;p_0), \quad B^j = B(\gamma^j;p_0), \quad C^j = C(\gamma^j;p_0),
 \State $\mathbf{M}_t= \mathbf{C} \odot  \mathbf{\sigma} \odot | \mathbf{\gamma} | \odot \mathbf{s}_t + \mathbf{A} \odot \mathbf{v}_t$, \quad $\mathbf{O}_t= \sqrt{\mathbf{B} \odot \mathbf{v}_t} \odot Diag
 (\mathbf{\sigma}) \sqrt{\mathbf{B} \odot \mathbf{v}_t} \odot \mathbf{\sigma}$
 \State  \(
-\mathbf{A} = \big[ A(\gamma^j;p_0)   \big], \quad \mathbf{B} = \big[  B(\gamma^j;p_0)  \big], \quad \mathbf{C} = \big[ C(\gamma^j;p_0)   \big] \), \text{ as defined in Section~\ref{subsec:exal}}
+\mathbf{A} = \big[ A(\gamma^j;p_0)   \big], \quad \mathbf{B} = \big[  B(\gamma^j;p_0)  \big], \quad \mathbf{C} = \big[ C(\gamma^j;p_0)   \big] \), \text{ as defined in Subsection~\ref{subsec:exal}}
 \State \( \mathbf{v}_t = \big[  v^j_t   \big], \quad  \mathbf{s}_t = \big[ 
 s^j_t  \big] , \quad \mathbf{\sigma} = \big[ \sigma^j  \big]
 \)
@@ -718,7 +718,7 @@ s^j_t  \big] , \quad \mathbf{\sigma} = \big[ \sigma^j  \big]
 \State \textbf{Notation:}
 \State  $\left\langle g(\xi) \right\rangle = \mathbb{E}_\xi\left[ g(\xi) \right]$
 \State  \(
-A^j = A(\gamma^j;p_0), \quad B^j = B(\gamma^j;p_0), \quad C^j = C(\gamma^j;p_0), \text{ as defined in Section~\ref{subsec:exal}}
+A^j = A(\gamma^j;p_0), \quad B^j = B(\gamma^j;p_0), \quad C^j = C(\gamma^j;p_0), \text{ as defined in Subsection~\ref{subsec:exal}}
 \)
 \State  Let \(\mathcal{J}_0=\{0\}\cup\mathcal{J}\). During the estimation period, let \(y_t^0 \equiv y_t^o\) and \(y_t^j \equiv z_t^j\) for \(j\in\mathcal{J}\), with selector \(\mathbf{h}_{t,j}\). This is the same source-indexed notation used in Algorithm~\ref{alg1}.
 \State \textbf{Step 0: Set initial values}
@@ -744,7 +744,7 @@ A^j = A(\gamma^j;p_0), \quad B^j = B(\gamma^j;p_0), \quad C^j = C(\gamma^j;p_0),
         \EndFor
 
         \State \textbf{Step 4: Update $r(\gamma^j, \sigma^j )$}
-        \State Approximate via VB-LD, as described in Section~\ref{subsec:postinf}
+        \State Approximate via VB-LD, as described in Subsection~\ref{subsec:postinf}
     \EndFor
 \EndWhile
 
@@ -763,7 +763,7 @@ A^j = A(\gamma^j;p_0), \quad B^j = B(\gamma^j;p_0), \quad C^j = C(\gamma^j;p_0),
 \State $\mathbf{M}_t= \mathbf{C} \odot  \mathbf{\sigma} \odot | \mathbf{\gamma} | \odot \mathbf{s}_t + \mathbf{A} \odot \mathbf{v}_t$, \quad $\mathbf{O}_t= \sqrt{\mathbf{B} \odot \mathbf{v}_t} \odot Diag
 (\mathbf{\sigma}) \sqrt{\mathbf{B} \odot \mathbf{v}_t} \odot \mathbf{\sigma}$
 \State  \(
-\mathbf{A} = \big[ \left\langle A(\gamma^j;p_0)  \right\rangle \big], \quad \mathbf{B} = \big[ \left\langle B(\gamma^j;p_0)  \right\rangle \big], \quad \mathbf{C} = \big[ \left\langle C(\gamma^j;p_0)  \right\rangle \big] \), \text{ as defined in Section~\ref{subsec:exal}}
+\mathbf{A} = \big[ \left\langle A(\gamma^j;p_0)  \right\rangle \big], \quad \mathbf{B} = \big[ \left\langle B(\gamma^j;p_0)  \right\rangle \big], \quad \mathbf{C} = \big[ \left\langle C(\gamma^j;p_0)  \right\rangle \big] \), \text{ as defined in Subsection~\ref{subsec:exal}}
 \State \( \mathbf{v}_t = \big[ \left\langle v^j_t  \right\rangle \big], \quad  \mathbf{s}_t = \big[ \left\langle
 s^j_t  \right\rangle \big] , \quad \mathbf{\sigma} = \big[ \left\langle \sigma^j  \right\rangle \big]
 \)

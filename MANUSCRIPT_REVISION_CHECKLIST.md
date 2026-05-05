@@ -850,8 +850,15 @@ Use this as the working order when actually editing the manuscript.
 - [x] Distinguish clearly between estimation-period selectors \(\mathbf{h}_{t,j}\) and forecast-window selectors \(\mathbf{e}_{T+k,j}\).
 - [x] Rewrite the forecast-window algorithm steps so they use the same \(T+k\) notation as the main text.
 - [x] Remove stale or ambiguous notation residue that no longer matches the cleaned unified-model exposition.
-- [x] Add short continuity cues so a reader can move from `Posterior Inference` into the appendix algorithms without reconstructing old notation.
+- [x] Add short continuity cues so a reader can move from `Posterior Computation` into the appendix algorithms without reconstructing old notation.
 - [x] Recheck the appendix as a reader-facing continuation of the main text rather than as an implementation note.
+
+### Targeted heading and Section 2.2 polish pass
+- [x] Rename section and subsection headings so they are self-contained and do not depend on local draft history.
+- [x] Replace local labels such as `Unified` with standard state-space terminology.
+- [x] Reframe the compact model display in Section 2.2 as a computational summary rather than a second model exposition.
+- [x] Trim the explanatory text around the compact form so it motivates filtering, smoothing, and FFBS without overexplaining equivalence.
+- [x] Recheck subsection cross-references after the heading changes.
 
 ### Fifth pass: harder review-dependent items
 - [ ] five-cutoff justification after Raquel input
