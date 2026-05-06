@@ -886,12 +886,22 @@ Use this as the working order when actually editing the manuscript.
 - [x] Identify the current gap: posterior interpretation tables are not yet emitted by those runs and will require a targeted post-export rerun or export fix.
 
 ### Exact relaunch handoff
-- [x] Build a cutoff-by-cutoff relaunch checklist for the selected manuscript model `exAL-M-T1`.
-- [x] Record the five authoritative source runs whose `exdqlm_multivar_synth_keep` CRPS values match the published Table 1 row exactly.
+- [x] Build a publication-aligned relaunch checklist for the selected manuscript model `exAL-M-T1`.
+- [x] Record the five publication-relevant `exAL-M-T1` runs tied to the current HE2 CRPS table.
 - [x] Record the representative Section 5 cutoff run to use for `fig:synth1`, `fig:synth2` if retained, and `tab:components_23_31`.
-- [x] Record the required predictive-synthesis artifacts, posterior table exports, and heavy outputs that must be preserved after rerun.
-- [x] Record the post-rerun validation contract, including exact CRPS verification against the published Table 1 values.
-- [x] Write the exact handoff to `EXAL_M_T1_RELAUNCH_CHECKLIST.md`.
+- [x] Record the Phase A predictive-synthesis and posterior-table outputs required to refresh the revised manuscript.
+- [x] Record the post-rerun validation contract, including CRPS verification against the current published Table 1 values.
+- [x] Write the exact manuscript-side handoff to `EXAL_M_T1_RELAUNCH_CHECKLIST.md`.
+
+### Focused exAL-M-T1 relaunch planning
+- [x] Freeze the narrow five-run `exAL-M-T1` publication lineage for the revised manuscript and remove dependence on the older pre-publication source-run audit.
+- [x] Write a workflow-side relaunch plan for the five publication-relevant `exAL-M-T1` runs only.
+- [x] Replace the manuscript-side `EXAL_M_T1_RELAUNCH_CHECKLIST.md` with the current publication-aligned five-run source map.
+- [x] Split the required outputs into Phase A article-critical outputs and Phase B historical-summary outputs so the relaunch stays focused.
+- [x] Identify the current replay blocker as a headless post issue rather than a fit-stage failure.
+- [ ] Apply the minimal headless-safe post fix in the workflow repo.
+- [ ] Rerun two `exAL-M-T1` canaries: `01/23/2021` cf1 keep and `12/25/2022` exact `set09` keep.
+- [ ] After both canaries pass, rerun the remaining three cf1 `exAL-M-T1` cutoffs and refresh the Phase A manuscript assets.
 
 ### Next coordinated TODOs after the current manuscript pass
 - [ ] Refresh every interpretation-dependent table and figure so it is generated from the same final `exAL-M-T1` run that produced the CRPS values reported in Table~1.
