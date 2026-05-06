@@ -20,6 +20,27 @@ Important guardrails:
 
 ---
 
+## 0. Current exAL-M-T1 refresh checkpoint
+
+This is the active manuscript-side rerender target for the revised article.
+
+- The narrow `exAL-M-T1` replay path is now verified on two canaries:
+  - `01/23/2021`
+  - `12/25/2022`
+- Both canaries now reproduce the published HE2 CRPS values to rounding and emit:
+  - synthesis figures
+  - quantile/sample exports
+  - `covariate_effects_summary`
+  - `gamma_summary`
+  - `sigma_summary`
+- The next workflow-side task is to scale this same path to:
+  - `11/12/2021`
+  - `12/21/2021`
+  - `05/11/2022`
+- Do not refresh `Evironmetrics---REVISED-DOC-2` figures or tables from any older side-work roots when the five-run verified lineage is the intended source.
+
+---
+
 ## 1. Source-of-truth crosswalk
 
 ### Rebuttal commitments that already drive the manuscript rewrite

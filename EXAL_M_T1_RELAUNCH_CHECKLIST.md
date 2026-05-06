@@ -62,22 +62,28 @@ These are the first outputs the relaunch must support.
 ## Current audit findings
 
 1. The original publication-aligned source runs already wrote the synthesis figures successfully.
-2. The missing gap is the posterior-table export path, not the existence of the main synthesis figures.
-3. The current side-work replay failure is a headless post issue in `40_figures_smoke_fast.R`, not a fit failure.
-4. Therefore the next operational step is a **minimal headless-safe post fix plus two canary reruns**, not a broad replay expansion.
+2. The missing posterior-table export path has now been restored on the replay side.
+3. The exact-snapshot deterministic-climate validation issue for the `12/25/2022` override run has now been fixed.
+4. The two exAL-M-T1 canaries now pass end to end under the authoritative replay path:
+   - `01/23/2021` cf1 keep
+   - `12/25/2022` exact `set09` keep
+5. Therefore the next operational step is to scale this same verified path to the remaining three `exAL-M-T1` cutoffs only.
 
 ## Recommended execution order
 
-1. Apply the minimal headless-safe post fix in the workflow repo.
-2. Rerun two exAL-M-T1 canaries:
-   - `01/23/2021` standard cf1 keep lineage
-   - `12/25/2022` exact `set09` keep lineage
-3. Verify:
-   - CRPS matches the current table
-   - post completes
-   - Phase A outputs are emitted
-4. Scale to the remaining three cf1 cutoffs.
-5. Refresh `Evironmetrics---REVISED-DOC-2` from those verified outputs only.
+1. Scale the verified replay path to:
+   - `11/12/2021` cf1 keep
+   - `12/21/2021` cf1 keep
+   - `05/11/2022` cf1 keep
+2. Verify for all five runs:
+   - mean CRPS matches the current HE2 table to rounding
+   - synthesis figures are present
+   - posterior tables are present
+3. Use only those five verified run roots to refresh:
+   - `fig:synth1`
+   - `tab:components_23_31`
+   - `fig:synth2` if retained
+4. Revisit Phase B historical-summary objects only after the Phase A refresh is complete.
 
 ## Companion workflow note
 
