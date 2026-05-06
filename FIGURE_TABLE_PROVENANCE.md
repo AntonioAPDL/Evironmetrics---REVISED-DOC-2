@@ -15,6 +15,10 @@ Main purpose:
 - distinguish reproducible workflow-linked outputs from legacy or ambiguous outputs,
 - and define the next regeneration tasks needed to align all interpretation material with the final selected `exAL-M-T1` analysis behind Table 1.
 
+Companion relaunch document:
+- `EXAL_M_T1_RELAUNCH_CHECKLIST.md`
+  - This records the exact cutoff-by-cutoff source runs behind the published `exAL-M-T1` CRPS values, the required rerun artifacts, and the post-rerun validation contract.
+
 This inventory does **not** yet certify that every interpretation-dependent object comes from the final selected run used for the published five-cutoff CRPS table. It establishes provenance first, so regeneration and manuscript updates can be done safely.
 
 ## Overall conclusion
@@ -199,6 +203,17 @@ These runs already provide:
 Current gap from this audit:
 - the April 22 `exdqlm_multivar_keep` runs do not appear to have written the posterior interpretation tables themselves, even though the workflow has the export contract and README for them.
 - In practice, this means the synthesis figures can likely be refreshed directly from the current validated runs, whereas the covariate / `gamma` / `sigma` tables will likely require a targeted post-export rerun or export fix.
+
+## Exact relaunch handoff
+
+The high-level provenance inventory in this file is now paired with a run-level relaunch checklist:
+- `EXAL_M_T1_RELAUNCH_CHECKLIST.md`
+
+Use that companion file when:
+- identifying the authoritative source run for a given cutoff,
+- rerunning the selected specification associated with a published Table 1 CRPS value,
+- verifying that the rerun reproduces the selected `exAL-M-T1` CRPS exactly,
+- and checking whether the required figure and table artifacts were emitted.
 
 ## Recommended next steps
 

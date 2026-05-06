@@ -885,6 +885,14 @@ Use this as the working order when actually editing the manuscript.
 - [x] Confirm that the recent `2022-12-25` selected-model run already produces cutoff-window synthesis figures and quantile CSV exports.
 - [x] Identify the current gap: posterior interpretation tables are not yet emitted by those runs and will require a targeted post-export rerun or export fix.
 
+### Exact relaunch handoff
+- [x] Build a cutoff-by-cutoff relaunch checklist for the selected manuscript model `exAL-M-T1`.
+- [x] Record the five authoritative source runs whose `exdqlm_multivar_synth_keep` CRPS values match the published Table 1 row exactly.
+- [x] Record the representative Section 5 cutoff run to use for `fig:synth1`, `fig:synth2` if retained, and `tab:components_23_31`.
+- [x] Record the required predictive-synthesis artifacts, posterior table exports, and heavy outputs that must be preserved after rerun.
+- [x] Record the post-rerun validation contract, including exact CRPS verification against the published Table 1 values.
+- [x] Write the exact handoff to `EXAL_M_T1_RELAUNCH_CHECKLIST.md`.
+
 ### Next coordinated TODOs after the current manuscript pass
 - [ ] Refresh every interpretation-dependent table and figure so it is generated from the same final `exAL-M-T1` run that produced the CRPS values reported in Table~1.
   - This includes the covariate-effects table, the dry/wet regime figures, the predictive-synthesis figure, and any appendix summaries that still depend on an older run.
