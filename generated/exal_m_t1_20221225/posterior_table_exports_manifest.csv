@@ -1,0 +1,8 @@
+"table_name","file_path","nrow","ncol","sha256"
+"per_time","crps_forecast_per_time.csv",64,14,"c5dbb020c8645c67ebfb4de541003beabe545323d5ad11e79199233a4f049980"
+"summary","crps_forecast_summary.csv",3,19,"78c452c979eb696c1981d38284084d6d75c6a333e4828d56005239accf830fd9"
+"gamma","gamma_summary.csv",21,7,"be31143918ad1b14454148121f375f21232b838c46d09bca6d1b92b149165cbc"
+"sigma","sigma_summary.csv",21,7,"e0779c4a38624ecd3f4ea4a9358613c01a86751692a75c3da95dad1dbb2bd18c"
+"covariate_effects","covariate_effects_summary.csv",27,8,"b1e4e56d33b9bbd2d6de9162f5849e45dbbcd6f46c7d2a373c69b55f9980e2c1"
+"summary","crps_input_health.csv",3,26,"271933d31ebd1c86992631a4ea76157fe9cb3d01f04dc62cbe74beac396e375b"
+"per_time","crps_input_health_per_time.csv",64,20,"b42b8b0bcf52bb807298dfafc1c91b11dd4a6023eb0440b8ef823ca482d556a9"

@@ -387,37 +387,37 @@ Because exAL-M-T1 attains the lowest CRPS in all five rolling-origin cutoffs, th
 \centering
 \renewcommand{\arraystretch}{1.13}
 \begin{threeparttable}
-\caption{Posterior Means and 95\% Credible Intervals for Covariate Effects}
+\caption{Selected Posterior Means and 95\% Credible Intervals for Transfer-Function Covariates}
 \label{tab:components_23_31}
 \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} l c S[table-format=-1.3] l }
 \toprule
 \textbf{Covariate} & \textbf{Quantile} & \textbf{Mean} & \textbf{95\% CI} \\
 \midrule
 \multirow{3}{*}{Precipitation}
-  & 5th  & 1.945 & $[1.917,\ 1.973]$ \\
-  & 50th & 2.392 & $[2.354,\ 2.429]$ \\
-  & 95th & 2.946 & $[2.913,\ 2.978]$ \\
+  & 5th  & -0.001 & $[-0.029,\ 0.026]$ \\
+  & 50th & 0.029 & $[-0.001,\ 0.058]$ \\
+  & 95th & 0.198 & $[0.159,\ 0.237]$ \\
 \midrule
 \multirow{3}{*}{Soil Moisture}
-  & 5th  & 0.115 & $[0.110,\ 0.119]$ \\
-  & 50th & 0.118 & $[0.113,\ 0.124]$ \\
-  & 95th & 0.253 & $[0.247,\ 0.259]$ \\
+  & 5th  & 0.184 & $[0.158,\ 0.211]$ \\
+  & 50th & 0.183 & $[0.154,\ 0.213]$ \\
+  & 95th & 0.322 & $[0.287,\ 0.357]$ \\
 \midrule
   \multirow{3}{*}{First GDPC factor}
-  & 5th  & -0.084 & $[-0.087,\ -0.080]$ \\
-  & 50th & -0.063 & $[-0.067,\ -0.059]$ \\
-  & 95th & -0.032 & $[-0.036,\ -0.028]$ \\
+  & 5th  & 0.001 & $[0.000,\ 0.001]$ \\
+  & 50th & 0.000 & $[-0.000,\ 0.001]$ \\
+  & 95th & 0.001 & $[-0.000,\ 0.001]$ \\
 \bottomrule
 \end{tabular*}
 \begin{tablenotes}
-\item \textit{Note:} Posterior means and 95\% credible intervals $[{\rm Q2.5}, {\rm Q97.5}]$ for covariate coefficients in the transfer function, at final time $T$, for the 5th, 50th, and 95th quantile models. \texttt{First GDPC factor} refers to the first generalized dynamic principal component introduced in Section~\ref{sec:data}.
+\item \textit{Note:} Posterior means and 95\% credible intervals $[{\rm Q2.5}, {\rm Q97.5}]$ for selected transfer-function coefficients at the representative December 25, 2022 cutoff, for the 5th, 50th, and 95th quantile models. \texttt{First GDPC factor} refers to the first generalized dynamic principal component introduced in Section~\ref{sec:data}.
 \end{tablenotes}
 \end{threeparttable}
 \end{table*}
 
-Table~\ref{tab:components_23_31} reports posterior means and 95\% credible intervals for the transfer-function coefficients at the 5th, 50th, and 95th quantiles. Precipitation has the largest positive effect and increases with the quantile level, indicating that it is the dominant driver of upper-tail flow behavior. Soil moisture is also positive at all three quantiles, with a stronger effect in the upper tail, which is consistent with antecedent wetness amplifying runoff during storms.
+Table~\ref{tab:components_23_31} reports posterior means and 95\% credible intervals for three reader-facing transfer-function coefficients at the 5th, 50th, and 95th quantiles. The precipitation effect is near zero at the lower and central quantiles, but becomes clearly positive in the upper tail, indicating that it contributes most strongly to high-flow episodes. Soil moisture is positive at all three quantiles and increases toward the upper tail, which is consistent with antecedent wetness amplifying runoff during storms.
 
-The first GDPC factor remains negative and comparatively small after conditioning on precipitation and soil moisture, so its role is secondary to the local hydrometeorological covariates. These estimates indicate that the transfer component is driven primarily by precipitation and antecedent wetness, with the climate factor acting as a broader large-scale adjustment.
+The first GDPC factor remains close to zero after conditioning on precipitation and soil moisture, so its role is secondary to the local hydrometeorological covariates in this representative cutoff. Taken together, these estimates indicate that upper-tail behavior is driven mainly by the local precipitation and wetness signals, with little additional contribution from the large-scale climate factor at this origin.
 
 \subsection{Historical Behavior Across Representative Regimes}
 
@@ -524,17 +524,17 @@ The reusable estimation routines for the extended dynamic quantile linear model 
 & {\textbf{Median}} & {\textbf{95\% CI}}
 & {\textbf{Median}} & {\textbf{95\% CI}} \\
 \midrule
-05th  & 0.796   & $[0.781,\ 0.809]$   & 1.06    & $[1.04,\ 1.07]$   & 0.991   & $[0.976,\ 1.01]$   \\
-20th  & 0.0599  & $[0.0471,\ 0.0734]$ & 0.330   & $[0.318,\ 0.342]$ & 0.219   & $[0.206,\ 0.232]$ \\
-35th  & -0.0232 & $[-0.0297,\ -0.0174]$ & 0.0827 & $[0.0739,\ 0.0911]$ & 0.0881 & $[0.0786,\ 0.0983]$ \\
-50th  & -0.0997 & $[-0.109,\ -0.0906]$ & -0.0451 & $[-0.0517,\ -0.0382]$ & 0.00766 & $[-0.000356,\ 0.0146]$ \\
-65th  & -0.285  & $[-0.297,\ -0.273]$ & -0.257  & $[-0.267,\ -0.248]$ & -0.0767 & $[-0.0870,\ -0.0671]$ \\
-80th  & -0.655  & $[-0.673,\ -0.637]$ & -0.744  & $[-0.758,\ -0.731]$ & -0.212  & $[-0.224,\ -0.200]$ \\
-95th  & -1.82   & $[-1.85,\ -1.80]$   & -2.38   & $[-2.41,\ -2.36]$   & -1.13   & $[-1.15,\ -1.12]$ \\
+05th  & 1.173   & $[1.117,\ 1.241]$   & 1.804   & $[1.755,\ 1.855]$   & 3.748   & $[3.594,\ 3.906]$ \\
+20th  & 0.124   & $[0.079,\ 0.177]$   & 0.392   & $[0.360,\ 0.427]$   & 0.659   & $[0.600,\ 0.723]$ \\
+35th  & -0.004  & $[-0.028,\ 0.019]$  & 0.520   & $[0.494,\ 0.547]$   & 0.295   & $[0.254,\ 0.340]$ \\
+50th  & -0.117  & $[-0.148,\ -0.089]$ & 0.233   & $[0.213,\ 0.252]$   & -0.006  & $[-0.047,\ 0.037]$ \\
+65th  & -0.321  & $[-0.362,\ -0.285]$ & 0.038   & $[0.025,\ 0.051]$   & -0.201  & $[-0.249,\ -0.156]$ \\
+80th  & -0.716  & $[-0.775,\ -0.660]$ & -0.298  & $[-0.330,\ -0.267]$ & -0.526  & $[-0.586,\ -0.471]$ \\
+95th  & -2.059  & $[-2.151,\ -1.962]$ & -1.869  & $[-1.920,\ -1.820]$ & -1.494  & $[-1.588,\ -1.401]$ \\
 \bottomrule
 \end{tabular*}
 \begin{tablenotes}
-\item \textit{Note:} Entries show the posterior median and the 95\% credible interval $[{\rm Q2.5}, {\rm Q97.5}]$ for each source and quantile. USGS = U.S. Geological Survey; GloFAS = Global Flood Awareness System; NWS = National Weather Service.
+\item \textit{Note:} Entries show the posterior median and the 95\% credible interval $[{\rm Q2.5}, {\rm Q97.5}]$ for each source and quantile at the representative December 25, 2022 cutoff. USGS = U.S. Geological Survey; GloFAS = Global Flood Awareness System; NWS = National Weather Service.
 \end{tablenotes}
 \end{table*}
 
@@ -558,17 +558,17 @@ The reusable estimation routines for the extended dynamic quantile linear model 
 & {\textbf{Median}} & {\textbf{95\% CI}}
 & {\textbf{Median}} & {\textbf{95\% CI}} \\
 \midrule
-05th  & 0.0281 & $[0.0277,\ 0.0285]$  & 0.0272 & $[0.0269,\ 0.0275]$  & 0.0332 & $[0.0327,\ 0.0336]$ \\
-20th  & 0.0560 & $[0.0552,\ 0.0568]$  & 0.0563 & $[0.0556,\ 0.0570]$  & 0.0650 & $[0.0640,\ 0.0658]$ \\
-35th  & 0.0745 & $[0.0734,\ 0.0755]$  & 0.0687 & $[0.0678,\ 0.0696]$  & 0.0813 & $[0.0802,\ 0.0824]$ \\
-50th  & 0.0826 & $[0.0814,\ 0.0837]$  & 0.0743 & $[0.0734,\ 0.0753]$  & 0.0852 & $[0.0840,\ 0.0864]$ \\
-65th  & 0.0817 & $[0.0805,\ 0.0828]$  & 0.0736 & $[0.0727,\ 0.0746]$  & 0.0805 & $[0.0794,\ 0.0816]$ \\
-80th  & 0.0725 & $[0.0715,\ 0.0735]$  & 0.0677 & $[0.0668,\ 0.0685]$  & 0.0646 & $[0.0638,\ 0.0655]$ \\
-95th  & 0.0435 & $[0.0429,\ 0.0440]$  & 0.0475 & $[0.0470,\ 0.0480]$  & 0.0356 & $[0.0351,\ 0.0361]$ \\
+05th  & 0.01066 & $[0.01022,\ 0.01115]$  & 0.31684 & $[0.30803,\ 0.32558]$  & 0.09287 & $[0.08960,\ 0.09622]$ \\
+20th  & 0.02031 & $[0.01935,\ 0.02135]$  & 0.53254 & $[0.51651,\ 0.54939]$  & 0.04353 & $[0.04155,\ 0.04559]$ \\
+35th  & 0.02684 & $[0.02553,\ 0.02813]$  & 0.61367 & $[0.59349,\ 0.63318]$  & 0.07828 & $[0.07476,\ 0.08198]$ \\
+50th  & 0.03101 & $[0.02961,\ 0.03257]$  & 0.57017 & $[0.55226,\ 0.58867]$  & 0.04422 & $[0.04219,\ 0.04652]$ \\
+65th  & 0.03258 & $[0.03112,\ 0.03424]$  & 0.51019 & $[0.49351,\ 0.52711]$  & 0.04340 & $[0.04144,\ 0.04545]$ \\
+80th  & 0.03174 & $[0.03029,\ 0.03327]$  & 0.40370 & $[0.39102,\ 0.41615]$  & 0.04186 & $[0.03999,\ 0.04378]$ \\
+95th  & 0.02521 & $[0.02422,\ 0.02627]$  & 0.21407 & $[0.20801,\ 0.22001]$  & 0.05247 & $[0.05033,\ 0.05474]$ \\
 \bottomrule
 \end{tabular*}
 \begin{tablenotes}
-\item \textit{Note:} Entries show the posterior median and the 95\% credible interval $[{\rm Q2.5}, {\rm Q97.5}]$ for each source and quantile. USGS = U.S. Geological Survey; GloFAS = Global Flood Awareness System; NWS = National Weather Service.
+\item \textit{Note:} Entries show the posterior median and the 95\% credible interval $[{\rm Q2.5}, {\rm Q97.5}]$ for each source and quantile at the representative December 25, 2022 cutoff. USGS = U.S. Geological Survey; GloFAS = Global Flood Awareness System; NWS = National Weather Service.
 \end{tablenotes}
 \end{table*}
 

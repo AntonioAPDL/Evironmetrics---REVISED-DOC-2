@@ -37,6 +37,37 @@ Table provenance is weaker but still promising:
 
 The remaining work is to tie the interpretation tables and cutoff-specific interpretation figures to the exact final selected `exAL-M-T1` run used for the current Table 1 CRPS values.
 
+## 2026-05-06 selected-model refresh status
+
+The representative selected-model refresh is now partially complete.
+
+Verified source run:
+- `/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_publication_replay_representatives_20260506/20221225_exal_m_t1/runs/multimodel_20221225_v8_exalm_t1_discount_grid_exact_v1_set09_exdqlm_multivar_keep`
+
+Verified status:
+- `validation_status=pass`
+- `compare_status=pass`
+- deterministic-climate validation passes
+- posterior table exports are present
+
+The revised manuscript repo now contains a local copy of the representative selected-model artifacts under:
+- `/data/muscat_data/jaguir26/project1_ucsc_phd/Evironmetrics---REVISED-DOC-2/generated/exal_m_t1_20221225`
+
+Those copied artifacts include:
+- `posterior_samples_valid.png`
+- `covariate_effects_summary.csv/.tex`
+- `gamma_summary.csv/.tex`
+- `sigma_summary.csv/.tex`
+- `posterior_table_exports_manifest.csv`
+
+Current manuscript refreshes already tied to that verified run:
+- `DISC/posterior_samples_valid.png`
+- `tab:components_23_31`
+- `tab:gamma_sigma_intervals1`
+- `tab:gamma_sigma_intervals2`
+
+The remaining step for the narrow exAL-M-T1 relaunch is to finish verifying the other three publication cutoffs so the full five-run lineage is closed cleanly before any broader manuscript/result synchronization.
+
 ## Current workflow evidence
 
 ### Figure-generation evidence

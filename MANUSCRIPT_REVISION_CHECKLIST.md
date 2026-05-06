@@ -921,12 +921,23 @@ Use this as the working order when actually editing the manuscript.
 - [x] Split the required outputs into Phase A article-critical outputs and Phase B historical-summary outputs so the relaunch stays focused.
 - [x] Identify the current replay blocker as a headless post issue rather than a fit-stage failure.
 - [x] Apply the minimal headless-safe post fix in the workflow repo.
-- [ ] Rerun two `exAL-M-T1` canaries: `01/23/2021` cf1 keep and `12/25/2022` exact `set09` keep.
+- [x] Rerun two `exAL-M-T1` canaries: `01/23/2021` cf1 keep and `12/25/2022` exact `set09` keep.
+  - Final result:
+    - both canaries pass end to end under the authoritative replay path
+    - both reproduce the published HE2 CRPS rows to rounding
+    - both emit the synthesis figures and posterior table exports needed for the revised article
+- [ ] Finish the remaining three publication-aligned `exAL-M-T1` rows and lock the final five-run provenance.
   - Current result:
-    - `01/23/2021` canary now passes and reproduces the published CRPS row to rounding.
-    - `12/25/2022` canary now reproduces the published CRPS row to rounding and emits the synthesis figures, but still fails the deterministic-climate validation block.
-    - both canaries still miss the posterior table exports needed for `tab:components_23_31`.
-- [ ] After both canaries pass, rerun the remaining three cf1 `exAL-M-T1` cutoffs and refresh the Phase A manuscript assets.
+    - `11/12/2021` now passes and reproduces the published CRPS row to rounding
+    - `12/21/2021` is still running under the authoritative replay path
+    - `05/11/2022` is still running under the authoritative replay path
+- [x] Refresh the representative Section 5 Phase A manuscript assets from the verified `12/25/2022` selected-model run.
+  - Current refresh:
+    - `fig:synth1` source image in `DISC/posterior_samples_valid.png`
+    - `tab:components_23_31`
+    - `tab:gamma_sigma_intervals1`
+    - `tab:gamma_sigma_intervals2`
+    - copied provenance bundle under `generated/exal_m_t1_20221225/`
 
 ### Next coordinated TODOs after the current manuscript pass
 - [ ] Refresh every interpretation-dependent table and figure so it is generated from the same final `exAL-M-T1` run that produced the CRPS values reported in Table~1.
