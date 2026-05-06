@@ -2,9 +2,19 @@
 
 ## Purpose
 
-This checklist fixes the exact source lineage for the selected manuscript model `exAL-M-T1` and records the relaunch contract needed to refresh interpretation-dependent outputs reproducibly.
+This checklist fixes the exact source lineage for the selected manuscript model `exAL-M-T1` and records the replay contract needed to refresh interpretation-dependent outputs reproducibly.
 
 Use this document when regenerating any Section 5 or appendix output that must remain consistent with the CRPS values reported in Table 1 of the manuscript.
+
+Preferred execution rule:
+- unless a replay fails because the preserved source-run fit artifacts are unusable, prefer a post-only replay from the authoritative source runs over a full refit;
+- preserve the exact selected-model source lineage tied to the published CRPS values;
+- and keep the replay outputs complete enough that figures, tables, and their supporting diagnostics can be rebuilt without another launch.
+
+Current status from the replay audit:
+- the authoritative source runs do not retain the fit-side `DISC_variables_*.RData` bundles needed by the current post exporter;
+- so post-only replay is not sufficient for the selected `exAL-M-T1` lineage as it stands;
+- the replay contract therefore needs to preserve those fit-side artifacts in a representative full-fit rerun before we scale to all five cutoffs.
 
 Primary manuscript repo:
 - `/data/muscat_data/jaguir26/project1_ucsc_phd/Evironmetrics---REVISED-DOC-2`
@@ -85,6 +95,16 @@ unless Table 1 is later regenerated and the manuscript standard changes.
 
 For all five authoritative source runs, the following artifacts already exist:
 - `publication_figure_manifest.csv`
+- `publication_style_used.yaml`
+- `figure_manifest.csv`
+- `post_artifacts_manifest.csv`
+- `post_artifacts_summary.json`
+- `timestamps.csv`
+- `timestamps_keep.csv`
+- `data_cbind_tY_X.csv`
+- `data_cbind_tY_X.rds`
+- `data_cbind_tY_X_keep.csv`
+- `data_cbind_tY_X_keep.rds`
 - `exdqlm_multivar_synth_keep_cutoff_window_posterior_samples.png`
 - `exdqlm_multivar_synth_keep_cutoff_window_posterior_samples.pdf`
 - `exdqlm_multivar_synth_keep_cutoff_window_posterior_samples_with_raw_ensembles.png`
@@ -92,6 +112,7 @@ For all five authoritative source runs, the following artifacts already exist:
 - `exdqlm_multivar_synth_keep_cutoff_window_quantiles.csv`
 - `exdqlm_multivar_synth_keep_cutoff_window_sample_subset.csv`
 - `exdqlm_multivar_synth_drop_cutoff_window_posterior_samples.png`
+- `exdqlm_multivar_synth_drop_cutoff_window_posterior_samples_with_raw_ensembles.png`
 - `posterior_table_exports_manifest.csv`
 
 For all five authoritative source runs, the following posterior interpretation tables are currently missing:
@@ -101,30 +122,55 @@ For all five authoritative source runs, the following posterior interpretation t
 
 So the figure refresh path already exists, but the interpretation-table export path still needs to be activated or repaired.
 
-## Required artifacts after relaunch
+## Required artifacts after replay
 
-Each relaunch of an authoritative source specification must preserve the following outputs.
+Each replay of an authoritative source specification must preserve the following outputs.
 
 ### Required predictive-synthesis artifacts
+- `figure_manifest.csv`
 - `publication_figure_manifest.csv`
+- `publication_style_used.yaml`
+- `timestamps.csv`
+- `timestamps_keep.csv`
+- `data_cbind_tY_X.csv`
+- `data_cbind_tY_X.rds`
+- `data_cbind_tY_X_keep.csv`
+- `data_cbind_tY_X_keep.rds`
 - `exdqlm_multivar_synth_keep_cutoff_window_posterior_samples.png`
 - `exdqlm_multivar_synth_keep_cutoff_window_posterior_samples.pdf`
 - `exdqlm_multivar_synth_keep_cutoff_window_posterior_samples_with_raw_ensembles.png`
 - `exdqlm_multivar_synth_keep_cutoff_window_posterior_samples_with_raw_ensembles.pdf`
 - `exdqlm_multivar_synth_keep_cutoff_window_quantiles.csv`
 - `exdqlm_multivar_synth_keep_cutoff_window_sample_subset.csv`
+- `post/inputs/nws_post_adapter.csv`
+- `post/inputs/glofas_post_adapter.csv`
+- `post/inputs/retros_post_adapter.csv`
 
 ### Required optional/appendix synthesis artifacts
 Keep these if `fig:synth2` or related appendix material remains in the paper:
 - `exdqlm_multivar_synth_drop_cutoff_window_posterior_samples.png`
 - `exdqlm_multivar_synth_drop_cutoff_window_posterior_samples.pdf`
+- `exdqlm_multivar_synth_drop_cutoff_window_posterior_samples_with_raw_ensembles.png`
+- `exdqlm_multivar_synth_drop_cutoff_window_posterior_samples_with_raw_ensembles.pdf`
 - `exdqlm_multivar_synth_drop_cutoff_window_quantiles.csv`
 - `exdqlm_multivar_synth_drop_cutoff_window_sample_subset.csv`
+
+### Required scoring and health tables
+These are needed both for replay verification and for later auditability.
+
+- `crps_forecast_summary.csv`
+- `crps_forecast_per_time.csv`
+- `crps_input_health.csv`
+- `crps_input_health_per_time.csv`
+- `crps_forecast_summary_keep.csv`
+- `crps_forecast_per_time_keep.csv`
+- `crps_input_health_keep.csv`
+- `crps_input_health_per_time_keep.csv`
 
 ### Required posterior table exports
 These are the key missing artifacts that the rerun must produce.
 
-For the representative cutoff run at minimum:
+For each authoritative replay if possible, and at minimum for the representative cutoff run:
 - `covariate_effects_summary.csv`
 - `covariate_effects_summary.rds`
 - `covariate_effects_summary.tex`
@@ -137,12 +183,75 @@ For the representative cutoff run at minimum:
 - `posterior_table_exports_manifest.csv`
 - `posterior_table_exports_README.md`
 
+### Required fit-side artifacts for reproducible post regeneration
+These are the artifacts the post stage still expects when rebuilding the selected multivariate outputs.
+
+For each quantile `q \in \{05,20,35,50,65,80,95\}`:
+- legacy primary-mode drop artifact:
+  - `fit/q=<q>/outputs/DISC_variables_<q_num>_exAL_synth_DISC.RData`
+  - `fit/q=<q>/outputs/multivar_forecast_health.txt`
+  - `fit/q=<q>/logs/fit.log`
+- keep-mode artifact:
+  - `fit/exdqlm_multivar/keep/q=<q>/outputs/DISC_variables_<q_num>_exAL_synth_DISC.RData`
+  - `fit/exdqlm_multivar/keep/q=<q>/outputs/multivar_forecast_health.txt`
+  - `fit/exdqlm_multivar/keep/q=<q>/logs/fit.log`
+
+These fit-side artifacts are not optional for the current replay path. Their absence is what caused the authoritative post-only replay to fail.
+
+### Required post artifact bookkeeping
+- `post_artifacts_manifest.csv`
+- `post_artifacts_summary.json`
+
+### Required run-level audit artifacts
+- `run_manifest.yaml`
+- `resolved_config.yaml`
+- `fit/logs/fit_stage.log`
+- `fit/logs/shared_input_source_map.log`
+- `report/summary.json`
+- `report/summary.md`
+- `validate/compare_report.json`
+- `validate/compare_report.txt`
+- `validate/current.sha256`
+- `validate/canonical.sha256`
+- environment snapshots under `env/`
+
 ### Heavy artifacts to retain
-Do not trim these away if the relaunch can preserve them and storage is acceptable:
+Do not trim these away if the replay can preserve them and storage is acceptable:
 - posterior sample subsets already referenced by the publication figure manifest
+- quantile-sidecar caches used by the publication figure renderer
+- multivariate synthesis cache RDS files for both `keep` and `drop` modes
 - run manifests and resolved configs
+- validate outputs and report summaries
 - post-stage manifests and summaries
 - any run-scoped objects needed to rebuild figures or tables without another relaunch
+
+## 2026-05-05 replay audit update
+
+Current status after the first representative authoritative replay pass:
+- the replay artifact contract was rechecked against the current manuscript needs and is complete for the selected-model refresh path;
+- the representative cutoff `2022-12-25` full-fit replay is now environment-compatible and reaches the quantile-specific fit stage under the authoritative source lineage;
+- however, the authoritative full-fit replay is not yet numerically stable across all quantiles, so the rerun is not yet ready to refresh manuscript figures or tables.
+
+Representative full-fit replay used in this audit:
+- config: `/data/muscat_data/jaguir26/project1_ucsc_phd/config/unified_runs_exalm_t1_postreplay_20260505/paper_exalm_t1_fullfit_20221225_20260505.yaml`
+- run root: `/data/muscat_data/jaguir26/project1_ucsc_phd/repro/runs/paper_exalm_t1_fullfit_20221225_20260505`
+
+Resolved environment and replay-compatibility blockers:
+- the legacy Rcpp kernels now compile with `cpp14` rather than `cpp11`;
+- the replay path now loads `readr` explicitly where the legacy covariate loaders still used `read_csv()`;
+- the replay path now combines `exdqlm` model components with the correct `+` method rather than relying on a missing legacy `combineMods()` helper;
+- the post stage already prefers run-scoped shared inputs when present, which remains necessary for strict-source replays.
+
+Current representative numerical-stability status:
+- `q = 0.05` is progressing normally through the VB iterations;
+- `q = 0.95` is also progressing normally;
+- `q = 0.20` fails decisively with `FFF_list iter=19[[1]] contains non-finite values`;
+- `q = 0.35`, `0.50`, `0.65`, and `0.80` show repeated `non-finite dq_transf` and `optim failure` events, followed by refreeze cycles.
+
+Operational consequence:
+- the representative authoritative full-fit replay does not yet complete the post, validate, and report stages;
+- therefore the post-rerun CRPS verification contract below remains blocked;
+- and no manuscript figures or interpretation tables should be refreshed from this replay until the numerical-stability issue is resolved.
 
 ## Exact relaunch checklist
 
@@ -154,10 +263,14 @@ Do not trim these away if the relaunch can preserve them and storage is acceptab
 - [ ] Record the exact runtime directories, compare bundles, and resolved configs before rerunning.
 
 ### Phase 2. Relaunch scope
-- [ ] Relaunch the five authoritative selected-model source specifications, or relaunch an equivalent workflow path that preserves the same selected specification for each cutoff.
-- [ ] Ensure the relaunch preserves publication figure outputs.
-- [ ] Ensure the relaunch writes posterior interpretation tables, not only CRPS tables.
-- [ ] Ensure the relaunch keeps heavy artifacts rather than pruning them.
+- [ ] Prefer post-only replay from the five authoritative selected-model source runs rather than a full refit.
+- [ ] Use `inputs.post.use_fit_outputs_from_run: true` and the exact authoritative `source_run_id`.
+- [ ] Keep `data_prep_shared: true` so the replay writes the run-scoped shared-input bundle expected by the post stage.
+- [ ] Set `inputs.shared.exact_source_snapshot_root` to the authoritative source run’s `inputs/shared/` tree so the replay inherits the same shared-input snapshot.
+- [ ] Run with `post.smoke_fast: false`, `post.figures: true`, and `post.export_tables: true`.
+- [ ] Preserve figures, tables, caches, and bookkeeping artifacts by launching with `CLEANUP_RDATA_AFTER_POST=0`.
+- [ ] Keep `validate` and `report` enabled so each replay closes with its own audit trail.
+- [ ] If post-only replay fails because the authoritative source run lacks the required fit-side `DISC_variables_*.RData` bundles, escalate to a full-fit replay from the frozen authoritative snapshot rather than substituting a newer lineage.
 
 ### Phase 3. Post-rerun CRPS verification
 For each cutoff, verify that the rerun still reproduces the published selected-model CRPS exactly for `exdqlm_multivar_synth_keep`.
@@ -176,13 +289,38 @@ Verification rule:
 ### Phase 4. Post-rerun artifact contract verification
 For each authoritative rerun, verify:
 
+- [ ] `figure_manifest.csv` exists
 - [ ] `publication_figure_manifest.csv` exists
+- [ ] `publication_style_used.yaml` exists
+- [ ] `timestamps.csv` exists
+- [ ] `timestamps_keep.csv` exists
+- [ ] `data_cbind_tY_X.csv/.rds` exists
+- [ ] `data_cbind_tY_X_keep.csv/.rds` exists
 - [ ] keep posterior-synthesis PNG/PDF exists
 - [ ] keep-with-raw-ensembles PNG/PDF exists
 - [ ] keep quantile CSV exists
 - [ ] keep sample-subset CSV exists
+- [ ] keep/drop cache RDS files remain present under `post/cache`
+- [ ] `post/inputs/nws_post_adapter.csv` exists
+- [ ] `post/inputs/glofas_post_adapter.csv` exists
+- [ ] `post/inputs/retros_post_adapter.csv` exists
+- [ ] `crps_forecast_summary.csv` exists
+- [ ] `crps_forecast_per_time.csv` exists
+- [ ] `crps_input_health.csv` exists
+- [ ] `crps_input_health_per_time.csv` exists
+- [ ] `crps_forecast_summary_keep.csv` exists
+- [ ] `crps_forecast_per_time_keep.csv` exists
+- [ ] `crps_input_health_keep.csv` exists
+- [ ] `crps_input_health_per_time_keep.csv` exists
 - [ ] `posterior_table_exports_manifest.csv` exists
 - [ ] `posterior_table_exports_README.md` exists
+- [ ] `post_artifacts_manifest.csv` exists
+- [ ] `post_artifacts_summary.json` exists
+- [ ] fit-side `DISC_variables_*.RData` bundles exist for both the legacy drop layout and the keep layout
+- [ ] fit-side `multivar_forecast_health.txt` files exist for both layouts
+- [ ] `fit/logs/fit_stage.log` exists
+- [ ] `report/summary.json` and `report/summary.md` exist
+- [ ] `validate/compare_report.json` and `validate/compare_report.txt` exist
 
 For the representative cutoff `2022-12-25`, verify additionally:
 - [ ] `covariate_effects_summary.csv/.rds/.tex` exists
