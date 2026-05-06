@@ -899,8 +899,12 @@ Use this as the working order when actually editing the manuscript.
 - [x] Replace the manuscript-side `EXAL_M_T1_RELAUNCH_CHECKLIST.md` with the current publication-aligned five-run source map.
 - [x] Split the required outputs into Phase A article-critical outputs and Phase B historical-summary outputs so the relaunch stays focused.
 - [x] Identify the current replay blocker as a headless post issue rather than a fit-stage failure.
-- [ ] Apply the minimal headless-safe post fix in the workflow repo.
+- [x] Apply the minimal headless-safe post fix in the workflow repo.
 - [ ] Rerun two `exAL-M-T1` canaries: `01/23/2021` cf1 keep and `12/25/2022` exact `set09` keep.
+  - Current result:
+    - `01/23/2021` canary now passes and reproduces the published CRPS row to rounding.
+    - `12/25/2022` canary now reproduces the published CRPS row to rounding and emits the synthesis figures, but still fails the deterministic-climate validation block.
+    - both canaries still miss the posterior table exports needed for `tab:components_23_31`.
 - [ ] After both canaries pass, rerun the remaining three cf1 `exAL-M-T1` cutoffs and refresh the Phase A manuscript assets.
 
 ### Next coordinated TODOs after the current manuscript pass
