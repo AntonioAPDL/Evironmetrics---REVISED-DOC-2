@@ -67,7 +67,7 @@ These are the first outputs the relaunch must support.
 4. The two exAL-M-T1 canaries now pass end to end under the authoritative replay path:
    - `01/23/2021` cf1 keep
    - `12/25/2022` exact `set09` keep
-5. The same verified path has now been launched for the remaining three `exAL-M-T1` cutoffs, with `11/12/2021` already passing and `12/21/2021` and `05/11/2022` still actively running.
+5. The same verified path has now completed for all five publication-aligned `exAL-M-T1` cutoffs.
 
 ## Current execution status
 
@@ -75,24 +75,21 @@ These are the first outputs the relaunch must support.
 |---|---|---:|---|
 | `01/23/2021` | `PASS` | `0.15685973014263893` | matches the published `0.1569` row to rounding |
 | `11/12/2021` | `PASS` | `0.02838779803717152` | matches the published `0.0284` row to rounding |
-| `12/21/2021` | `RUNNING` | ~ | authoritative replay still in fit stage |
-| `05/11/2022` | `RUNNING` | ~ | authoritative replay still in fit stage |
+| `12/21/2021` | `PASS` | `0.23693814285226766` | matches the published `0.2369` row to rounding |
+| `05/11/2022` | `PASS` | `0.020965785429243058` | matches the published `0.0210` row to rounding |
 | `12/25/2022` | `PASS` | `0.43752505703872074` | matches the published `0.4375` row to rounding |
 
 ## Recommended execution order
 
-1. Finish the two still-running authoritative replays:
-   - `12/21/2021` cf1 keep
-   - `05/11/2022` cf1 keep
-2. Verify for all five runs:
+1. Verify for all five runs:
    - mean CRPS matches the current HE2 table to rounding
    - synthesis figures are present
    - posterior tables are present
-3. Use only those five verified run roots to refresh:
+2. Use only those five verified run roots to refresh:
    - `fig:synth1`
    - `tab:components_23_31`
    - `fig:synth2` if retained
-4. Revisit Phase B historical-summary objects only after the Phase A refresh is complete.
+3. Revisit Phase B historical-summary objects only after the Phase A refresh is complete.
 
 ## Companion workflow note
 

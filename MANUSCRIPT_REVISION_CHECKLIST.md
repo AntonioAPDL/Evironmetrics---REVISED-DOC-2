@@ -926,11 +926,12 @@ Use this as the working order when actually editing the manuscript.
     - both canaries pass end to end under the authoritative replay path
     - both reproduce the published HE2 CRPS rows to rounding
     - both emit the synthesis figures and posterior table exports needed for the revised article
-- [ ] Finish the remaining three publication-aligned `exAL-M-T1` rows and lock the final five-run provenance.
-  - Current result:
-    - `11/12/2021` now passes and reproduces the published CRPS row to rounding
-    - `12/21/2021` is still running under the authoritative replay path
-    - `05/11/2022` is still running under the authoritative replay path
+- [x] Finish the remaining three publication-aligned `exAL-M-T1` rows and lock the final five-run provenance.
+  - Final result:
+    - `11/12/2021` passes and reproduces the published `0.0284` row to rounding
+    - `12/21/2021` passes and reproduces the published `0.2369` row to rounding
+    - `05/11/2022` passes and reproduces the published `0.0210` row to rounding
+    - all five publication-aligned `exAL-M-T1` cutoffs now pass end to end under the authoritative replay path
 - [x] Refresh the representative Section 5 Phase A manuscript assets from the verified `12/25/2022` selected-model run.
   - Current refresh:
     - `fig:synth1` source image in `DISC/posterior_samples_valid.png`
