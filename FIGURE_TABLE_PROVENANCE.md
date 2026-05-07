@@ -26,16 +26,21 @@ Setup/support figure correction plan:
 
 Canonical forward runbook:
 - `/data/muscat_data/jaguir26/project1_ucsc_phd/repro/run/CANONICAL_REVISED_ARTICLE_WORKFLOW.md`
+- `/data/muscat_data/jaguir26/project1_ucsc_phd/repro/run/HE2_FULL_HISTORY_REPAIR_FORWARD_PLAN.md`
 
 Article-side provenance refresh helper:
 - `scripts/refresh_local_provenance_bundles.py`
 - `scripts/refresh_exal_m_t1_generated_assets.py`
 - `scripts/refresh_he2_manifest_snapshot.py`
+- `scripts/build_generated_asset_index.py`
 - `scripts/refresh_all_generated_assets.py`
 
 Article-side review outputs:
 - `generated/article_asset_review/ARTICLE_ASSET_REVIEW.md`
 - `generated/article_asset_review/figure_gallery.html`
+- `generated/README.md`
+- `generated/asset_inventory.csv`
+- `generated/he2_historical_support_audit_20260507/historical_support_audit.md`
 
 This inventory now distinguishes three reproducibility levels:
 - objects frozen locally in the article repo and tied to verified selected-model reruns,
@@ -58,6 +63,10 @@ The clean current generator contract is:
 - `R/unified/stages/stage_post.R`
 - `scripts/run_environmetrics_figures.R`
 - `R/environmetrics/40_figures.R`
+
+The article-side generated asset freeze point is now indexed under:
+- `generated/README.md`
+- `generated/asset_inventory.csv`
 
 The weaker historical entrypoint is:
 - `scripts/make_environmetrics_figures.R`

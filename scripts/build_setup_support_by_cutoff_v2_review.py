@@ -59,6 +59,7 @@ def main() -> None:
     md = [
         '# Setup/Support Figures by Cutoff v2 Review\n\n',
         'This review bundle mirrors the corrected cutoff-specific setup/input/support figures derived from the validated exAL-M-T1 v2 runtime family.\n\n',
+        'See also: `INPUT_ALIGNMENT_AUDIT.md` in this same directory for the exact selected-run input alignment and the explanation of why three retrospective panels remain short-window.\n\n',
         '## Cutoff summary\n',
         '| Cutoff | Directory | Bundle class | Requested history | Retrospective available from | Forecast window | Published CRPS |\n',
         '|---|---|---|---|---|---|---:|\n',
@@ -85,7 +86,8 @@ def main() -> None:
         '<!doctype html><html><head><meta charset="utf-8"><title>Setup/Support Figures by Cutoff v2</title>',
         '<style>body{font-family:Arial,sans-serif;margin:24px;} .cutoff{margin-top:36px;} .grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;} .card{border:1px solid #ddd;padding:12px;border-radius:8px;background:#fff;} img{max-width:100%;height:auto;border:1px solid #eee;} .meta{font-size:13px;color:#333;line-height:1.4;} code{background:#f4f4f4;padding:2px 4px;border-radius:4px;}</style></head><body>',
         '<h1>Setup/Support Figures by Cutoff v2</h1>',
-        '<p>These figures are generated from the validated exAL-M-T1 v2 cutoff-specific setup/support workflow and mirrored into the revised-article repo for review.</p>'
+        '<p>These figures are generated from the validated exAL-M-T1 v2 cutoff-specific setup/support workflow and mirrored into the revised-article repo for review.</p>',
+        '<p>See <code>INPUT_ALIGNMENT_AUDIT.md</code> in this same directory for the exact selected-run input alignment and the short-window retrospective explanation.</p>'
     ]
     for cutoff_dir, meta, support, policy, coverage, rows in records:
         html.append(f'<div class="cutoff"><h2>{meta["cutoff_date"]}</h2>')

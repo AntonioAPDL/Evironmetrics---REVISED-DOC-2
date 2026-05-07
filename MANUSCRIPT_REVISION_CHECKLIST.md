@@ -63,6 +63,33 @@ The older setup/support family:
 
 is now retained only as a **provisional `v1` audit artifact**.
 
+### 0.2 Generated-asset organization checkpoint
+
+The revised article repo is now the manuscript-local freeze point for generated asset families under:
+- `generated/`
+
+Current generated-asset index:
+- `generated/README.md`
+- `generated/asset_inventory.csv`
+
+Preferred article-side refresh command:
+- `python3 scripts/refresh_all_generated_assets.py`
+
+That command should be treated as the standard way to refresh article-side bundles before any figure/table promotion into `DISC/`.
+
+### 0.3 Forward repair checkpoint
+
+The current publication state and the future corrected full-history rerun state must stay separate until we intentionally update them.
+
+Forward repair planning documents:
+- `/data/muscat_data/jaguir26/project1_ucsc_phd/repro/run/HE2_FULL_HISTORY_REPAIR_FORWARD_PLAN.md`
+- `generated/he2_historical_support_audit_20260507/historical_support_audit.md`
+
+Important future TODOs now explicitly tracked:
+- PCA covariate reproducibility hardening
+- full-history bundle reconstruction for `2021-01-23`, `2021-11-12`, and `2022-12-25`
+- corrected reruns for the affected Bayesian publication rows only after the bundle contract is rebuilt
+
 ---
 
 ## 1. Source-of-truth crosswalk
