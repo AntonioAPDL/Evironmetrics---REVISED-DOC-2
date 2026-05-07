@@ -93,10 +93,10 @@ These objects are still reproducible workflow assets, but they are not part of t
 
 | Manuscript object | Role | Action |
 |---|---|---|
-| `fig:sanlorenzo` | study-setting figure | keep as cutoff-dependent setup/support figure; current `generated/setup_support_by_cutoff/` family is provisional `v1` only; corrected replacement must follow the `v2` source manifest / file plan / acceptance checklist under `/data/muscat_data/jaguir26/project1_ucsc_phd/repro/run/` |
-| `fig:covariates` | data/covariate setup figure | keep as cutoff-dependent setup/support figure; current `generated/setup_support_by_cutoff/` family is provisional `v1` only; corrected replacement must follow the `v2` source manifest / file plan / acceptance checklist under `/data/muscat_data/jaguir26/project1_ucsc_phd/repro/run/` |
-| `fig:retrospectives` | retrospective-product setup figure | keep as cutoff-dependent setup/support figure; current `generated/setup_support_by_cutoff/` family is provisional `v1` only; corrected replacement must follow the `v2` source manifest / file plan / acceptance checklist under `/data/muscat_data/jaguir26/project1_ucsc_phd/repro/run/` |
-| `fig:ensembles` | forecast-product setup figure | keep as cutoff-dependent setup/support figure; current `generated/setup_support_by_cutoff/` family is provisional `v1` only; corrected replacement must follow the `v2` source manifest / file plan / acceptance checklist under `/data/muscat_data/jaguir26/project1_ucsc_phd/repro/run/` |
+| `fig:sanlorenzo` | study-setting figure | now tied to the corrected `v2` cutoff-specific setup/support family; manuscript-facing `DISC/usgs.png` is promoted from `generated/setup_support_by_cutoff_v2/20221225_exal_m_t1/figures/usgs.png`, while all five cutoff variants are preserved under `generated/setup_support_by_cutoff_v2/` |
+| `fig:covariates` | data/covariate setup figure | now tied to the corrected `v2` cutoff-specific setup/support family; manuscript-facing `DISC/precip_soilmoisture_climatePC1_faceted_labeled.png` is promoted from `generated/setup_support_by_cutoff_v2/20221225_exal_m_t1/figures/...`, while all five cutoff variants are preserved under `generated/setup_support_by_cutoff_v2/` |
+| `fig:retrospectives` | retrospective-product setup figure | now tied to the corrected `v2` cutoff-specific setup/support family; manuscript-facing `DISC/retrospective_log_discharge_plot_faceted.png` is promoted from `generated/setup_support_by_cutoff_v2/20221225_exal_m_t1/figures/...`, while all five cutoff variants are preserved under `generated/setup_support_by_cutoff_v2/` |
+| `fig:ensembles` | forecast-product setup figure | now tied to the corrected `v2` cutoff-specific setup/support family; manuscript-facing `DISC/forecats.png` is promoted from `generated/setup_support_by_cutoff_v2/20221225_exal_m_t1/figures/...`, while all five cutoff variants are preserved under `generated/setup_support_by_cutoff_v2/` |
 
 ## 5. What this means operationally
 
@@ -117,17 +117,23 @@ For the current revised article pass, the chosen approach is:
 4. do not force them into the representative `2022-12-25` selected-run bundle
 5. preserve their article-side provenance bundle in `generated/historical_summary_sources/`
 6. preserve `fig:synth2` in `generated/workflow_linked_support_sources/`
-7. preserve the current cutoff-dependent setup/support figures as provisional `v1` audit artifacts through `generated/setup_support_by_cutoff/` and `generated/setup_support_by_cutoff_review/`
-8. refresh the local support bundles through:
+7. preserve the corrected cutoff-dependent setup/support figures through:
+   - `generated/setup_support_by_cutoff_v2/`
+   - `generated/setup_support_by_cutoff_v2_review/`
+8. preserve the older `v1` setup/support family only as an archival audit artifact:
+   - `generated/setup_support_by_cutoff/`
+   - `generated/setup_support_by_cutoff_review/`
+9. refresh the local support bundles through:
    - `scripts/refresh_local_provenance_bundles.py`
-9. replace the cutoff-specific setup/support family with the corrected `v2` family once implemented through:
+10. refresh the corrected cutoff-specific setup/support family through:
    - `scripts/refresh_setup_support_by_cutoff_v2.py`
    - `scripts/build_setup_support_by_cutoff_v2_review.py`
-10. refresh the representative selected-model bundle and five-run source freeze through:
+   - `scripts/promote_setup_support_v2_to_disc.py`
+11. refresh the representative selected-model bundle and five-run source freeze through:
    - `scripts/refresh_exal_m_t1_generated_assets.py`
-11. refresh the HE2 publication snapshot through:
+12. refresh the HE2 publication snapshot through:
    - `scripts/refresh_he2_manifest_snapshot.py`
-12. refresh all article-side generated bundles and the review report through:
+13. refresh all article-side generated bundles and the review report through:
    - `scripts/refresh_all_generated_assets.py`
 
 This is the strongest minimal choice because it preserves reproducibility, avoids mixing incompatible provenance roles, and does not require unnecessary reruns.

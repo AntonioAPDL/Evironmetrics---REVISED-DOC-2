@@ -1,0 +1,11 @@
+{
+  "slug": "20211112_exal_m_t1",
+  "cutoff_date": "2021-11-12",
+  "published_crps": "0.0284",
+  "selected_run_root": "/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_publication_replay_representatives_20260506/20211112_exal_m_t1/runs/multimodel_20211112_v8_eps180cf1_exdqlm_multivar_keep_featurecov_cf1",
+  "figure_bundle_root": "/data/muscat_data/jaguir26/project1_ucsc_phd/repro/frozen_shared_inputs/exalm_t1_authoritative_20260505/cutoff_date=2021-11-12/forecats_bundle",
+  "bundle_class": "short_window_synth_bundle",
+  "nws_policy_summary": "nws_synth_retro_ens_mean keep-source policy",
+  "glofas_policy_summary": "glofas_hist_v31_lisflood_cons",
+  "support_start": "2018-11-28"
+}

@@ -24,37 +24,39 @@ Important guardrails:
 
 This is the active manuscript-side rerender target for the revised article.
 
-- The narrow `exAL-M-T1` replay path is now verified on two canaries:
+- The narrow `exAL-M-T1` replay path is now verified across all five publication cutoffs:
   - `01/23/2021`
+  - `11/12/2021`
+  - `12/21/2021`
+  - `05/11/2022`
   - `12/25/2022`
-- Both canaries now reproduce the published HE2 CRPS values to rounding and emit:
+- The representative `2022-12-25` rerun reproduces the published HE2 CRPS value to rounding and emits:
   - synthesis figures
   - quantile/sample exports
   - `covariate_effects_summary`
   - `gamma_summary`
   - `sigma_summary`
-- The next workflow-side task is to scale this same path to:
-  - `11/12/2021`
-  - `12/21/2021`
-  - `05/11/2022`
+- The article-side five-run freeze is preserved under:
+  - `generated/exal_m_t1_five_run_sources/`
 - Do not refresh `Evironmetrics---REVISED-DOC-2` figures or tables from any older side-work roots when the five-run verified lineage is the intended source.
 
 ### 0.1 Setup/support figure correction checkpoint
 
-The current cutoff-specific setup/support family:
-- `generated/setup_support_by_cutoff/`
-- `generated/setup_support_by_cutoff_review/`
+The corrected cutoff-specific setup/support family is now:
+- `generated/setup_support_by_cutoff_v2/`
+- `generated/setup_support_by_cutoff_v2_review/`
 
-is now considered a **provisional `v1` audit artifact**, not the final article-facing freeze.
-
-Reason:
-- the underlying `exAL-M-T1` runs appear mostly correct,
-- but the current `v1` setup/support figure derivation used the wrong plotting surfaces for some figures and incomplete replay-side bundle metadata.
-
-The next implementation pass for those four figures must follow:
+It is built from the validated `v2` workflow:
+- `/data/muscat_data/jaguir26/project1_ucsc_phd/repro/run/EXAL_M_T1_SETUP_SUPPORT_BY_CUTOFF_V2_WORKFLOW.md`
 - `/data/muscat_data/jaguir26/project1_ucsc_phd/repro/run/EXAL_M_T1_SETUP_SUPPORT_V2_SOURCE_MANIFEST.md`
 - `/data/muscat_data/jaguir26/project1_ucsc_phd/repro/run/EXAL_M_T1_SETUP_SUPPORT_V2_FILE_PLAN.md`
 - `/data/muscat_data/jaguir26/project1_ucsc_phd/repro/run/EXAL_M_T1_SETUP_SUPPORT_V2_ACCEPTANCE_CHECKLIST.md`
+
+The older setup/support family:
+- `generated/setup_support_by_cutoff/`
+- `generated/setup_support_by_cutoff_review/`
+
+is now retained only as a **provisional `v1` audit artifact**.
 
 ---
 
@@ -1033,6 +1035,35 @@ Use this as the working order when actually editing the manuscript.
     - `/data/muscat_data/jaguir26/project1_ucsc_phd/repro/run/EXAL_M_T1_SETUP_SUPPORT_V2_SOURCE_MANIFEST.md`
     - `/data/muscat_data/jaguir26/project1_ucsc_phd/repro/run/EXAL_M_T1_SETUP_SUPPORT_V2_FILE_PLAN.md`
     - `/data/muscat_data/jaguir26/project1_ucsc_phd/repro/run/EXAL_M_T1_SETUP_SUPPORT_V2_ACCEPTANCE_CHECKLIST.md`
+- [x] Implement the corrected setup/support `v2` workflow from the frozen planning gate.
+  - Workflow config:
+    - `/data/muscat_data/jaguir26/project1_ucsc_phd/config/exal_m_t1_setup_support_by_cutoff_v2_20260507.json`
+  - Workflow scripts:
+    - `/data/muscat_data/jaguir26/project1_ucsc_phd/scripts/render_exal_m_t1_setup_support_by_cutoff_v2.py`
+    - `/data/muscat_data/jaguir26/project1_ucsc_phd/scripts/render_setup_support_bundle_v2.R`
+    - `/data/muscat_data/jaguir26/project1_ucsc_phd/scripts/setup_support_bundle_v2_helpers.R`
+    - `/data/muscat_data/jaguir26/project1_ucsc_phd/scripts/build_exal_m_t1_setup_support_v2_review.py`
+    - `/data/muscat_data/jaguir26/project1_ucsc_phd/scripts/validate_exal_m_t1_setup_support_v2.py`
+    - `/data/muscat_data/jaguir26/project1_ucsc_phd/repro/run/EXAL_M_T1_SETUP_SUPPORT_BY_CUTOFF_V2_WORKFLOW.md`
+- [x] Validate the corrected setup/support `v2` family across all five publication cutoffs.
+  - Canonical runtime family:
+    - `/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/exal_m_t1_setup_support_by_cutoff_v2_20260507/`
+  - Workflow-side review:
+    - `/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/exal_m_t1_setup_support_by_cutoff_v2_20260507/review/REVIEW.md`
+    - `/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/exal_m_t1_setup_support_by_cutoff_v2_20260507/review/gallery.html`
+    - `/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/exal_m_t1_setup_support_by_cutoff_v2_20260507/review/figure_manifest.csv`
+  - Validation gate:
+    - `/data/muscat_data/jaguir26/project1_ucsc_phd/repro/run/EXAL_M_T1_SETUP_SUPPORT_V2_ACCEPTANCE_CHECKLIST.md`
+- [x] Mirror the corrected setup/support `v2` family into the revised article repo and promote the representative `2022-12-25` cutoff figures into `DISC/`.
+  - Article-side mirror:
+    - `generated/setup_support_by_cutoff_v2/`
+    - `generated/setup_support_by_cutoff_v2_review/`
+  - Article-side promotion manifest:
+    - `generated/setup_support_by_cutoff_v2_article_selection/selection_manifest.json`
+  - Article-side scripts:
+    - `scripts/refresh_setup_support_by_cutoff_v2.py`
+    - `scripts/build_setup_support_by_cutoff_v2_review.py`
+    - `scripts/promote_setup_support_v2_to_disc.py`
 - [x] Add a canonical forward runbook and an article-side provenance refresh helper.
   - Canonical runbook:
     - `/data/muscat_data/jaguir26/project1_ucsc_phd/repro/run/CANONICAL_REVISED_ARTICLE_WORKFLOW.md`

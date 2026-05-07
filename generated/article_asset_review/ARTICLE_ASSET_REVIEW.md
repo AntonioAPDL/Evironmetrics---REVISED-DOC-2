@@ -9,10 +9,10 @@ Primary visual gallery: `generated/article_asset_review/figure_gallery.html`
 ## Setup / Inputs
 | Label | Role | Article file | Bundle file | TeX line | Note |
 |---|---|---|---|---:|---|
-| `fig:sanlorenzo` | Study-setting figure | `usgs.png` | `workflow_linked_support_sources/figures/usgs.png` | 241 | Workflow-linked support figure |
-| `fig:covariates` | Covariate setup figure | `precip_soilmoisture_climatePC1_faceted_labeled.png` | `workflow_linked_support_sources/figures/precip_soilmoisture_climatePC1_faceted_labeled.png` | 262 | Workflow-linked support figure |
-| `fig:retrospectives` | Retrospective-product setup figure | `retrospective_log_discharge_plot_faceted.png` | `workflow_linked_support_sources/figures/retrospective_log_discharge_plot_faceted.png` | 277 | Workflow-linked support figure |
-| `fig:ensembles` | Forecast-product setup figure | `forecats.png` | `workflow_linked_support_sources/figures/forecats.png` | 328 | Workflow-linked support figure |
+| `fig:sanlorenzo` | Study-setting figure | `usgs.png` | `setup_support_by_cutoff_v2/20221225_exal_m_t1/figures/usgs.png` | 241 | Representative 2022-12-25 setup/support v2 figure |
+| `fig:covariates` | Covariate setup figure | `precip_soilmoisture_climatePC1_faceted_labeled.png` | `setup_support_by_cutoff_v2/20221225_exal_m_t1/figures/precip_soilmoisture_climatePC1_faceted_labeled.png` | 262 | Representative 2022-12-25 setup/support v2 figure |
+| `fig:retrospectives` | Retrospective-product setup figure | `retrospective_log_discharge_plot_faceted.png` | `setup_support_by_cutoff_v2/20221225_exal_m_t1/figures/retrospective_log_discharge_plot_faceted.png` | 277 | Representative 2022-12-25 setup/support v2 figure |
+| `fig:ensembles` | Forecast-product setup figure | `forecats.png` | `setup_support_by_cutoff_v2/20221225_exal_m_t1/figures/forecats.png` | 328 | Representative 2022-12-25 setup/support v2 figure |
 
 ## Selected Model
 | Label | Role | Article file | Bundle file | TeX line | Note |
