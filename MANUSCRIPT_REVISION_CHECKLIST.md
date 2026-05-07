@@ -939,6 +939,26 @@ Use this as the working order when actually editing the manuscript.
     - `tab:gamma_sigma_intervals1`
     - `tab:gamma_sigma_intervals2`
     - copied provenance bundle under `generated/exal_m_t1_20221225/`
+- [x] Freeze the five verified `exAL-M-T1` run roots locally in the revised-doc repo.
+  - Local freeze:
+    - `generated/exal_m_t1_five_run_sources/<slug>/crps_forecast_summary.csv`
+    - `generated/exal_m_t1_five_run_sources/<slug>/compare_report.json`
+    - `generated/exal_m_t1_five_run_sources/<slug>/summary.json`
+- [x] Build the exact artifact-to-run map for current `exAL-M-T1`-dependent manuscript objects.
+  - Source map:
+    - `EXAL_M_T1_ARTIFACT_RUN_MAP.md`
+- [x] Distinguish in-scope selected-model refresh objects from workflow-linked but out-of-scope historical/counterfactual objects.
+  - In scope:
+    - `tab:benchmark_crps_models`
+    - `fig:synth1`
+    - `tab:components_23_31`
+    - `tab:gamma_sigma_intervals1`
+    - `tab:gamma_sigma_intervals2`
+  - Deferred/out of narrow keep-run scope:
+    - `fig:synth2`
+    - `fig:dry_quantile`
+    - `fig:rainy_quantile`
+    - `fig:80_components`
 
 ### Next coordinated TODOs after the current manuscript pass
 - [ ] Refresh every interpretation-dependent table and figure so it is generated from the same final `exAL-M-T1` run that produced the CRPS values reported in Table~1.

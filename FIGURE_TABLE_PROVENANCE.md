@@ -66,7 +66,15 @@ Current manuscript refreshes already tied to that verified run:
 - `tab:gamma_sigma_intervals1`
 - `tab:gamma_sigma_intervals2`
 
-The remaining step for the narrow exAL-M-T1 relaunch is to finish verifying the other three publication cutoffs so the full five-run lineage is closed cleanly before any broader manuscript/result synchronization.
+The narrow exAL-M-T1 relaunch is now verified across all five publication cutoffs.
+
+The exact manuscript-side artifact mapping is recorded in:
+- `EXAL_M_T1_ARTIFACT_RUN_MAP.md`
+
+That companion file should now be treated as the most direct answer to:
+- which manuscript objects are locked to the verified five-run keep lineage,
+- which objects are already refreshed from the representative `2022-12-25` run,
+- and which remaining figures are still workflow-linked but outside the narrow keep-run source set.
 
 ## Current workflow evidence
 
