@@ -26,7 +26,7 @@
 
 \begin{document}
 
-\title{Bayesian Quantile-Based Correction and Synthesis of River Flow Forecasts\protect\thanks{This research was conducted as part of the PhD dissertation of the first author at the University of California, Santa Cruz.}}
+\title{Bayesian Quantile-Based Correction and Synthesis of River Flow Forecasts}
 
 \author[1]{Antonio Aguirre*}
 \author[1]{Raquel Prado}
@@ -52,7 +52,7 @@
 
 \maketitle
 
-\footnotetext{\textbf{Abbreviations:} CRPS, Continuous Ranked Probability Score; DQLM, Dynamic Quantile Linear Model.}
+\noindent\textbf{Abbreviations:} CRPS, Continuous Ranked Probability Score; DQLM, Dynamic Quantile Linear Model.
 
 
 \section{INTRODUCTION}
@@ -236,7 +236,7 @@ Our target series is the average daily natural water flow (in cubic feet per sec
 
 The San Lorenzo River is a major water resource for the Santa Cruz area and is relevant to both flood response and longer-term water-supply planning. The record includes major flood episodes as well as prolonged dry conditions, so it supports analysis of both low-flow and high-flow behavior in one basin. Lower quantiles are therefore relevant for drought conditions, whereas upper quantiles are relevant for flood risk.
 
-\begin{figure}[h]
+\begin{figure}[htbp]
 \centering
 \includegraphics[width=450pt]{DISC/usgs.png}
 \caption{
@@ -400,7 +400,7 @@ The first GDPC factor remains close to zero after conditioning on precipitation 
 
 To illustrate how the selected specification behaves across contrasting hydrological conditions, we show historical quantile summaries over two representative periods: the 2012--2016 drought and the 2017--2019 wet period. These figures are included as historical summaries of the fitted specification, not as a second forecast-validation exercise and not as additional rolling-origin evidence.
 
-\begin{figure}[h]
+\begin{figure}[htbp]
 \centering
 \includegraphics[width=450pt]{DISC/All_exal_2012-2016_DISC.png}
 \caption{
@@ -409,7 +409,7 @@ Historical posterior mean and 95\% credible intervals of river-flow quantiles du
 \label{fig:dry_quantile}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[htbp]
 \centering
 \includegraphics[width=450pt]{DISC/All_exal_2017-2019_DISC.png}
 \caption{
@@ -427,7 +427,7 @@ The contrast between these periods is most visible in the spread between the 5th
 
 Figure~\ref{fig:synth1} shows the synthesized predictive distribution for the December 25, 2022 cutoff. Its role is illustrative: it shows how the fitted quantile-specific forecasts combine into one predictive distribution for a single forecast origin, whereas the comparative forecast evaluation remains the main empirical evidence of the paper.
 
-\begin{figure}[h]
+\begin{figure}[htbp]
 \centering
 \includegraphics[width=450pt]{DISC/posterior_samples_valid.png}
 \caption{
@@ -458,7 +458,9 @@ Foundation grant MMS2050012.
 
 \section*{Code availability}
 
-The reusable estimation routines for the extended dynamic quantile linear model are available through the CRAN R package \texttt{exdqlm}. The end-to-end forecasting workflow used in this study is available at \url{https://github.com/AntonioAPDL/Project1}. Applying that workflow to a new basin still requires constructing a basin-specific, version-consistent archive of observations, retrospective products, forecast products, and forecast covariates.
+The reusable estimation routines for the extended dynamic quantile linear model are available through the CRAN R package \texttt{exdqlm}. The end-to-end forecasting workflow used in this study is available at \url{https://github.com/AntonioAPDL/Project1}.
+
+Applying that workflow to a new basin still requires constructing a basin-specific, version-consistent archive of observations, retrospective products, forecast products, and forecast covariates.
 
 %\subsection*{Author contributions}
 
@@ -542,7 +544,7 @@ Tables~\ref{tab:gamma_sigma_intervals1} and \ref{tab:gamma_sigma_intervals2} pro
 \subsection{Long-Cycle Seasonal Component}
 \label{app:longcycle}
 
-\begin{figure}[h]
+\begin{figure}[htbp]
 \centering
 \includegraphics[width=450pt]{DISC/80_component_1991_2022.png}
 \caption{
@@ -556,7 +558,7 @@ Figure~\ref{fig:80_components} shows that the 80-month seasonal component is bro
 \subsection{Historical-Only Predictive Synthesis}
 \label{app:historicalsynth}
 
-\begin{figure}[h]
+\begin{figure}[htbp]
 \centering
 \includegraphics[width=450pt]{DISC/posterior_samples_counter_valid.png}
 \caption{
@@ -809,15 +811,12 @@ s^j_t  \right\rangle \big] , \quad \mathbf{\sigma} = \big[ \left\langle \sigma^j
 \end{algorithm}
 
 
-\nocite{*}% 
-
 \clearpage
 
 \bibliography{wileyNJD-APA}%
 
-\section*{Author Biography}
-
-\begin{biography}{\includegraphics[width=60pt,height=70pt  ]{empty}}{\textbf{Author Name.} This is sample author biography text this is.}
-\end{biography}
+% The Wiley template ships with a sample author-biography block that includes a
+% placeholder `empty` graphic. We intentionally omit that sample material from
+% the manuscript to avoid carrying template-only assets into the final build.
 
 \end{document}
