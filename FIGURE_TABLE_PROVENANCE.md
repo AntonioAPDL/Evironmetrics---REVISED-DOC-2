@@ -150,7 +150,7 @@ The following manuscript figure assets in `Evironmetrics---REVISED-DOC-2/DISC/` 
 
 | Manuscript label | Current manuscript role | Current provenance evidence | Confidence | Repro status | Selected-run status | Recommended action |
 |---|---|---|---|---|---|---|
-| `tab:benchmark_crps_models` | main five-cutoff forecast-validation table | current manuscript table; not audited here against workflow exports | medium | needs separate validation against finalized benchmark pipeline | main reference table | leave for separate benchmark audit |
+| `tab:benchmark_crps_models` | main five-cutoff forecast-validation table | HE2 publication manifest plus synchronized manuscript table values; local article-side snapshot in `generated/he2_publication_manifest_snapshot/` | high | validated against the frozen HE2 publication source | main reference table | keep synced to HE2 publication manifest snapshot |
 | `tab:components_23_31` | main-text covariate-effects summary | workflow export contract exists for `covariate_effects_summary.csv`; helper code and tests exist; current values also appear in workflow `article.txt` | medium | reproducible from workflow repo in principle | must match final selected run | regenerate from final selected run and relink manuscript table |
 | `tab:gamma_sigma_intervals1` | supplementary appendix `gamma` summary | workflow export contract exists for `gamma_summary.csv`; helper code and tests exist; current values also appear in workflow `article.txt` | medium | reproducible from workflow repo in principle | locked to representative `2022-12-25` support role | keep as supplementary appendix support |
 | `tab:gamma_sigma_intervals2` | supplementary appendix `sigma` summary | workflow export contract exists for `sigma_summary.csv`; helper code and tests exist; current values also appear in workflow `article.txt` | medium | reproducible from workflow repo in principle | locked to representative `2022-12-25` support role | keep as supplementary appendix support |
@@ -248,9 +248,11 @@ These runs already provide:
 - CRPS summary tables,
 - and run-scoped manifests and input hashes.
 
-Current gap from this audit:
-- the April 22 `exdqlm_multivar_keep` runs do not appear to have written the posterior interpretation tables themselves, even though the workflow has the export contract and README for them.
-- In practice, this means the synthesis figures can likely be refreshed directly from the current validated runs, whereas the covariate / `gamma` / `sigma` tables will likely require a targeted post-export rerun or export fix.
+Resolved gap from this audit:
+- the narrow `exAL-M-T1` replay path was completed with the required post-export fixes, so the representative selected-model outputs and posterior interpretation tables are now frozen locally in the revised article repo.
+- In practice, this means:
+  - `fig:synth1`, `tab:components_23_31`, `tab:gamma_sigma_intervals1`, and `tab:gamma_sigma_intervals2` are now locked to verified article-side bundles, and
+  - the historical-summary figures are preserved separately through the local provenance bundle under `generated/historical_summary_sources/`.
 
 ## Exact relaunch handoff
 
@@ -263,38 +265,34 @@ Use that companion file when:
 - verifying that the rerun reproduces the selected `exAL-M-T1` CRPS exactly,
 - and checking whether the required figure and table artifacts were emitted.
 
-## Recommended next steps
+## Current locked state
 
-1. Decide the provenance policy for Section 5 and the appendix.
-   - Recommended policy:
-     - Section 4 remains the five-cutoff validation evidence.
-     - Section 5 uses outputs from one representative final cutoff of the selected `exAL-M-T1` specification.
-     - Appendix tables/figures may remain historical summaries of the selected specification if labeled clearly.
+1. Section 4 remains the five-cutoff validation evidence.
+   - `tab:benchmark_crps_models` is now synced to the frozen HE2 publication manifest.
 
-2. Regenerate the selected-run dependent outputs first.
-   - `tab:components_23_31`
+2. Section 5 uses outputs from one representative final cutoff of the selected `exAL-M-T1` specification.
    - `fig:synth1`
-   - `fig:synth2` if retained
+   - `tab:components_23_31`
 
-3. Keep the historical-summary objects in their descriptive role and preserve their provenance bundle.
-   - `fig:dry_quantile`
-   - `fig:rainy_quantile`
-   - `fig:80_components`
+3. The appendix support tables remain tied to the same representative cutoff, but in a supplementary role.
    - `tab:gamma_sigma_intervals1`
    - `tab:gamma_sigma_intervals2`
 
-4. Once the selected-run provenance is settled, update the manuscript captions and nearby text so the role of each object is explicit.
+4. The historical-summary objects remain workflow-linked descriptive support and are frozen locally in the article repo.
+   - `fig:dry_quantile`
+   - `fig:rainy_quantile`
+   - `fig:80_components`
 
-5. After the manuscript-side provenance is stable, synchronize the corrections letter to the same selected-run logic and figure/table references.
+5. The corrections letter is synchronized to the same provenance split and current benchmark table values.
 
 ## Audit status summary
 
 ### Established in this pass
-- the current manuscript figure assets are workflow-linked and hash-verified,
-- the workflow repo contains a formal table-export path for the interpretation tables,
-- and we now know which outputs are safe to keep, which need explicit provenance language, and which must be regenerated from the final selected run.
+- the benchmark table in the revised article is now aligned with the frozen HE2 publication manifest,
+- the representative selected-model outputs are refreshed from verified `exAL-M-T1` sources,
+- the appendix support tables are explicitly demoted to a supplementary role,
+- the historical-summary figures are workflow-linked, hash-verified, and frozen locally in the revised article repo, and
+- the corrections letter is synchronized to the current article-side provenance split.
 
-### Still unresolved after this pass
-- exact run-level linkage between the current interpretation tables/figures and the finalized `exAL-M-T1` benchmark run behind Table 1,
-- final manuscript policy for historical summaries versus representative-final-cutoff illustrations,
-- and the corresponding corrections-letter synchronization.
+### Remaining optional work
+- further aesthetic or publication-quality refreshes of historical-summary figures, if ever desired, should be treated as optional figure-improvement work rather than as unresolved provenance work.

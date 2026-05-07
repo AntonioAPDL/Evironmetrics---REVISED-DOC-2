@@ -67,7 +67,7 @@ That bundle now includes:
 
 | Manuscript object | Current role | Locked cutoff/run | Exact verified source | Current manuscript target | Current status |
 |---|---|---|---|---|---|
-| `tab:benchmark_crps_models` | five-cutoff validation table | all five cutoffs | `generated/exal_m_t1_five_run_sources/<slug>/crps_forecast_summary.csv` | values in `wileyNJD-APA.tex` Table 1 | locked |
+| `tab:benchmark_crps_models` | five-cutoff validation table | HE2 publication freeze across all five cutoffs | local snapshot in `generated/he2_publication_manifest_snapshot/`, with the `exAL-M-T1` row additionally locked to `generated/exal_m_t1_five_run_sources/<slug>/crps_forecast_summary.csv` | values in `wileyNJD-APA.tex` Table 1 | locked |
 | `fig:synth1` | representative selected-model illustration | `2022-12-25 exAL-M-T1 keep` | `generated/exal_m_t1_20221225/exdqlm_multivar_synth_keep_cutoff_window_posterior_samples.png` | `DISC/posterior_samples_valid.png` | refreshed |
 | `tab:components_23_31` | representative transfer-function summary | `2022-12-25 exAL-M-T1 keep` | `generated/exal_m_t1_20221225/covariate_effects_summary.csv` | values in `wileyNJD-APA.tex` | refreshed |
 

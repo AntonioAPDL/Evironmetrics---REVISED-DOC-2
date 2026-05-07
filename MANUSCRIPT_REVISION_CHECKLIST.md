@@ -950,6 +950,13 @@ Use this as the working order when actually editing the manuscript.
 - [x] Build the exact artifact-to-run map for current `exAL-M-T1`-dependent manuscript objects.
   - Source map:
     - `EXAL_M_T1_ARTIFACT_RUN_MAP.md`
+- [x] Sync the main five-cutoff CRPS benchmark table in the revised article to the frozen HE2 publication manifest.
+  - Locked source:
+    - `reports/he2_publication_manifest/he2_bayesian_publication_manifest.md`
+  - Result:
+    - `tab:benchmark_crps_models` in `wileyNJD-APA.tex` now matches the current published HE2 values
+  - Local article-side snapshot:
+    - `generated/he2_publication_manifest_snapshot/`
 - [x] Distinguish in-scope selected-model refresh objects from workflow-linked but out-of-scope historical/counterfactual objects.
   - In scope:
     - `tab:benchmark_crps_models`
