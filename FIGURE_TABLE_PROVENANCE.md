@@ -8,7 +8,7 @@ Primary manuscript repo:
 - `/data/muscat_data/jaguir26/project1_ucsc_phd/Evironmetrics---REVISED-DOC-2`
 
 Primary workflow repo currently linked to figure/table generation:
-- `/data/muscat_data/jaguir26/project1_ucsc_phd_v8_launch_471fcfd`
+- `/data/muscat_data/jaguir26/project1_ucsc_phd`
 
 Main purpose:
 - identify which manuscript outputs are already traceable to the current workflow,
@@ -19,23 +19,32 @@ Companion relaunch document:
 - `EXAL_M_T1_RELAUNCH_CHECKLIST.md`
   - This records the exact cutoff-by-cutoff source runs behind the published `exAL-M-T1` CRPS values, the required rerun artifacts, and the post-rerun validation contract.
 
-This inventory does **not** yet certify that every interpretation-dependent object comes from the final selected run used for the published five-cutoff CRPS table. It establishes provenance first, so regeneration and manuscript updates can be done safely.
+This inventory now distinguishes three reproducibility levels:
+- objects frozen locally in the article repo and tied to verified selected-model reruns,
+- objects frozen locally in the article repo as workflow-linked support figures,
+- and the underlying workflow-side generators that remain the authoritative reproduction path.
 
 ## Overall conclusion
 
-The manuscript repo is **not self-contained** for figure/table generation. It contains the article source and static assets, but not the full workflow required to regenerate them. However, the workflow repo above contains direct figure-generation code, reproducibility documentation, and posterior-table export infrastructure.
+The manuscript repo is **not fully self-contained** for figure/table generation. It now contains frozen local provenance bundles for all current figure/table assets used by the article, but the authoritative generators still live in the workflow repo above.
 
-Most important result from this audit:
+Most important results from this audit:
 - every figure file currently used by the manuscript and checked below matches the workflow repo's recorded gold hash exactly.
+- every current figure/table asset in the article is now either:
+  - tied to a verified selected-model rerun bundle,
+  - or frozen locally as a workflow-linked support figure.
 
-That means the current manuscript figures are strongly linked to the current workflow repo, even though the manuscript repo itself does not yet carry the generation scripts.
+That means the current manuscript figures are strongly linked to the current workflow repo, even though the manuscript repo itself does not carry the full generation scripts.
 
-Table provenance is weaker but still promising:
-- the workflow repo contains a formal post-stage table-export contract,
-- helper code for `gamma`, `sigma`, and covariate-effect summaries,
-- and tests that encode the expected table schema and representative values.
+The clean current generator contract is:
+- `R/unified/stages/stage_post.R`
+- `scripts/run_environmetrics_figures.R`
+- `R/environmetrics/40_figures.R`
 
-The remaining work is to tie the interpretation tables and cutoff-specific interpretation figures to the exact final selected `exAL-M-T1` run used for the current Table 1 CRPS values.
+The weaker historical entrypoint is:
+- `scripts/make_environmetrics_figures.R`
+
+That legacy script still relies on notebook-linearized state and hard-coded external paths, so it should not be treated as the primary current reproduction contract.
 
 ## 2026-05-06 selected-model refresh status
 
@@ -74,20 +83,29 @@ The exact manuscript-side artifact mapping is recorded in:
 That companion file should now be treated as the most direct answer to:
 - which manuscript objects are locked to the verified five-run keep lineage,
 - which objects are already refreshed from the representative `2022-12-25` run,
-- and which remaining figures are still workflow-linked but outside the narrow keep-run source set.
+- and which remaining figures are workflow-linked support objects outside the narrow keep-run source set.
+
+The revised manuscript repo now also contains two article-side frozen support bundles:
+- `generated/historical_summary_sources/`
+- `generated/workflow_linked_support_sources/`
 
 ## Current workflow evidence
 
 ### Figure-generation evidence
 
 The workflow repo contains the following direct figure-generation references:
-- `R/environmetrics/40_figures.R`
-- `scripts/make_environmetrics_figures.R`
-- `Environmetrics_Figures.ipynb`
-- `repro/extracted/Environmetrics_Figures__RECOVERED_WORKING.r`
-- `repro/REPO_MAP.md`
-- `repro/REPRODUCE_PAPER.md`
-- `repro/gold_DISC_figures.sha256`
+- authoritative current path:
+  - `R/environmetrics/40_figures.R`
+  - `scripts/run_environmetrics_figures.R`
+  - `R/unified/stages/stage_post.R`
+- legacy / historical references:
+  - `scripts/make_environmetrics_figures.R`
+  - `Environmetrics_Figures.ipynb`
+  - `repro/extracted/Environmetrics_Figures__RECOVERED_WORKING.r`
+- provenance / validation:
+  - `repro/REPO_MAP.md`
+  - `repro/REPRODUCE_PAPER.md`
+  - `repro/gold_DISC_figures.sha256`
 
 ### Posterior-table export evidence
 
@@ -114,15 +132,15 @@ The following manuscript figure assets in `Evironmetrics---REVISED-DOC-2/DISC/` 
 
 | Manuscript label | Current asset | Current manuscript role | Workflow evidence | Hash match | Repro status | Selected-run status | Recommended action |
 |---|---|---|---|---|---|---|---|
-| `fig:sanlorenzo` | `DISC/usgs.png` | study-setting figure | `REPO_MAP.md`, `REPRODUCE_PAPER.md`, `40_figures.R`, notebook | yes | reproducible from workflow repo | not selected-run dependent | keep |
-| `fig:covariates` | `DISC/precip_soilmoisture_climatePC1_faceted_labeled.png` | covariate setup figure | same as above | yes | reproducible from workflow repo | not selected-run dependent | keep |
-| `fig:retrospectives` | `DISC/retrospective_log_discharge_plot_faceted.png` | retrospective-product setup figure | notebook + `40_figures.R`; source path still slightly less explicit in docs | yes | reproducible from workflow repo with minor documentation gap | not selected-run dependent | keep, but preserve source note |
-| `fig:ensembles` | `DISC/forecats.png` | forecast-product setup figure | notebook, `40_figures.R`, dedicated `FORECATS_INPUTS_AND_WEIGHTING_PLAN.md` | yes | reproducible from workflow repo, but with extra workflow complexity | not selected-run dependent | keep, but treat as a sensitive workflow artifact |
+| `fig:sanlorenzo` | `DISC/usgs.png` | study-setting figure | `40_figures.R`, `run_environmetrics_figures.R`, `stage_post.R`, plus provenance docs; frozen locally in `generated/workflow_linked_support_sources/` | yes | reproducible from workflow repo and frozen locally in the article repo | not selected-run dependent | keep as workflow-linked support |
+| `fig:covariates` | `DISC/precip_soilmoisture_climatePC1_faceted_labeled.png` | covariate setup figure | same as above; relies on run-scoped covariate path injection in the current workflow | yes | reproducible from workflow repo and frozen locally in the article repo | not selected-run dependent | keep as workflow-linked support |
+| `fig:retrospectives` | `DISC/retrospective_log_discharge_plot_faceted.png` | retrospective-product setup figure | `40_figures.R`, `run_environmetrics_figures.R`, `stage_post.R`, dedicated retrospective-selection logic; frozen locally in `generated/workflow_linked_support_sources/` | yes | reproducible from workflow repo and frozen locally in the article repo | not selected-run dependent | keep as workflow-linked support |
+| `fig:ensembles` | `DISC/forecats.png` | forecast-product setup figure | current figure runner plus `FORECATS_INPUTS_AND_WEIGHTING_PLAN.md`; frozen locally in `generated/workflow_linked_support_sources/` | yes | reproducible from workflow repo and frozen locally in the article repo | not selected-run dependent | keep as workflow-linked support |
 | `fig:dry_quantile` | `DISC/All_exal_2012-2016_DISC.png` | historical regime illustration | `REPO_MAP.md`, `REPRODUCE_PAPER.md`, `40_figures.R`, notebook; locked article-side bundle in `generated/historical_summary_sources/` | yes | reproducible from workflow repo and frozen locally in the article repo | intentionally retained as historical-summary support | keep with explicit historical-summary provenance |
 | `fig:rainy_quantile` | `DISC/All_exal_2017-2019_DISC.png` | historical regime illustration | same as above; locked article-side bundle in `generated/historical_summary_sources/` | yes | reproducible from workflow repo and frozen locally in the article repo | intentionally retained as historical-summary support | keep with explicit historical-summary provenance |
 | `fig:synth1` | `DISC/posterior_samples_valid.png` | predictive synthesis illustration | `REPO_MAP.md`, `REPRODUCE_PAPER.md`, `40_figures.R`, notebook | yes | reproducible from workflow repo | must match final selected run | regenerate from final selected run |
 | `fig:80_components` | `DISC/80_component_1991_2022.png` | appendix long-cycle seasonal illustration | `REPO_MAP.md`, `REPRODUCE_PAPER.md`, `40_figures.R`, notebook; locked article-side bundle in `generated/historical_summary_sources/` | yes | reproducible from workflow repo and frozen locally in the article repo | intentionally retained as historical-summary support | keep with explicit historical-summary provenance |
-| `fig:synth2` | `DISC/posterior_samples_counter_valid.png` | appendix historical-only predictive synthesis | `REPO_MAP.md`, `REPRODUCE_PAPER.md`, `40_figures.R`, notebook | yes | reproducible from workflow repo | must match final selected run if retained | regenerate from final selected run if retained |
+| `fig:synth2` | `DISC/posterior_samples_counter_valid.png` | appendix historical-only predictive synthesis | `40_figures.R`, `run_environmetrics_figures.R`, provenance docs; frozen locally in `generated/workflow_linked_support_sources/` | yes | reproducible from workflow repo and frozen locally in the article repo | intentionally retained as workflow-linked appendix reference | keep with explicit separate provenance |
 
 ### Notes on figure confidence
 
@@ -140,9 +158,16 @@ The following manuscript figure assets in `Evironmetrics---REVISED-DOC-2/DISC/` 
      - not representative-cutoff outputs,
      - and not a second forecast-validation exercise.
 
-3. The synthesis figures are the most sensitive selected-run artifacts.
-   - They are reproducible from the workflow repo,
-   - but they must be regenerated or re-verified against the exact final selected run that produced the current Table 1 CRPS values.
+3. The older notebook/manual reproduction notes are now secondary.
+   - `repro/REPRODUCE_PAPER.md` and `repro/REPO_MAP.md` remain useful provenance references.
+   - But the clean current reproduction path is the run-scoped unified workflow:
+     - `stage_post.R` injects the actual shared input paths,
+     - `run_environmetrics_figures.R` runs headlessly,
+     - `40_figures.R` generates the figures.
+
+4. `fig:synth1` is the only synthesis figure currently tied to the selected-model refresh.
+   - `fig:synth1` is locked to the verified representative `2022-12-25` rerun bundle.
+   - `fig:synth2` remains a separate workflow-linked appendix reference and is not part of the narrow five-run keep-lineage freeze.
 
 ## Table provenance map
 
@@ -173,18 +198,18 @@ The following manuscript figure assets in `Evironmetrics---REVISED-DOC-2/DISC/` 
 
 ## Provenance classification for the next phase
 
-### Group A: keep as workflow-linked setup figures
+### Group A: keep as workflow-linked support figures
 These already have strong provenance and do not depend on the selected-run decision.
 - `fig:sanlorenzo`
 - `fig:covariates`
 - `fig:retrospectives`
 - `fig:ensembles`
+- `fig:synth2`
 
 ### Group B: selected-run dependent and must be refreshed or verified first
 These are too tightly tied to one fitted output to leave ambiguous.
 - `fig:synth1`
 - `tab:components_23_31`
-- `fig:synth2` if retained in the appendix
 
 ### Group C: reproducible historical-summary support
 These objects are intentionally kept as workflow-linked historical summaries of the fitted specification, rather than as representative-cutoff outputs.
@@ -212,7 +237,6 @@ The following policy is now adopted for the revised manuscript and should govern
 - Therefore, the following Section 5 objects must be regenerated or re-verified from the `2022-12-25` `exdqlm_multivar_keep` run:
   - `fig:synth1`
   - `tab:components_23_31`
-  - `fig:synth2` if retained
 
 ### Appendix: historical summaries of the selected specification
 - Appendix figures and tables remain historical summaries of the selected specification rather than representative-cutoff illustrations.
@@ -248,11 +272,14 @@ These runs already provide:
 - CRPS summary tables,
 - and run-scoped manifests and input hashes.
 
-Resolved gap from this audit:
+Resolved gaps from this audit:
 - the narrow `exAL-M-T1` replay path was completed with the required post-export fixes, so the representative selected-model outputs and posterior interpretation tables are now frozen locally in the revised article repo.
+- the remaining setup/support figures and the appendix historical-only reference synthesis are now also frozen locally in the revised article repo through:
+  - `generated/workflow_linked_support_sources/`
 - In practice, this means:
   - `fig:synth1`, `tab:components_23_31`, `tab:gamma_sigma_intervals1`, and `tab:gamma_sigma_intervals2` are now locked to verified article-side bundles, and
-  - the historical-summary figures are preserved separately through the local provenance bundle under `generated/historical_summary_sources/`.
+  - the historical-summary figures are preserved separately through the local provenance bundle under `generated/historical_summary_sources/`,
+  - while `fig:sanlorenzo`, `fig:covariates`, `fig:retrospectives`, `fig:ensembles`, and `fig:synth2` are preserved through `generated/workflow_linked_support_sources/`.
 
 ## Exact relaunch handoff
 

@@ -983,6 +983,19 @@ Use this as the working order when actually editing the manuscript.
     - `generated/historical_summary_sources/figures/80_component_1991_2022.png`
     - `generated/historical_summary_sources/figures/All_exal_2012-2016_DISC.png`
     - `generated/historical_summary_sources/figures/All_exal_2017-2019_DISC.png`
+- [x] Freeze a local provenance bundle for the remaining workflow-linked setup/support figures.
+  - Bundle:
+    - `generated/workflow_linked_support_sources/README.md`
+    - `generated/workflow_linked_support_sources/manifest.csv`
+    - `generated/workflow_linked_support_sources/SHA256SUMS.txt`
+    - `generated/workflow_linked_support_sources/figures/usgs.png`
+    - `generated/workflow_linked_support_sources/figures/precip_soilmoisture_climatePC1_faceted_labeled.png`
+    - `generated/workflow_linked_support_sources/figures/retrospective_log_discharge_plot_faceted.png`
+    - `generated/workflow_linked_support_sources/figures/forecats.png`
+    - `generated/workflow_linked_support_sources/figures/posterior_samples_counter_valid.png`
+  - Locked reproduction note:
+    - treat `R/unified/stages/stage_post.R` + `scripts/run_environmetrics_figures.R` + `R/environmetrics/40_figures.R` as the current clean reproduction path
+    - treat `scripts/make_environmetrics_figures.R` as legacy scaffolding rather than the preferred reproduction contract
 
 ### Next coordinated TODOs after the current manuscript pass
 - [ ] Refresh every interpretation-dependent table and figure so it is generated from the same final `exAL-M-T1` run that produced the CRPS values reported in Table~1.
