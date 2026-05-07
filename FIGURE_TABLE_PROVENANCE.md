@@ -24,6 +24,13 @@ Canonical forward runbook:
 
 Article-side provenance refresh helper:
 - `scripts/refresh_local_provenance_bundles.py`
+- `scripts/refresh_exal_m_t1_generated_assets.py`
+- `scripts/refresh_he2_manifest_snapshot.py`
+- `scripts/refresh_all_generated_assets.py`
+
+Article-side review outputs:
+- `generated/article_asset_review/ARTICLE_ASSET_REVIEW.md`
+- `generated/article_asset_review/figure_gallery.html`
 
 This inventory now distinguishes three reproducibility levels:
 - objects frozen locally in the article repo and tied to verified selected-model reruns,
@@ -97,6 +104,13 @@ The revised manuscript repo now also contains two article-side frozen support bu
 
 Both support bundles can now be refreshed through:
 - `scripts/refresh_local_provenance_bundles.py`
+
+The representative selected-model bundle and the HE2 snapshot can now be refreshed through:
+- `scripts/refresh_exal_m_t1_generated_assets.py`
+- `scripts/refresh_he2_manifest_snapshot.py`
+
+The preferred top-level article-side refresh entrypoint is:
+- `scripts/refresh_all_generated_assets.py`
 
 ## Current workflow evidence
 

@@ -999,10 +999,20 @@ Use this as the working order when actually editing the manuscript.
 - [x] Add a canonical forward runbook and an article-side provenance refresh helper.
   - Canonical runbook:
     - `/data/muscat_data/jaguir26/project1_ucsc_phd/repro/run/CANONICAL_REVISED_ARTICLE_WORKFLOW.md`
-  - Article-side helper:
+  - Article-side helpers:
     - `scripts/refresh_local_provenance_bundles.py`
+    - `scripts/refresh_exal_m_t1_generated_assets.py`
+    - `scripts/refresh_he2_manifest_snapshot.py`
+    - `scripts/refresh_all_generated_assets.py`
+    - `scripts/build_article_asset_review_report.py`
   - Operational rule:
-    - refresh local support bundles through the helper script instead of manual copying
+    - refresh article-side generated bundles through the helper scripts instead of manual copying
+- [x] Generate an article-side review report so all current figures and tables can be inspected from one place.
+  - Review outputs:
+    - `generated/article_asset_review/ARTICLE_ASSET_REVIEW.md`
+    - `generated/article_asset_review/figure_gallery.html`
+    - `generated/article_asset_review/figure_manifest.csv`
+    - `generated/article_asset_review/table_manifest.csv`
 
 ### Next coordinated TODOs after the current manuscript pass
 - [ ] Refresh every interpretation-dependent table and figure so it is generated from the same final `exAL-M-T1` run that produced the CRPS values reported in Table~1.

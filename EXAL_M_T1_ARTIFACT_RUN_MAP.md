@@ -119,5 +119,11 @@ For the current revised article pass, the chosen approach is:
 6. preserve the remaining setup/support figures and `fig:synth2` in `generated/workflow_linked_support_sources/`
 7. refresh both local support bundles through:
    - `scripts/refresh_local_provenance_bundles.py`
+8. refresh the representative selected-model bundle and five-run source freeze through:
+   - `scripts/refresh_exal_m_t1_generated_assets.py`
+9. refresh the HE2 publication snapshot through:
+   - `scripts/refresh_he2_manifest_snapshot.py`
+10. refresh all article-side generated bundles and the review report through:
+   - `scripts/refresh_all_generated_assets.py`
 
 This is the strongest minimal choice because it preserves reproducibility, avoids mixing incompatible provenance roles, and does not require unnecessary reruns.
