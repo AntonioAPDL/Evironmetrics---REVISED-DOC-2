@@ -29,9 +29,12 @@ Canonical forward runbook:
 - `/data/muscat_data/jaguir26/project1_ucsc_phd/repro/run/HE2_FULL_HISTORY_REPAIR_FORWARD_PLAN.md`
 
 Article-side provenance refresh helper:
+- `ARTICLE_GENERATED_ASSET_MANIFEST.json`
 - `scripts/refresh_local_provenance_bundles.py`
 - `scripts/refresh_exal_m_t1_generated_assets.py`
 - `scripts/refresh_he2_manifest_snapshot.py`
+- `scripts/build_generated_table_includes.py`
+- `scripts/promote_generated_figures_to_disc.py`
 - `scripts/build_setup_support_by_cutoff_v2_appendix.py`
 - `scripts/build_generated_asset_index.py`
 - `scripts/refresh_all_generated_assets.py`
@@ -39,6 +42,9 @@ Article-side provenance refresh helper:
 Article-side review outputs:
 - `generated/article_asset_review/ARTICLE_ASSET_REVIEW.md`
 - `generated/article_asset_review/figure_gallery.html`
+- `generated/article_asset_review/CURRENT_MODEL_OUTPUT_WIRING_AUDIT.md`
+- `generated/article_asset_selection/selection_manifest.json`
+- `generated/article_table_includes/README.md`
 - `generated/README.md`
 - `generated/asset_inventory.csv`
 - `generated/he2_historical_support_audit_20260507/historical_support_audit.md`
@@ -58,6 +64,8 @@ Most important results from this audit:
 - every current figure/table asset in the article is now either:
   - tied to a verified selected-model rerun bundle,
   - or frozen locally as a workflow-linked support figure.
+- the manuscript-facing `DISC/` figures are now promoted from a source-controlled generated-asset manifest rather than by manual selection.
+- the model-derived manuscript tables now consume generated `\\input{}` row includes rebuilt from frozen article-side CSV sources.
 
 That means the current manuscript figures are strongly linked to the current workflow repo, even though the manuscript repo itself does not carry the full generation scripts.
 

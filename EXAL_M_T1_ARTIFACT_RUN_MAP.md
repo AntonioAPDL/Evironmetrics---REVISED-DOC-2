@@ -129,11 +129,16 @@ For the current revised article pass, the chosen approach is:
    - `scripts/refresh_setup_support_by_cutoff_v2.py`
    - `scripts/build_setup_support_by_cutoff_v2_review.py`
    - `scripts/promote_setup_support_v2_to_disc.py`
-11. refresh the representative selected-model bundle and five-run source freeze through:
+11. promote manuscript-facing `DISC/` figures through the source-controlled generated-asset manifest:
+   - `ARTICLE_GENERATED_ASSET_MANIFEST.json`
+   - `scripts/promote_generated_figures_to_disc.py`
+12. rebuild the manuscript table rows from the frozen article-side CSV exports through:
+   - `scripts/build_generated_table_includes.py`
+13. refresh the representative selected-model bundle and five-run source freeze through:
    - `scripts/refresh_exal_m_t1_generated_assets.py`
-12. refresh the HE2 publication snapshot through:
+14. refresh the HE2 publication snapshot through:
    - `scripts/refresh_he2_manifest_snapshot.py`
-13. refresh all article-side generated bundles and the review report through:
+15. refresh all article-side generated bundles and the review report through:
    - `scripts/refresh_all_generated_assets.py`
 
 This is the strongest minimal choice because it preserves reproducibility, avoids mixing incompatible provenance roles, and does not require unnecessary reruns.

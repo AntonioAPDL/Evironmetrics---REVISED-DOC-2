@@ -6,7 +6,9 @@ import csv
 from pathlib import Path
 
 FAMILY_DESCRIPTIONS = {
-    'article_asset_review': 'Top-level review report and gallery for current article figures and tables.',
+    'article_asset_review': 'Top-level review report, gallery, and wiring audit for current article figures and tables.',
+    'article_asset_selection': 'Manifest showing which generated figure files are currently promoted into DISC/.',
+    'article_table_includes': 'Generated TeX row includes for the manuscript tables, rebuilt from frozen article-side data sources.',
     'exal_m_t1_20221225': 'Representative selected-model bundle from the verified 2022-12-25 exAL-M-T1 rerun.',
     'exal_m_t1_five_run_sources': 'Five-cutoff publication source freeze for exAL-M-T1.',
     'he2_historical_support_audit_20260507': 'Audit snapshot showing which published Bayesian rows use full historical support versus short-window support.',
