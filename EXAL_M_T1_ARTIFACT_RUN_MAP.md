@@ -70,8 +70,13 @@ That bundle now includes:
 | `tab:benchmark_crps_models` | five-cutoff validation table | all five cutoffs | `generated/exal_m_t1_five_run_sources/<slug>/crps_forecast_summary.csv` | values in `wileyNJD-APA.tex` Table 1 | locked |
 | `fig:synth1` | representative selected-model illustration | `2022-12-25 exAL-M-T1 keep` | `generated/exal_m_t1_20221225/exdqlm_multivar_synth_keep_cutoff_window_posterior_samples.png` | `DISC/posterior_samples_valid.png` | refreshed |
 | `tab:components_23_31` | representative transfer-function summary | `2022-12-25 exAL-M-T1 keep` | `generated/exal_m_t1_20221225/covariate_effects_summary.csv` | values in `wileyNJD-APA.tex` | refreshed |
-| `tab:gamma_sigma_intervals1` | representative appendix `gamma` summary | `2022-12-25 exAL-M-T1 keep` | `generated/exal_m_t1_20221225/gamma_summary.csv` | values in `wileyNJD-APA.tex` | refreshed |
-| `tab:gamma_sigma_intervals2` | representative appendix `sigma` summary | `2022-12-25 exAL-M-T1 keep` | `generated/exal_m_t1_20221225/sigma_summary.csv` | values in `wileyNJD-APA.tex` | refreshed |
+
+### Supplementary appendix support tied to the representative selected-model run
+
+| Manuscript object | Current role | Locked cutoff/run | Exact verified source | Current manuscript target | Current status |
+|---|---|---|---|---|---|
+| `tab:gamma_sigma_intervals1` | supplementary appendix `gamma` summary | `2022-12-25 exAL-M-T1 keep` | `generated/exal_m_t1_20221225/gamma_summary.csv` | values in `wileyNJD-APA.tex` | refreshed |
+| `tab:gamma_sigma_intervals2` | supplementary appendix `sigma` summary | `2022-12-25 exAL-M-T1 keep` | `generated/exal_m_t1_20221225/sigma_summary.csv` | values in `wileyNJD-APA.tex` | refreshed |
 
 ### Workflow-linked but outside the locked five-run keep source set
 
@@ -96,8 +101,9 @@ These objects are still reproducible workflow assets, but they are not part of t
 ## 5. What this means operationally
 
 1. The five verified `exAL-M-T1` keep runs are now the locked reproducible source set for the main selected-model manuscript evidence.
-2. Any further refresh of `fig:synth1`, `tab:components_23_31`, `tab:gamma_sigma_intervals1`, or `tab:gamma_sigma_intervals2` should use only the files recorded above.
-3. `fig:synth2` and the historical-summary figures should not be silently treated as part of that five-run keep lineage. If they remain in the paper, they should either:
+2. Any further refresh of the central selected-model objects `fig:synth1` and `tab:components_23_31` should use only the files recorded above.
+3. The appendix support tables `tab:gamma_sigma_intervals1` and `tab:gamma_sigma_intervals2` should remain supplementary and should continue to use the representative `2022-12-25` source files recorded above.
+4. `fig:synth2` and the historical-summary figures should not be silently treated as part of that five-run keep lineage. If they remain in the paper, they should either:
    - stay explicitly labeled as separate workflow-linked historical/counterfactual objects, or
    - be regenerated from a separately locked source path.
 

@@ -936,9 +936,12 @@ Use this as the working order when actually editing the manuscript.
   - Current refresh:
     - `fig:synth1` source image in `DISC/posterior_samples_valid.png`
     - `tab:components_23_31`
-    - `tab:gamma_sigma_intervals1`
-    - `tab:gamma_sigma_intervals2`
     - copied provenance bundle under `generated/exal_m_t1_20221225/`
+- [x] Keep `tab:gamma_sigma_intervals1` and `tab:gamma_sigma_intervals2` as supplementary appendix support.
+  - Locked choice:
+    - keep both tables refreshed from the representative `2022-12-25` selected-model run
+    - treat them as appendix support, not central selected-model refresh targets
+    - keep them outside the main in-scope Section 5 artifact set
 - [x] Freeze the five verified `exAL-M-T1` run roots locally in the revised-doc repo.
   - Local freeze:
     - `generated/exal_m_t1_five_run_sources/<slug>/crps_forecast_summary.csv`
@@ -952,13 +955,14 @@ Use this as the working order when actually editing the manuscript.
     - `tab:benchmark_crps_models`
     - `fig:synth1`
     - `tab:components_23_31`
-    - `tab:gamma_sigma_intervals1`
-    - `tab:gamma_sigma_intervals2`
   - Deferred/out of narrow keep-run scope:
     - `fig:synth2`
     - `fig:dry_quantile`
     - `fig:rainy_quantile`
     - `fig:80_components`
+  - Supplementary appendix support:
+    - `tab:gamma_sigma_intervals1`
+    - `tab:gamma_sigma_intervals2`
 - [x] Make the historical-summary figures explicit in the manuscript text and captions.
   - Locked choice:
     - keep `fig:dry_quantile`, `fig:rainy_quantile`, and `fig:80_components`
