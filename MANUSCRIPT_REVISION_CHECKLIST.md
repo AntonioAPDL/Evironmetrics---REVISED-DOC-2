@@ -39,6 +39,23 @@ This is the active manuscript-side rerender target for the revised article.
   - `05/11/2022`
 - Do not refresh `Evironmetrics---REVISED-DOC-2` figures or tables from any older side-work roots when the five-run verified lineage is the intended source.
 
+### 0.1 Setup/support figure correction checkpoint
+
+The current cutoff-specific setup/support family:
+- `generated/setup_support_by_cutoff/`
+- `generated/setup_support_by_cutoff_review/`
+
+is now considered a **provisional `v1` audit artifact**, not the final article-facing freeze.
+
+Reason:
+- the underlying `exAL-M-T1` runs appear mostly correct,
+- but the current `v1` setup/support figure derivation used the wrong plotting surfaces for some figures and incomplete replay-side bundle metadata.
+
+The next implementation pass for those four figures must follow:
+- `/data/muscat_data/jaguir26/project1_ucsc_phd/repro/run/EXAL_M_T1_SETUP_SUPPORT_V2_SOURCE_MANIFEST.md`
+- `/data/muscat_data/jaguir26/project1_ucsc_phd/repro/run/EXAL_M_T1_SETUP_SUPPORT_V2_FILE_PLAN.md`
+- `/data/muscat_data/jaguir26/project1_ucsc_phd/repro/run/EXAL_M_T1_SETUP_SUPPORT_V2_ACCEPTANCE_CHECKLIST.md`
+
 ---
 
 ## 1. Source-of-truth crosswalk
@@ -996,20 +1013,26 @@ Use this as the working order when actually editing the manuscript.
   - Locked reproduction note:
     - treat `R/unified/stages/stage_post.R` + `scripts/run_environmetrics_figures.R` + `R/environmetrics/40_figures.R` as the current clean reproduction path
     - treat `scripts/make_environmetrics_figures.R` as legacy scaffolding rather than the preferred reproduction contract
-- [x] Create a canonical cutoff-specific setup/support figure family for the four input/setup plots derived from the five verified `exAL-M-T1` run bundles.
-  - Workflow-side runtime family:
+- [x] Audit the first cutoff-specific setup/support figure family and freeze it as a provisional `v1` artifact rather than treating it as the final canonical update.
+  - Provisional workflow-side runtime family:
     - `/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/exal_m_t1_setup_support_by_cutoff_20260506/`
-  - Canonical workflow-side scripts:
+  - Provisional `v1` scripts:
     - `config/exal_m_t1_setup_support_by_cutoff_20260506.json`
     - `/data/muscat_data/jaguir26/project1_ucsc_phd/scripts/render_exal_m_t1_setup_support_by_cutoff.py`
     - `/data/muscat_data/jaguir26/project1_ucsc_phd/scripts/render_setup_support_figures.R`
     - `/data/muscat_data/jaguir26/project1_ucsc_phd/R/environmetrics/40_figures_setup_support.R`
-  - Article-side mirrored bundle and review:
+  - Provisional article-side mirror and review:
     - `generated/setup_support_by_cutoff/`
     - `generated/setup_support_by_cutoff_review/`
-  - Canonical article-side helpers:
-    - `scripts/refresh_setup_support_by_cutoff.py`
-    - `scripts/build_setup_support_by_cutoff_review.py`
+  - Why this is not final:
+    - wrong plotting surfaces for `usgs.png` and the covariate figure
+    - incomplete recovery of authoritative `forecats_bundle` metadata
+    - retrospective plotting still needs bundle-native lineage handling
+- [x] Freeze the corrected `v2` planning gate for the setup/support figures before further implementation.
+  - Canonical planning docs:
+    - `/data/muscat_data/jaguir26/project1_ucsc_phd/repro/run/EXAL_M_T1_SETUP_SUPPORT_V2_SOURCE_MANIFEST.md`
+    - `/data/muscat_data/jaguir26/project1_ucsc_phd/repro/run/EXAL_M_T1_SETUP_SUPPORT_V2_FILE_PLAN.md`
+    - `/data/muscat_data/jaguir26/project1_ucsc_phd/repro/run/EXAL_M_T1_SETUP_SUPPORT_V2_ACCEPTANCE_CHECKLIST.md`
 - [x] Add a canonical forward runbook and an article-side provenance refresh helper.
   - Canonical runbook:
     - `/data/muscat_data/jaguir26/project1_ucsc_phd/repro/run/CANONICAL_REVISED_ARTICLE_WORKFLOW.md`

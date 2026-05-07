@@ -19,6 +19,11 @@ Companion relaunch document:
 - `EXAL_M_T1_RELAUNCH_CHECKLIST.md`
   - This records the exact cutoff-by-cutoff source runs behind the published `exAL-M-T1` CRPS values, the required rerun artifacts, and the post-rerun validation contract.
 
+Setup/support figure correction plan:
+- `/data/muscat_data/jaguir26/project1_ucsc_phd/repro/run/EXAL_M_T1_SETUP_SUPPORT_V2_SOURCE_MANIFEST.md`
+- `/data/muscat_data/jaguir26/project1_ucsc_phd/repro/run/EXAL_M_T1_SETUP_SUPPORT_V2_FILE_PLAN.md`
+- `/data/muscat_data/jaguir26/project1_ucsc_phd/repro/run/EXAL_M_T1_SETUP_SUPPORT_V2_ACCEPTANCE_CHECKLIST.md`
+
 Canonical forward runbook:
 - `/data/muscat_data/jaguir26/project1_ucsc_phd/repro/run/CANONICAL_REVISED_ARTICLE_WORKFLOW.md`
 
@@ -106,11 +111,16 @@ It now also contains a dedicated cutoff-specific setup/support figure family der
 - `generated/setup_support_by_cutoff/`
 - `generated/setup_support_by_cutoff_review/`
 
-That family is produced from the canonical workflow-side derivation path:
+That family is produced from the current workflow-side derivation path:
 - `config/exal_m_t1_setup_support_by_cutoff_20260506.json`
 - `scripts/render_exal_m_t1_setup_support_by_cutoff.py`
 - `scripts/render_setup_support_figures.R`
 - `R/environmetrics/40_figures_setup_support.R`
+
+Important current status:
+- this `20260506` setup/support family is now treated as a provisional `v1` audit artifact;
+- it should not be treated as the final article-facing provenance freeze;
+- the corrected replacement must follow the three `v2` planning documents above.
 
 Both support bundles can now be refreshed through:
 - `scripts/refresh_local_provenance_bundles.py`
@@ -165,10 +175,10 @@ The following manuscript figure assets in `Evironmetrics---REVISED-DOC-2/DISC/` 
 
 | Manuscript label | Current asset | Current manuscript role | Workflow evidence | Hash match | Repro status | Selected-run status | Recommended action |
 |---|---|---|---|---|---|---|---|
-| `fig:sanlorenzo` | `DISC/usgs.png` | study-setting figure | dedicated cutoff-specific derivation from the five verified `exAL-M-T1` run bundles via `render_exal_m_t1_setup_support_by_cutoff.py` and `40_figures_setup_support.R`; mirrored locally in `generated/setup_support_by_cutoff/` | yes | reproducible from verified run-scoped inputs and frozen locally in the article repo | cutoff-dependent setup/support family now available for all five cutoffs | keep as setup/support figure with explicit per-cutoff provenance |
-| `fig:covariates` | `DISC/precip_soilmoisture_climatePC1_faceted_labeled.png` | covariate setup figure | same dedicated cutoff-specific derivation; uses run-scoped historical covariate inputs through the verified five-run bundles; mirrored locally in `generated/setup_support_by_cutoff/` | yes | reproducible from verified run-scoped inputs and frozen locally in the article repo | cutoff-dependent setup/support family now available for all five cutoffs | keep as setup/support figure with explicit per-cutoff provenance |
-| `fig:retrospectives` | `DISC/retrospective_log_discharge_plot_faceted.png` | retrospective-product setup figure | same dedicated cutoff-specific derivation; uses materialized `retros.csv` from each verified run bundle; mirrored locally in `generated/setup_support_by_cutoff/` | yes | reproducible from verified run-scoped inputs and frozen locally in the article repo | cutoff-dependent setup/support family now available for all five cutoffs | keep as setup/support figure with explicit per-cutoff provenance |
-| `fig:ensembles` | `DISC/forecats.png` | forecast-product setup figure | same dedicated cutoff-specific derivation; uses run-scoped retrospective history plus NWS/GloFAS forecast files for each cutoff; mirrored locally in `generated/setup_support_by_cutoff/` | yes | reproducible from verified run-scoped inputs and frozen locally in the article repo | cutoff-dependent setup/support family now available for all five cutoffs | keep as setup/support figure with explicit per-cutoff provenance |
+| `fig:sanlorenzo` | `DISC/usgs.png` | study-setting figure | current article-side copies remain hash-matched to the historical workflow gold set; the attempted cutoff-specific family under `generated/setup_support_by_cutoff/` is now treated as provisional `v1` only and must be replaced by the corrected `v2` bundle described in the new planning docs | yes | reproducible historically and auditable locally, but the cutoff-specific `v2` regeneration path is still pending | current per-cutoff `v1` family is audit-only | keep as setup/support figure, but do not treat the current cutoff-family as final provenance |
+| `fig:covariates` | `DISC/precip_soilmoisture_climatePC1_faceted_labeled.png` | covariate setup figure | same: historical gold asset remains verified, while the cutoff-specific `v1` family is provisional only and must be rebuilt from raw cutoff covariate files under the `v2` plan | yes | reproducible historically and auditable locally, but the cutoff-specific `v2` regeneration path is still pending | current per-cutoff `v1` family is audit-only | keep as setup/support figure, pending corrected `v2` provenance family |
+| `fig:retrospectives` | `DISC/retrospective_log_discharge_plot_faceted.png` | retrospective-product setup figure | same: historical gold asset remains verified, while the cutoff-specific `v1` family is provisional only and must be rebuilt from authoritative retrospective lineage / bundle data under the `v2` plan | yes | reproducible historically and auditable locally, but the cutoff-specific `v2` regeneration path is still pending | current per-cutoff `v1` family is audit-only | keep as setup/support figure, pending corrected `v2` provenance family |
+| `fig:ensembles` | `DISC/forecats.png` | forecast-product setup figure | same: historical gold asset remains verified, while the cutoff-specific `v1` family is provisional only and must be rebuilt on top of the authoritative forecats/histfix bundles under the `v2` plan | yes | reproducible historically and auditable locally, but the cutoff-specific `v2` regeneration path is still pending | current per-cutoff `v1` family is audit-only | keep as setup/support figure, pending corrected `v2` provenance family |
 | `fig:dry_quantile` | `DISC/All_exal_2012-2016_DISC.png` | historical regime illustration | `REPO_MAP.md`, `REPRODUCE_PAPER.md`, `40_figures.R`, notebook; locked article-side bundle in `generated/historical_summary_sources/` | yes | reproducible from workflow repo and frozen locally in the article repo | intentionally retained as historical-summary support | keep with explicit historical-summary provenance |
 | `fig:rainy_quantile` | `DISC/All_exal_2017-2019_DISC.png` | historical regime illustration | same as above; locked article-side bundle in `generated/historical_summary_sources/` | yes | reproducible from workflow repo and frozen locally in the article repo | intentionally retained as historical-summary support | keep with explicit historical-summary provenance |
 | `fig:synth1` | `DISC/posterior_samples_valid.png` | predictive synthesis illustration | `REPO_MAP.md`, `REPRODUCE_PAPER.md`, `40_figures.R`, notebook | yes | reproducible from workflow repo | must match final selected run | regenerate from final selected run |
@@ -177,17 +187,18 @@ The following manuscript figure assets in `Evironmetrics---REVISED-DOC-2/DISC/` 
 
 ### Notes on figure confidence
 
-1. The four setup/support figures are now reproduced through a dedicated cutoff-specific workflow.
+1. The four setup/support figures are currently reproduced through a dedicated cutoff-specific `v1` workflow.
    - Workflow-side review:
      - `/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/exal_m_t1_setup_support_by_cutoff_20260506/review/`
    - Article-side mirror and review:
      - `generated/setup_support_by_cutoff/`
      - `generated/setup_support_by_cutoff_review/`
-   - This is now the preferred provenance path for:
+   - This is useful as an audit/debugging artifact for:
      - `usgs.png`
      - `precip_soilmoisture_climatePC1_faceted_labeled.png`
      - `retrospective_log_discharge_plot_faceted.png`
      - `forecats.png`
+   - But it is not yet the final accepted provenance path. The corrected `v2` path must be implemented first.
 
 2. `forecats.png` remains more delicate than the other setup figures.
    - The workflow repo includes a dedicated reproducibility plan at:
@@ -244,7 +255,7 @@ The following manuscript figure assets in `Evironmetrics---REVISED-DOC-2/DISC/` 
 ## Provenance classification for the next phase
 
 ### Group A: keep as cutoff-specific setup/support figures
-These now have a dedicated per-cutoff reproduction family derived from the verified five-run `exAL-M-T1` bundles.
+These need a corrected `v2` per-cutoff reproduction family derived from the verified five-run `exAL-M-T1` bundles and the authoritative forecats/histfix bundle roots.
 - `fig:sanlorenzo`
 - `fig:covariates`
 - `fig:retrospectives`
@@ -329,7 +340,7 @@ Resolved gaps from this audit:
 - In practice, this means:
   - `fig:synth1`, `tab:components_23_31`, `tab:gamma_sigma_intervals1`, and `tab:gamma_sigma_intervals2` are now locked to verified article-side bundles, and
   - the historical-summary figures are preserved separately through the local provenance bundle under `generated/historical_summary_sources/`,
-  - while `fig:synth2` is preserved through `generated/workflow_linked_support_sources/`, and `fig:sanlorenzo`, `fig:covariates`, `fig:retrospectives`, and `fig:ensembles` are now preserved through the new cutoff-specific family under `generated/setup_support_by_cutoff/`.
+  - while `fig:synth2` is preserved through `generated/workflow_linked_support_sources/`, and `fig:sanlorenzo`, `fig:covariates`, `fig:retrospectives`, and `fig:ensembles` are currently preserved only as historical workflow-linked assets plus a provisional `v1` audit family under `generated/setup_support_by_cutoff/` until the corrected `v2` bundle is built.
 
 ## Exact relaunch handoff
 

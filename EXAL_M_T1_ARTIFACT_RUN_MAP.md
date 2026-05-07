@@ -93,10 +93,10 @@ These objects are still reproducible workflow assets, but they are not part of t
 
 | Manuscript object | Role | Action |
 |---|---|---|
-| `fig:sanlorenzo` | study-setting figure | keep as cutoff-dependent setup/support figure; canonical article-side family is `generated/setup_support_by_cutoff/` with review in `generated/setup_support_by_cutoff_review/` |
-| `fig:covariates` | data/covariate setup figure | keep as cutoff-dependent setup/support figure; canonical article-side family is `generated/setup_support_by_cutoff/` with review in `generated/setup_support_by_cutoff_review/` |
-| `fig:retrospectives` | retrospective-product setup figure | keep as cutoff-dependent setup/support figure; canonical article-side family is `generated/setup_support_by_cutoff/` with review in `generated/setup_support_by_cutoff_review/` |
-| `fig:ensembles` | forecast-product setup figure | keep as cutoff-dependent setup/support figure; canonical article-side family is `generated/setup_support_by_cutoff/` with review in `generated/setup_support_by_cutoff_review/` |
+| `fig:sanlorenzo` | study-setting figure | keep as cutoff-dependent setup/support figure; current `generated/setup_support_by_cutoff/` family is provisional `v1` only; corrected replacement must follow the `v2` source manifest / file plan / acceptance checklist under `/data/muscat_data/jaguir26/project1_ucsc_phd/repro/run/` |
+| `fig:covariates` | data/covariate setup figure | keep as cutoff-dependent setup/support figure; current `generated/setup_support_by_cutoff/` family is provisional `v1` only; corrected replacement must follow the `v2` source manifest / file plan / acceptance checklist under `/data/muscat_data/jaguir26/project1_ucsc_phd/repro/run/` |
+| `fig:retrospectives` | retrospective-product setup figure | keep as cutoff-dependent setup/support figure; current `generated/setup_support_by_cutoff/` family is provisional `v1` only; corrected replacement must follow the `v2` source manifest / file plan / acceptance checklist under `/data/muscat_data/jaguir26/project1_ucsc_phd/repro/run/` |
+| `fig:ensembles` | forecast-product setup figure | keep as cutoff-dependent setup/support figure; current `generated/setup_support_by_cutoff/` family is provisional `v1` only; corrected replacement must follow the `v2` source manifest / file plan / acceptance checklist under `/data/muscat_data/jaguir26/project1_ucsc_phd/repro/run/` |
 
 ## 5. What this means operationally
 
@@ -117,12 +117,12 @@ For the current revised article pass, the chosen approach is:
 4. do not force them into the representative `2022-12-25` selected-run bundle
 5. preserve their article-side provenance bundle in `generated/historical_summary_sources/`
 6. preserve `fig:synth2` in `generated/workflow_linked_support_sources/`
-7. preserve the cutoff-dependent setup/support figures through `generated/setup_support_by_cutoff/` and `generated/setup_support_by_cutoff_review/`
+7. preserve the current cutoff-dependent setup/support figures as provisional `v1` audit artifacts through `generated/setup_support_by_cutoff/` and `generated/setup_support_by_cutoff_review/`
 8. refresh the local support bundles through:
    - `scripts/refresh_local_provenance_bundles.py`
-9. refresh the cutoff-specific setup/support family through:
-   - `scripts/refresh_setup_support_by_cutoff.py`
-   - `scripts/build_setup_support_by_cutoff_review.py`
+9. replace the cutoff-specific setup/support family with the corrected `v2` family once implemented through:
+   - `scripts/refresh_setup_support_by_cutoff_v2.py`
+   - `scripts/build_setup_support_by_cutoff_v2_review.py`
 10. refresh the representative selected-model bundle and five-run source freeze through:
    - `scripts/refresh_exal_m_t1_generated_assets.py`
 11. refresh the HE2 publication snapshot through:
