@@ -968,6 +968,14 @@ Use this as the working order when actually editing the manuscript.
     - keep `fig:dry_quantile`, `fig:rainy_quantile`, and `fig:80_components`
     - treat them as workflow-linked historical summaries of the selected specification
     - do not treat them as representative-cutoff or additional forecast-validation objects
+- [x] Freeze a local provenance bundle for the historical-summary figures in the revised article repo.
+  - Bundle:
+    - `generated/historical_summary_sources/README.md`
+    - `generated/historical_summary_sources/manifest.csv`
+    - `generated/historical_summary_sources/SHA256SUMS.txt`
+    - `generated/historical_summary_sources/figures/80_component_1991_2022.png`
+    - `generated/historical_summary_sources/figures/All_exal_2012-2016_DISC.png`
+    - `generated/historical_summary_sources/figures/All_exal_2017-2019_DISC.png`
 
 ### Next coordinated TODOs after the current manuscript pass
 - [ ] Refresh every interpretation-dependent table and figure so it is generated from the same final `exAL-M-T1` run that produced the CRPS values reported in Table~1.

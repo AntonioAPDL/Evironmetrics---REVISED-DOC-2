@@ -118,10 +118,10 @@ The following manuscript figure assets in `Evironmetrics---REVISED-DOC-2/DISC/` 
 | `fig:covariates` | `DISC/precip_soilmoisture_climatePC1_faceted_labeled.png` | covariate setup figure | same as above | yes | reproducible from workflow repo | not selected-run dependent | keep |
 | `fig:retrospectives` | `DISC/retrospective_log_discharge_plot_faceted.png` | retrospective-product setup figure | notebook + `40_figures.R`; source path still slightly less explicit in docs | yes | reproducible from workflow repo with minor documentation gap | not selected-run dependent | keep, but preserve source note |
 | `fig:ensembles` | `DISC/forecats.png` | forecast-product setup figure | notebook, `40_figures.R`, dedicated `FORECATS_INPUTS_AND_WEIGHTING_PLAN.md` | yes | reproducible from workflow repo, but with extra workflow complexity | not selected-run dependent | keep, but treat as a sensitive workflow artifact |
-| `fig:dry_quantile` | `DISC/All_exal_2012-2016_DISC.png` | historical regime illustration | `REPO_MAP.md`, `REPRODUCE_PAPER.md`, `40_figures.R`, notebook | yes | reproducible from workflow repo | selected-run consistency still needs decision | provenance decision, then keep or regenerate |
-| `fig:rainy_quantile` | `DISC/All_exal_2017-2019_DISC.png` | historical regime illustration | same as above | yes | reproducible from workflow repo | selected-run consistency still needs decision | provenance decision, then keep or regenerate |
+| `fig:dry_quantile` | `DISC/All_exal_2012-2016_DISC.png` | historical regime illustration | `REPO_MAP.md`, `REPRODUCE_PAPER.md`, `40_figures.R`, notebook; locked article-side bundle in `generated/historical_summary_sources/` | yes | reproducible from workflow repo and frozen locally in the article repo | intentionally retained as historical-summary support | keep with explicit historical-summary provenance |
+| `fig:rainy_quantile` | `DISC/All_exal_2017-2019_DISC.png` | historical regime illustration | same as above; locked article-side bundle in `generated/historical_summary_sources/` | yes | reproducible from workflow repo and frozen locally in the article repo | intentionally retained as historical-summary support | keep with explicit historical-summary provenance |
 | `fig:synth1` | `DISC/posterior_samples_valid.png` | predictive synthesis illustration | `REPO_MAP.md`, `REPRODUCE_PAPER.md`, `40_figures.R`, notebook | yes | reproducible from workflow repo | must match final selected run | regenerate from final selected run |
-| `fig:80_components` | `DISC/80_component_1991_2022.png` | appendix long-cycle seasonal illustration | `REPO_MAP.md`, `REPRODUCE_PAPER.md`, `40_figures.R`, notebook | yes | reproducible from workflow repo | selected-run consistency still needs decision | provenance decision, then keep or regenerate |
+| `fig:80_components` | `DISC/80_component_1991_2022.png` | appendix long-cycle seasonal illustration | `REPO_MAP.md`, `REPRODUCE_PAPER.md`, `40_figures.R`, notebook; locked article-side bundle in `generated/historical_summary_sources/` | yes | reproducible from workflow repo and frozen locally in the article repo | intentionally retained as historical-summary support | keep with explicit historical-summary provenance |
 | `fig:synth2` | `DISC/posterior_samples_counter_valid.png` | appendix historical-only predictive synthesis | `REPO_MAP.md`, `REPRODUCE_PAPER.md`, `40_figures.R`, notebook | yes | reproducible from workflow repo | must match final selected run if retained | regenerate from final selected run if retained |
 
 ### Notes on figure confidence
@@ -131,10 +131,14 @@ The following manuscript figure assets in `Evironmetrics---REVISED-DOC-2/DISC/` 
      - `repro/FORECATS_INPUTS_AND_WEIGHTING_PLAN.md`
    - That document records both the current generation path and known sensitivity around weighted/legacy inputs.
 
-2. The dry/wet regime figures and the appendix long-cycle figure are reproducible as artifacts, but their **manuscript role** still needs to be fixed.
-   - We still need to decide whether they are:
-     - historical summaries of the selected specification, or
-     - outputs tied to one representative final cutoff.
+2. The dry/wet regime figures and the appendix long-cycle figure are now locked as historical-summary support.
+   - They are not part of the narrow five-run `exAL-M-T1` keep-run lineage.
+   - They are frozen locally in:
+     - `generated/historical_summary_sources/`
+   - Their role is descriptive:
+     - historical summaries of the fitted specification,
+     - not representative-cutoff outputs,
+     - and not a second forecast-validation exercise.
 
 3. The synthesis figures are the most sensitive selected-run artifacts.
    - They are reproducible from the workflow repo,
@@ -182,8 +186,8 @@ These are too tightly tied to one fitted output to leave ambiguous.
 - `tab:components_23_31`
 - `fig:synth2` if retained in the appendix
 
-### Group C: reproducible, but manuscript role still needs an explicit provenance decision
-These can be kept only if we clearly decide whether they are historical summaries of the selected specification or outputs from one representative final cutoff.
+### Group C: reproducible historical-summary support
+These objects are intentionally kept as workflow-linked historical summaries of the fitted specification, rather than as representative-cutoff outputs.
 - `fig:dry_quantile`
 - `fig:rainy_quantile`
 - `fig:80_components`
@@ -211,15 +215,20 @@ The following policy is now adopted for the revised manuscript and should govern
   - `fig:synth2` if retained
 
 ### Appendix: historical summaries of the selected specification
-- Appendix figures and tables may remain historical summaries of the selected specification rather than representative-cutoff illustrations.
-- This applies, unless later revised, to:
+- Appendix figures and tables remain historical summaries of the selected specification rather than representative-cutoff illustrations.
+- This applies to:
   - `fig:dry_quantile`
   - `fig:rainy_quantile`
   - `fig:80_components`
   - `tab:gamma_sigma_intervals1`
   - `tab:gamma_sigma_intervals2`
-- If these remain in that role, the captions and nearby text must say so clearly.
-- If the workflow cannot regenerate them cleanly in that role, they should be rerun or demoted rather than left ambiguous.
+- The captions and nearby text should continue to say so clearly.
+- For the three historical-summary figures, the revised article repo now includes a locked local provenance bundle at:
+  - `generated/historical_summary_sources/`
+- That bundle preserves:
+  - article-side copies of the exact PNGs,
+  - SHA-256 hashes matching the workflow gold manifests,
+  - and source references to the workflow script and reproduction docs.
 
 ## Recent selected-model workflow status
 
@@ -267,7 +276,7 @@ Use that companion file when:
    - `fig:synth1`
    - `fig:synth2` if retained
 
-3. Make an explicit keep-versus-regenerate decision for the historical summary objects.
+3. Keep the historical-summary objects in their descriptive role and preserve their provenance bundle.
    - `fig:dry_quantile`
    - `fig:rainy_quantile`
    - `fig:80_components`

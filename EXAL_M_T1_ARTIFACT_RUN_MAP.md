@@ -85,9 +85,9 @@ These objects are still reproducible workflow assets, but they are not part of t
 | Manuscript object | Current role | Current source status | Action |
 |---|---|---|---|
 | `fig:synth2` | appendix historical-only reference | not sourced from the locked five-run keep lineage; current `DISC/posterior_samples_counter_valid.png` remains a workflow-linked counterfactual artifact outside this narrowed keep-run freeze | defer or regenerate from a separately locked counterfactual workflow if retained |
-| `fig:dry_quantile` | historical regime illustration | workflow-linked historical figure, hash-matched to the current workflow gold record; not a five-run cutoff artifact | keep as historical-summary object |
-| `fig:rainy_quantile` | historical regime illustration | workflow-linked historical figure, hash-matched to the current workflow gold record; not a five-run cutoff artifact | keep as historical-summary object |
-| `fig:80_components` | appendix long-cycle historical summary | workflow-linked historical figure, hash-matched to the current workflow gold record; not a five-run cutoff artifact | keep as historical-summary object |
+| `fig:dry_quantile` | historical regime illustration | workflow-linked historical figure, hash-matched to the current workflow gold record and frozen locally in `generated/historical_summary_sources/`; not a five-run cutoff artifact | keep as historical-summary object |
+| `fig:rainy_quantile` | historical regime illustration | workflow-linked historical figure, hash-matched to the current workflow gold record and frozen locally in `generated/historical_summary_sources/`; not a five-run cutoff artifact | keep as historical-summary object |
+| `fig:80_components` | appendix long-cycle historical summary | workflow-linked historical figure, hash-matched to the current workflow gold record and frozen locally in `generated/historical_summary_sources/`; not a five-run cutoff artifact | keep as historical-summary object |
 
 ### Setup figures outside the selected-model refresh scope
 
@@ -115,5 +115,6 @@ For the current revised article pass, the chosen approach is:
 2. treat them explicitly as workflow-linked historical summaries
 3. do not treat them as additional five-cutoff forecast-validation evidence
 4. do not force them into the representative `2022-12-25` selected-run bundle
+5. preserve their article-side provenance bundle in `generated/historical_summary_sources/`
 
 This is the strongest minimal choice because it preserves reproducibility, avoids mixing incompatible provenance roles, and does not require unnecessary reruns.
