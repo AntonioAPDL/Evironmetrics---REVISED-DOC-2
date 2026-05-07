@@ -93,10 +93,10 @@ These objects are still reproducible workflow assets, but they are not part of t
 
 | Manuscript object | Role | Action |
 |---|---|---|
-| `fig:sanlorenzo` | study-setting figure | keep as workflow-linked support; frozen locally in `generated/workflow_linked_support_sources/` |
-| `fig:covariates` | data/covariate setup figure | keep as workflow-linked support; frozen locally in `generated/workflow_linked_support_sources/` |
-| `fig:retrospectives` | retrospective-product setup figure | keep as workflow-linked support; frozen locally in `generated/workflow_linked_support_sources/` |
-| `fig:ensembles` | forecast-product setup figure | keep as workflow-linked support; frozen locally in `generated/workflow_linked_support_sources/` |
+| `fig:sanlorenzo` | study-setting figure | keep as cutoff-dependent setup/support figure; canonical article-side family is `generated/setup_support_by_cutoff/` with review in `generated/setup_support_by_cutoff_review/` |
+| `fig:covariates` | data/covariate setup figure | keep as cutoff-dependent setup/support figure; canonical article-side family is `generated/setup_support_by_cutoff/` with review in `generated/setup_support_by_cutoff_review/` |
+| `fig:retrospectives` | retrospective-product setup figure | keep as cutoff-dependent setup/support figure; canonical article-side family is `generated/setup_support_by_cutoff/` with review in `generated/setup_support_by_cutoff_review/` |
+| `fig:ensembles` | forecast-product setup figure | keep as cutoff-dependent setup/support figure; canonical article-side family is `generated/setup_support_by_cutoff/` with review in `generated/setup_support_by_cutoff_review/` |
 
 ## 5. What this means operationally
 
@@ -116,14 +116,18 @@ For the current revised article pass, the chosen approach is:
 3. do not treat them as additional five-cutoff forecast-validation evidence
 4. do not force them into the representative `2022-12-25` selected-run bundle
 5. preserve their article-side provenance bundle in `generated/historical_summary_sources/`
-6. preserve the remaining setup/support figures and `fig:synth2` in `generated/workflow_linked_support_sources/`
-7. refresh both local support bundles through:
+6. preserve `fig:synth2` in `generated/workflow_linked_support_sources/`
+7. preserve the cutoff-dependent setup/support figures through `generated/setup_support_by_cutoff/` and `generated/setup_support_by_cutoff_review/`
+8. refresh the local support bundles through:
    - `scripts/refresh_local_provenance_bundles.py`
-8. refresh the representative selected-model bundle and five-run source freeze through:
+9. refresh the cutoff-specific setup/support family through:
+   - `scripts/refresh_setup_support_by_cutoff.py`
+   - `scripts/build_setup_support_by_cutoff_review.py`
+10. refresh the representative selected-model bundle and five-run source freeze through:
    - `scripts/refresh_exal_m_t1_generated_assets.py`
-9. refresh the HE2 publication snapshot through:
+11. refresh the HE2 publication snapshot through:
    - `scripts/refresh_he2_manifest_snapshot.py`
-10. refresh all article-side generated bundles and the review report through:
+12. refresh all article-side generated bundles and the review report through:
    - `scripts/refresh_all_generated_assets.py`
 
 This is the strongest minimal choice because it preserves reproducibility, avoids mixing incompatible provenance roles, and does not require unnecessary reruns.

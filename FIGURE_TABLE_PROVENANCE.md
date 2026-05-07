@@ -102,6 +102,16 @@ The revised manuscript repo now also contains two article-side frozen support bu
 - `generated/historical_summary_sources/`
 - `generated/workflow_linked_support_sources/`
 
+It now also contains a dedicated cutoff-specific setup/support figure family derived from the five verified `exAL-M-T1` run bundles:
+- `generated/setup_support_by_cutoff/`
+- `generated/setup_support_by_cutoff_review/`
+
+That family is produced from the canonical workflow-side derivation path:
+- `config/exal_m_t1_setup_support_by_cutoff_20260506.json`
+- `scripts/render_exal_m_t1_setup_support_by_cutoff.py`
+- `scripts/render_setup_support_figures.R`
+- `R/environmetrics/40_figures_setup_support.R`
+
 Both support bundles can now be refreshed through:
 - `scripts/refresh_local_provenance_bundles.py`
 
@@ -155,10 +165,10 @@ The following manuscript figure assets in `Evironmetrics---REVISED-DOC-2/DISC/` 
 
 | Manuscript label | Current asset | Current manuscript role | Workflow evidence | Hash match | Repro status | Selected-run status | Recommended action |
 |---|---|---|---|---|---|---|---|
-| `fig:sanlorenzo` | `DISC/usgs.png` | study-setting figure | `40_figures.R`, `run_environmetrics_figures.R`, `stage_post.R`, plus provenance docs; frozen locally in `generated/workflow_linked_support_sources/` | yes | reproducible from workflow repo and frozen locally in the article repo | not selected-run dependent | keep as workflow-linked support |
-| `fig:covariates` | `DISC/precip_soilmoisture_climatePC1_faceted_labeled.png` | covariate setup figure | same as above; relies on run-scoped covariate path injection in the current workflow | yes | reproducible from workflow repo and frozen locally in the article repo | not selected-run dependent | keep as workflow-linked support |
-| `fig:retrospectives` | `DISC/retrospective_log_discharge_plot_faceted.png` | retrospective-product setup figure | `40_figures.R`, `run_environmetrics_figures.R`, `stage_post.R`, dedicated retrospective-selection logic; frozen locally in `generated/workflow_linked_support_sources/` | yes | reproducible from workflow repo and frozen locally in the article repo | not selected-run dependent | keep as workflow-linked support |
-| `fig:ensembles` | `DISC/forecats.png` | forecast-product setup figure | current figure runner plus `FORECATS_INPUTS_AND_WEIGHTING_PLAN.md`; frozen locally in `generated/workflow_linked_support_sources/` | yes | reproducible from workflow repo and frozen locally in the article repo | not selected-run dependent | keep as workflow-linked support |
+| `fig:sanlorenzo` | `DISC/usgs.png` | study-setting figure | dedicated cutoff-specific derivation from the five verified `exAL-M-T1` run bundles via `render_exal_m_t1_setup_support_by_cutoff.py` and `40_figures_setup_support.R`; mirrored locally in `generated/setup_support_by_cutoff/` | yes | reproducible from verified run-scoped inputs and frozen locally in the article repo | cutoff-dependent setup/support family now available for all five cutoffs | keep as setup/support figure with explicit per-cutoff provenance |
+| `fig:covariates` | `DISC/precip_soilmoisture_climatePC1_faceted_labeled.png` | covariate setup figure | same dedicated cutoff-specific derivation; uses run-scoped historical covariate inputs through the verified five-run bundles; mirrored locally in `generated/setup_support_by_cutoff/` | yes | reproducible from verified run-scoped inputs and frozen locally in the article repo | cutoff-dependent setup/support family now available for all five cutoffs | keep as setup/support figure with explicit per-cutoff provenance |
+| `fig:retrospectives` | `DISC/retrospective_log_discharge_plot_faceted.png` | retrospective-product setup figure | same dedicated cutoff-specific derivation; uses materialized `retros.csv` from each verified run bundle; mirrored locally in `generated/setup_support_by_cutoff/` | yes | reproducible from verified run-scoped inputs and frozen locally in the article repo | cutoff-dependent setup/support family now available for all five cutoffs | keep as setup/support figure with explicit per-cutoff provenance |
+| `fig:ensembles` | `DISC/forecats.png` | forecast-product setup figure | same dedicated cutoff-specific derivation; uses run-scoped retrospective history plus NWS/GloFAS forecast files for each cutoff; mirrored locally in `generated/setup_support_by_cutoff/` | yes | reproducible from verified run-scoped inputs and frozen locally in the article repo | cutoff-dependent setup/support family now available for all five cutoffs | keep as setup/support figure with explicit per-cutoff provenance |
 | `fig:dry_quantile` | `DISC/All_exal_2012-2016_DISC.png` | historical regime illustration | `REPO_MAP.md`, `REPRODUCE_PAPER.md`, `40_figures.R`, notebook; locked article-side bundle in `generated/historical_summary_sources/` | yes | reproducible from workflow repo and frozen locally in the article repo | intentionally retained as historical-summary support | keep with explicit historical-summary provenance |
 | `fig:rainy_quantile` | `DISC/All_exal_2017-2019_DISC.png` | historical regime illustration | same as above; locked article-side bundle in `generated/historical_summary_sources/` | yes | reproducible from workflow repo and frozen locally in the article repo | intentionally retained as historical-summary support | keep with explicit historical-summary provenance |
 | `fig:synth1` | `DISC/posterior_samples_valid.png` | predictive synthesis illustration | `REPO_MAP.md`, `REPRODUCE_PAPER.md`, `40_figures.R`, notebook | yes | reproducible from workflow repo | must match final selected run | regenerate from final selected run |
@@ -167,12 +177,24 @@ The following manuscript figure assets in `Evironmetrics---REVISED-DOC-2/DISC/` 
 
 ### Notes on figure confidence
 
-1. `forecats.png` is reproducible, but its workflow is more delicate than the other setup figures.
+1. The four setup/support figures are now reproduced through a dedicated cutoff-specific workflow.
+   - Workflow-side review:
+     - `/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/exal_m_t1_setup_support_by_cutoff_20260506/review/`
+   - Article-side mirror and review:
+     - `generated/setup_support_by_cutoff/`
+     - `generated/setup_support_by_cutoff_review/`
+   - This is now the preferred provenance path for:
+     - `usgs.png`
+     - `precip_soilmoisture_climatePC1_faceted_labeled.png`
+     - `retrospective_log_discharge_plot_faceted.png`
+     - `forecats.png`
+
+2. `forecats.png` remains more delicate than the other setup figures.
    - The workflow repo includes a dedicated reproducibility plan at:
      - `repro/FORECATS_INPUTS_AND_WEIGHTING_PLAN.md`
-   - That document records both the current generation path and known sensitivity around weighted/legacy inputs.
+   - The new cutoff-specific derivation anchors that figure to the verified run-scoped forecast inputs instead of the older generic paper-level copy.
 
-2. The dry/wet regime figures and the appendix long-cycle figure are now locked as historical-summary support.
+3. The dry/wet regime figures and the appendix long-cycle figure are now locked as historical-summary support.
    - They are not part of the narrow five-run `exAL-M-T1` keep-run lineage.
    - They are frozen locally in:
      - `generated/historical_summary_sources/`
@@ -181,14 +203,14 @@ The following manuscript figure assets in `Evironmetrics---REVISED-DOC-2/DISC/` 
      - not representative-cutoff outputs,
      - and not a second forecast-validation exercise.
 
-3. The older notebook/manual reproduction notes are now secondary.
+4. The older notebook/manual reproduction notes are now secondary.
    - `repro/REPRODUCE_PAPER.md` and `repro/REPO_MAP.md` remain useful provenance references.
    - But the clean current reproduction path is the run-scoped unified workflow:
      - `stage_post.R` injects the actual shared input paths,
      - `run_environmetrics_figures.R` runs headlessly,
      - `40_figures.R` generates the figures.
 
-4. `fig:synth1` is the only synthesis figure currently tied to the selected-model refresh.
+5. `fig:synth1` is the only synthesis figure currently tied to the selected-model refresh.
    - `fig:synth1` is locked to the verified representative `2022-12-25` rerun bundle.
    - `fig:synth2` remains a separate workflow-linked appendix reference and is not part of the narrow five-run keep-lineage freeze.
 
@@ -221,20 +243,22 @@ The following manuscript figure assets in `Evironmetrics---REVISED-DOC-2/DISC/` 
 
 ## Provenance classification for the next phase
 
-### Group A: keep as workflow-linked support figures
-These already have strong provenance and do not depend on the selected-run decision.
+### Group A: keep as cutoff-specific setup/support figures
+These now have a dedicated per-cutoff reproduction family derived from the verified five-run `exAL-M-T1` bundles.
 - `fig:sanlorenzo`
 - `fig:covariates`
 - `fig:retrospectives`
 - `fig:ensembles`
+
+### Group B: keep as workflow-linked appendix reference
 - `fig:synth2`
 
-### Group B: selected-run dependent and must be refreshed or verified first
+### Group C: selected-run dependent and must be refreshed or verified first
 These are too tightly tied to one fitted output to leave ambiguous.
 - `fig:synth1`
 - `tab:components_23_31`
 
-### Group C: reproducible historical-summary support
+### Group D: reproducible historical-summary support
 These objects are intentionally kept as workflow-linked historical summaries of the fitted specification, rather than as representative-cutoff outputs.
 - `fig:dry_quantile`
 - `fig:rainy_quantile`
@@ -297,12 +321,15 @@ These runs already provide:
 
 Resolved gaps from this audit:
 - the narrow `exAL-M-T1` replay path was completed with the required post-export fixes, so the representative selected-model outputs and posterior interpretation tables are now frozen locally in the revised article repo.
-- the remaining setup/support figures and the appendix historical-only reference synthesis are now also frozen locally in the revised article repo through:
+- the cutoff-dependent setup/support figures are now mirrored locally in the revised article repo through:
+  - `generated/setup_support_by_cutoff/`
+  - `generated/setup_support_by_cutoff_review/`
+- the appendix historical-only reference synthesis remains frozen locally through:
   - `generated/workflow_linked_support_sources/`
 - In practice, this means:
   - `fig:synth1`, `tab:components_23_31`, `tab:gamma_sigma_intervals1`, and `tab:gamma_sigma_intervals2` are now locked to verified article-side bundles, and
   - the historical-summary figures are preserved separately through the local provenance bundle under `generated/historical_summary_sources/`,
-  - while `fig:sanlorenzo`, `fig:covariates`, `fig:retrospectives`, `fig:ensembles`, and `fig:synth2` are preserved through `generated/workflow_linked_support_sources/`.
+  - while `fig:synth2` is preserved through `generated/workflow_linked_support_sources/`, and `fig:sanlorenzo`, `fig:covariates`, `fig:retrospectives`, and `fig:ensembles` are now preserved through the new cutoff-specific family under `generated/setup_support_by_cutoff/`.
 
 ## Exact relaunch handoff
 

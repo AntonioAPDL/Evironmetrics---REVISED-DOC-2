@@ -996,6 +996,20 @@ Use this as the working order when actually editing the manuscript.
   - Locked reproduction note:
     - treat `R/unified/stages/stage_post.R` + `scripts/run_environmetrics_figures.R` + `R/environmetrics/40_figures.R` as the current clean reproduction path
     - treat `scripts/make_environmetrics_figures.R` as legacy scaffolding rather than the preferred reproduction contract
+- [x] Create a canonical cutoff-specific setup/support figure family for the four input/setup plots derived from the five verified `exAL-M-T1` run bundles.
+  - Workflow-side runtime family:
+    - `/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/exal_m_t1_setup_support_by_cutoff_20260506/`
+  - Canonical workflow-side scripts:
+    - `config/exal_m_t1_setup_support_by_cutoff_20260506.json`
+    - `/data/muscat_data/jaguir26/project1_ucsc_phd/scripts/render_exal_m_t1_setup_support_by_cutoff.py`
+    - `/data/muscat_data/jaguir26/project1_ucsc_phd/scripts/render_setup_support_figures.R`
+    - `/data/muscat_data/jaguir26/project1_ucsc_phd/R/environmetrics/40_figures_setup_support.R`
+  - Article-side mirrored bundle and review:
+    - `generated/setup_support_by_cutoff/`
+    - `generated/setup_support_by_cutoff_review/`
+  - Canonical article-side helpers:
+    - `scripts/refresh_setup_support_by_cutoff.py`
+    - `scripts/build_setup_support_by_cutoff_review.py`
 - [x] Add a canonical forward runbook and an article-side provenance refresh helper.
   - Canonical runbook:
     - `/data/muscat_data/jaguir26/project1_ucsc_phd/repro/run/CANONICAL_REVISED_ARTICLE_WORKFLOW.md`
@@ -1015,14 +1029,30 @@ Use this as the working order when actually editing the manuscript.
     - `generated/article_asset_review/table_manifest.csv`
 
 ### Next coordinated TODOs after the current manuscript pass
-- [ ] Refresh every interpretation-dependent table and figure so it is generated from the same final `exAL-M-T1` run that produced the CRPS values reported in Table~1.
-  - This includes the covariate-effects table, the dry/wet regime figures, the predictive-synthesis figure, and any appendix summaries that still depend on an older run.
+- [x] Refresh or explicitly reclassify every interpretation-dependent table and figure in line with the locked provenance split.
+  - Representative selected-model outputs refreshed from verified `exAL-M-T1` sources:
+    - `fig:synth1`
+    - `tab:components_23_31`
+    - `tab:gamma_sigma_intervals1`
+    - `tab:gamma_sigma_intervals2`
+  - Historical-summary figures intentionally retained with separate locked provenance:
+    - `fig:dry_quantile`
+    - `fig:rainy_quantile`
+    - `fig:80_components`
+  - Cutoff-dependent setup/support figures now reproduced through the dedicated five-cutoff derived family:
+    - `fig:sanlorenzo`
+    - `fig:covariates`
+    - `fig:retrospectives`
+    - `fig:ensembles`
 - [x] Decide and state the provenance of the supporting interpretation material.
   - Locked decision: Section 4 remains the five-cutoff CRPS evidence; Section 5 uses the representative final cutoff `2022-12-25`; appendix figures/tables remain historical summaries of the selected specification unless later demoted or rerun.
-- [ ] Update the predictive-synthesis figure in the main text so it matches the final selected `exAL-M-T1` analysis used in the current manuscript.
-  - The current main-text synthesis figure is still tied to an older single-cutoff output and needs to be regenerated from the final selected run.
-- [ ] Recheck whether the dry/wet regime figures are still based on the final cutoff fit and, if so, make that provenance explicit.
-  - If they are not based on the final selected run, regenerate them or revise the surrounding text so the interpretation remains coherent.
+- [x] Update the predictive-synthesis figure in the main text so it matches the final selected `exAL-M-T1` analysis used in the current manuscript.
+  - `fig:synth1` is now tied to the verified representative `2022-12-25` selected-model bundle.
+- [x] Recheck the dry/wet regime figures and make their provenance explicit.
+  - Locked decision:
+    - keep them as descriptive historical-summary figures
+    - do not treat them as representative-cutoff outputs
+    - preserve them through `generated/historical_summary_sources/`
 - [ ] Clarify forecast-covariate availability in both the manuscript and the corrections letter.
   - Make explicit that forecast precipitation and forecast soil moisture are used after the cutoff, whereas the large-scale climate factor (GDPC / PCA-based summary) is not forecasted in the same way.
 - [ ] Add an explicit justification for why only five cutoffs were retained after the archive/version screening.
