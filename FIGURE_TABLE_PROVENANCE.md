@@ -32,6 +32,7 @@ Article-side provenance refresh helper:
 - `scripts/refresh_local_provenance_bundles.py`
 - `scripts/refresh_exal_m_t1_generated_assets.py`
 - `scripts/refresh_he2_manifest_snapshot.py`
+- `scripts/build_setup_support_by_cutoff_v2_appendix.py`
 - `scripts/build_generated_asset_index.py`
 - `scripts/refresh_all_generated_assets.py`
 
@@ -41,6 +42,7 @@ Article-side review outputs:
 - `generated/README.md`
 - `generated/asset_inventory.csv`
 - `generated/he2_historical_support_audit_20260507/historical_support_audit.md`
+- `generated/setup_support_by_cutoff_v2_appendix/README.md`
 
 This inventory now distinguishes three reproducibility levels:
 - objects frozen locally in the article repo and tied to verified selected-model reruns,
@@ -67,6 +69,9 @@ The clean current generator contract is:
 The article-side generated asset freeze point is now indexed under:
 - `generated/README.md`
 - `generated/asset_inventory.csv`
+
+The appendix-ready composite cutoff panels now live under:
+- `generated/setup_support_by_cutoff_v2_appendix/`
 
 The weaker historical entrypoint is:
 - `scripts/make_environmetrics_figures.R`

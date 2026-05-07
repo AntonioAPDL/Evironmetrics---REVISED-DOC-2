@@ -77,6 +77,11 @@ Preferred article-side refresh command:
 
 That command should be treated as the standard way to refresh article-side bundles before any figure/table promotion into `DISC/`.
 
+The revised article appendix can now also draw from:
+- `generated/setup_support_by_cutoff_v2_appendix/`
+
+This family contains appendix-ready composite panels for the cutoff-specific setup/support figures and is refreshed automatically through the same top-level command.
+
 ### 0.3 Forward repair checkpoint
 
 The current publication state and the future corrected full-history rerun state must stay separate until we intentionally update them.

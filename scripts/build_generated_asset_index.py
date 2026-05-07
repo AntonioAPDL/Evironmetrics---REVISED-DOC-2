@@ -15,6 +15,7 @@ FAMILY_DESCRIPTIONS = {
     'setup_support_by_cutoff': 'Older v1 cutoff-specific setup/support figure family retained only for audit comparison.',
     'setup_support_by_cutoff_review': 'v1 review markdown/gallery for the provisional setup/support figure family.',
     'setup_support_by_cutoff_v2': 'Canonical cutoff-specific setup/support figure family mirrored from the validated v2 workflow.',
+    'setup_support_by_cutoff_v2_appendix': 'Appendix-ready composite panels built from the canonical v2 cutoff-specific setup/support figure family.',
     'setup_support_by_cutoff_v2_article_selection': 'Manifest for which cutoff-specific v2 figures are promoted into DISC/.',
     'setup_support_by_cutoff_v2_review': 'Review markdown/gallery and audits for the canonical v2 setup/support figure family.',
     'workflow_linked_support_sources': 'Frozen workflow-linked support bundle for appendix/reference figures not tied to the narrow exAL-M-T1 rerun family.',

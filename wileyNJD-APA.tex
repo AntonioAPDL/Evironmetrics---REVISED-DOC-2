@@ -602,6 +602,47 @@ Historical-only reference predictive distribution for river flow (log-log scale,
 
 Figure~\ref{fig:synth2} provides a historical-only reference for the December 25, 2022 cutoff. It is included to contrast the operational synthesis in Figure~\ref{fig:synth1} with a simpler counterfactual that excludes retrospective and forecast products.
 
+\subsection{Additional Cutoff-Specific Setup and Support Panels}
+\label{app:cutoffsupportpanels}
+
+The main text shows the representative December 25, 2022 setup and support figures individually. For completeness, this appendix collects the corresponding setup/support panels for the other rolling-origin cutoffs used in the Bayesian forecast validation. Each panel contains four views for the same cutoff: observed USGS history to the cutoff, the historical PPT/SOIL/PCA covariate histories, the retrospective support actually used by the fitted models, and the cutoff-centered forecast-product context. These supplementary panels are included for documentation and reader inspection rather than as separate forecast-validation evidence.
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=450pt]{generated/setup_support_by_cutoff_v2_appendix/20210123_exal_m_t1_panel.png}
+\caption{
+Supplementary setup/support panel for the January 23, 2021 cutoff. The panel documents the historical observations, covariate histories, retrospective support used by fit, and forecast-product context associated with the published Bayesian validation rows at this cutoff.
+}
+\label{fig:setupsupport_20210123}
+\end{figure}
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=450pt]{generated/setup_support_by_cutoff_v2_appendix/20211112_exal_m_t1_panel.png}
+\caption{
+Supplementary setup/support panel for the November 12, 2021 cutoff. As in Figure~\ref{fig:setupsupport_20210123}, the panel documents the cutoff-specific observation, covariate, retrospective, and forecast-product inputs linked to the published Bayesian validation rows.
+}
+\label{fig:setupsupport_20211112}
+\end{figure}
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=450pt]{generated/setup_support_by_cutoff_v2_appendix/20211221_exal_m_t1_panel.png}
+\caption{
+Supplementary setup/support panel for the December 21, 2021 cutoff. This cutoff belongs to the full-history histfix class, so the retrospective component extends back to the common historical start used by the fitted models.
+}
+\label{fig:setupsupport_20211221}
+\end{figure}
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=450pt]{generated/setup_support_by_cutoff_v2_appendix/20220511_exal_m_t1_panel.png}
+\caption{
+Supplementary setup/support panel for the May 11, 2022 cutoff. This is the second full-history histfix cutoff retained in the Bayesian rolling-origin validation.
+}
+\label{fig:setupsupport_20220511}
+\end{figure}
+
 \section{Markov Chain Monte Carlo Algorithms}
 
 The appendix algorithms use the same state-space notation as Subsection~\ref{subsec:fullmodel}. To keep the displays compact, they work with source-indexed observation vectors during the estimation period and with source-indexed forecast-product vectors during the forecast window. The role of the selector vector is therefore the same throughout: before the cutoff it is \(\mathbf{h}_{t,j}\), whereas after the cutoff it becomes the forecast-window selector \(\mathbf{e}_{T+k,j}\) for the active source \(j\). When the main text distinguishes individual forecast members through \(y_T^{j,i}(k)\), the appendix uses the corresponding source-indexed forecast quantity \(y_{T+k}^{j}\) because the algorithms only need the active source channel at each lead time.
