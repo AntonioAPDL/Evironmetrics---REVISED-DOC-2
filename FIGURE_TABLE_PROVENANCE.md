@@ -19,6 +19,12 @@ Companion relaunch document:
 - `EXAL_M_T1_RELAUNCH_CHECKLIST.md`
   - This records the exact cutoff-by-cutoff source runs behind the published `exAL-M-T1` CRPS values, the required rerun artifacts, and the post-rerun validation contract.
 
+Canonical forward runbook:
+- `/data/muscat_data/jaguir26/project1_ucsc_phd/repro/run/CANONICAL_REVISED_ARTICLE_WORKFLOW.md`
+
+Article-side provenance refresh helper:
+- `scripts/refresh_local_provenance_bundles.py`
+
 This inventory now distinguishes three reproducibility levels:
 - objects frozen locally in the article repo and tied to verified selected-model reruns,
 - objects frozen locally in the article repo as workflow-linked support figures,
@@ -88,6 +94,9 @@ That companion file should now be treated as the most direct answer to:
 The revised manuscript repo now also contains two article-side frozen support bundles:
 - `generated/historical_summary_sources/`
 - `generated/workflow_linked_support_sources/`
+
+Both support bundles can now be refreshed through:
+- `scripts/refresh_local_provenance_bundles.py`
 
 ## Current workflow evidence
 

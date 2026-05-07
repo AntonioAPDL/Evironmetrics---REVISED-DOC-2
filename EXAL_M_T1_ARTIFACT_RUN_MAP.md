@@ -117,5 +117,7 @@ For the current revised article pass, the chosen approach is:
 4. do not force them into the representative `2022-12-25` selected-run bundle
 5. preserve their article-side provenance bundle in `generated/historical_summary_sources/`
 6. preserve the remaining setup/support figures and `fig:synth2` in `generated/workflow_linked_support_sources/`
+7. refresh both local support bundles through:
+   - `scripts/refresh_local_provenance_bundles.py`
 
 This is the strongest minimal choice because it preserves reproducibility, avoids mixing incompatible provenance roles, and does not require unnecessary reruns.

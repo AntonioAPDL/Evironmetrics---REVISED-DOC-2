@@ -996,6 +996,13 @@ Use this as the working order when actually editing the manuscript.
   - Locked reproduction note:
     - treat `R/unified/stages/stage_post.R` + `scripts/run_environmetrics_figures.R` + `R/environmetrics/40_figures.R` as the current clean reproduction path
     - treat `scripts/make_environmetrics_figures.R` as legacy scaffolding rather than the preferred reproduction contract
+- [x] Add a canonical forward runbook and an article-side provenance refresh helper.
+  - Canonical runbook:
+    - `/data/muscat_data/jaguir26/project1_ucsc_phd/repro/run/CANONICAL_REVISED_ARTICLE_WORKFLOW.md`
+  - Article-side helper:
+    - `scripts/refresh_local_provenance_bundles.py`
+  - Operational rule:
+    - refresh local support bundles through the helper script instead of manual copying
 
 ### Next coordinated TODOs after the current manuscript pass
 - [ ] Refresh every interpretation-dependent table and figure so it is generated from the same final `exAL-M-T1` run that produced the CRPS values reported in Table~1.
