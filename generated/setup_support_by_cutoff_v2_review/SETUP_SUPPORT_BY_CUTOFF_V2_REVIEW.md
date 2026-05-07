@@ -1,5 +1,7 @@
 # Setup/Support Figures by Cutoff v2 Review
 
+See also: `INPUT_ALIGNMENT_AUDIT.md` in this same directory for the exact selected-run input alignment and the explanation of why three retrospective panels remain short-window.
+
 This review bundle mirrors the corrected cutoff-specific setup/input/support figures derived from the validated exAL-M-T1 v2 runtime family.
 
 ## Cutoff summary
