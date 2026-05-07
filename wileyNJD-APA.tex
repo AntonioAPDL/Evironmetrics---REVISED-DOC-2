@@ -421,13 +421,13 @@ The first GDPC factor remains close to zero after conditioning on precipitation 
 
 \subsection{Historical Behavior Across Representative Regimes}
 
-To illustrate how the selected specification adapts across contrasting hydrological conditions, we focus on the 5th, 50th, and 95th quantiles during the 2012--2016 drought and the 2017--2019 wet period. These figures are included to show how predictive spread changes across representative regimes, not as a second forecast-validation exercise.
+To illustrate how the selected specification behaves across contrasting hydrological conditions, we show historical quantile summaries over two representative periods: the 2012--2016 drought and the 2017--2019 wet period. These figures are included as historical summaries of the fitted specification, not as a second forecast-validation exercise and not as additional rolling-origin evidence.
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=450pt]{DISC/All_exal_2012-2016_DISC.png}
 \caption{
-Posterior mean and 95\% credible intervals of river flow quantiles during the dry period (2012--2016). Shown are estimates for the 5th (red), 50th (green), and 95th (blue) quantile models, along with observed daily USGS flow (black). Horizontal dashed lines mark NOAA-defined minor and major flooding thresholds.
+Historical posterior mean and 95\% credible intervals of river-flow quantiles during the dry period (2012--2016) under the selected specification. Shown are estimates for the 5th (red), 50th (green), and 95th (blue) quantile models, along with observed daily USGS flow (black). Horizontal dashed lines mark NOAA-defined minor and major flooding thresholds.
 }
 \label{fig:dry_quantile}
 \end{figure}
@@ -436,14 +436,14 @@ Posterior mean and 95\% credible intervals of river flow quantiles during the dr
 \centering
 \includegraphics[width=450pt]{DISC/All_exal_2017-2019_DISC.png}
 \caption{
-Posterior mean and 95\% credible intervals of river flow quantiles during the wet period (2017--2019). Shown are estimates for the 5th (red), 50th (green), and 95th (blue) quantile models, along with observed daily USGS flow (black). Horizontal dashed lines mark NOAA-defined minor and major flooding thresholds.
+Historical posterior mean and 95\% credible intervals of river-flow quantiles during the wet period (2017--2019) under the selected specification. Shown are estimates for the 5th (red), 50th (green), and 95th (blue) quantile models, along with observed daily USGS flow (black). Horizontal dashed lines mark NOAA-defined minor and major flooding thresholds.
 }
 \label{fig:rainy_quantile}
 \end{figure}
 
-Figures~\ref{fig:dry_quantile} and \ref{fig:rainy_quantile} show clear differences between the drought and wet periods. During 2012--2016, the posterior bands remain comparatively narrow and the upper tail rarely approaches the flood thresholds. During 2017--2019, the upper tail widens substantially during the main winter events, and the 95th quantile exceeds the major flood stage in 2017 and 2019.
+Figures~\ref{fig:dry_quantile} and \ref{fig:rainy_quantile} show clear differences between the drought and wet periods in these historical summaries. During 2012--2016, the posterior bands remain comparatively narrow and the upper tail rarely approaches the flood thresholds. During 2017--2019, the upper tail widens substantially during the main winter events, and the 95th quantile exceeds the major flood stage in 2017 and 2019.
 
-The contrast between these periods is most visible in the spread between the 5th and 95th quantiles. That spread remains relatively tight under dry conditions but expands during wet-season peaks, indicating that the selected specification allocates greater predictive spread when hydrological variability increases.
+The contrast between these periods is most visible in the spread between the 5th and 95th quantiles. That spread remains relatively tight under dry conditions but expands during wet-season peaks, indicating that the selected specification allocates greater predictive spread when hydrological variability increases over the historical record.
 
 \subsection{Predictive Synthesis Illustration}
 \label{subsec:synthillustration}
@@ -581,12 +581,12 @@ Tables~\ref{tab:gamma_sigma_intervals1} and \ref{tab:gamma_sigma_intervals2} sum
 \centering
 \includegraphics[width=450pt]{DISC/80_component_1991_2022.png}
 \caption{
-Posterior mean and 95\% credible intervals for the 80-month seasonal component of river flow from 1991 to 2022, estimated at the 5th (red), 50th (green), and 95th (blue) quantiles. Observed USGS daily flow is shown in black for reference.
+Historical posterior mean and 95\% credible intervals for the 80-month seasonal component of river flow from 1991 to 2022, estimated at the 5th (red), 50th (green), and 95th (blue) quantiles under the selected specification. Observed USGS daily flow is shown in black for reference.
 }
 \label{fig:80_components}
 \end{figure}
 
-Figure~\ref{fig:80_components} shows that the 80-month seasonal component is broadly aligned across the three representative quantiles and captures multi-year wet and dry phases in the historical record.
+Figure~\ref{fig:80_components} shows that the 80-month seasonal component is broadly aligned across the three representative quantiles and captures multi-year wet and dry phases in the historical record. Its role is descriptive: it summarizes the long-cycle behavior recovered by the fitted specification rather than providing additional forecast-window validation evidence.
 
 \subsection{Historical-Only Predictive Synthesis}
 \label{app:historicalsynth}

@@ -959,6 +959,11 @@ Use this as the working order when actually editing the manuscript.
     - `fig:dry_quantile`
     - `fig:rainy_quantile`
     - `fig:80_components`
+- [x] Make the historical-summary figures explicit in the manuscript text and captions.
+  - Locked choice:
+    - keep `fig:dry_quantile`, `fig:rainy_quantile`, and `fig:80_components`
+    - treat them as workflow-linked historical summaries of the selected specification
+    - do not treat them as representative-cutoff or additional forecast-validation objects
 
 ### Next coordinated TODOs after the current manuscript pass
 - [ ] Refresh every interpretation-dependent table and figure so it is generated from the same final `exAL-M-T1` run that produced the CRPS values reported in Table~1.
