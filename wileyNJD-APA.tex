@@ -232,7 +232,7 @@ where \(\rho_\tau\) is the quantile score and \(\mathbf{G}^{-1}\) is the predict
 
 \subsection{Study Setting and Observations}
 
-Our target series is the average daily natural water flow (in cubic feet per second) of the San Lorenzo River at the Big Trees U.S. Geological Survey (USGS) gauging station in Santa Cruz, California. The Big Trees location is characterized by minimal human intervention, so the recorded flow closely reflects natural river dynamics. The full dataset covers May 29, 1987, through December 25, 2022, and contains 12,986 daily USGS observations. For reproducibility, the setup/support figures in this section are shown for the representative cutoff-specific input bundle associated with the December 25, 2022 \texttt{exAL-M-T1} run, so Figures~\ref{fig:sanlorenzo}--\ref{fig:ensembles} display the historical support and forecast windows actually used by that bundle rather than the full record.
+Our target series is the average daily natural water flow (in cubic feet per second) of the San Lorenzo River at the Big Trees U.S. Geological Survey (USGS) gauging station in Santa Cruz, California. The Big Trees location is characterized by minimal human intervention, so the recorded flow closely reflects natural river dynamics. Over the study window used in this article, the daily series covers May 29, 1987, through December 25, 2022, and contains 12,995 observations. For reproducibility, the setup/support figures in this section are shown for the representative cutoff-specific input bundle associated with the December 25, 2022 \texttt{exAL-M-T1} run. Figures~\ref{fig:sanlorenzo} and \ref{fig:covariates} use the full historical daily record available to that bundle from May 29, 1987 through the cutoff. Figure~\ref{fig:retrospectives} uses the retrospective support actually preserved for that bundle, which begins later because the selected December 25, 2022 configuration follows the short-window synthetic-retrospective lane. Figure~\ref{fig:ensembles} shows a compact cutoff-centered display extending 28 days before and 28 days after the cutoff so that the plotted post-cutoff portion matches the maximum forecast horizon.
 
 The San Lorenzo River is a major water resource for the Santa Cruz area and is relevant to both flood response and longer-term water-supply planning. The record includes major flood episodes as well as prolonged dry conditions, so it supports analysis of both low-flow and high-flow behavior in one basin. Lower quantiles are therefore relevant for drought conditions, whereas upper quantiles are relevant for flood risk.
 
@@ -240,7 +240,7 @@ The San Lorenzo River is a major water resource for the Santa Cruz area and is r
 \centering
 \includegraphics[width=450pt]{DISC/usgs.png}
 \caption{
-Observed USGS daily water flow (log-log scale, cm$^3$/s) over the historical support window used by the representative December 25, 2022 cutoff-specific input bundle, spanning January 10, 2020 through December 25, 2022. Horizontal dashed lines indicate NOAA-defined minor (16.5 ft, 503 cm) and major (21.76 ft, 663 cm) flooding thresholds, converted to the plotting scale.
+Observed USGS daily water flow (log-log scale, cm$^3$/s) over the full historical daily record used for the representative December 25, 2022 cutoff-specific input bundle, spanning May 29, 1987 through December 25, 2022. Horizontal dashed lines indicate NOAA-defined minor (16.5 ft, 503 cm) and major (21.76 ft, 663 cm) flooding thresholds, converted to the plotting scale.
 }
 \label{fig:sanlorenzo}
 \end{figure}
@@ -255,27 +255,27 @@ To represent broader climate conditions, we also use a collection of monthly cli
 
 We summarize these climate indices with the first generalized dynamic principal component (GDPC) \citep{JSSv092c02}. This factor serves as a single large-scale climate summary that captures their dominant common variation through time. The number of leads and lags is selected by leave-one-out cross-validation, and the first component explains 53.42\% of the total variability among the indices.
 
-The transfer covariates used in the application are therefore standardized precipitation, standardized soil moisture, and the first GDPC factor. Figure~\ref{fig:covariates} shows these three explanatory series over the representative historical support window associated with the December 25, 2022 cutoff-specific input bundle.
+The transfer covariates used in the application are therefore standardized precipitation, standardized soil moisture, and the first GDPC factor. Figure~\ref{fig:covariates} shows these three explanatory series over the full historical daily window available to the representative December 25, 2022 cutoff-specific input bundle.
 
 \begin{figure*}[hbt!]
 \centering
 \centerline{\includegraphics[width=450pt]{DISC/precip_soilmoisture_climatePC1_faceted_labeled.png}}
 \caption{
-Historical precipitation, soil moisture, and first GDPC covariate series over the January 10, 2020 through December 25, 2022 support window used by the representative December 25, 2022 cutoff-specific input bundle. The figure is rendered directly from the raw cutoff-specific covariate files used by that bundle.
+Historical precipitation, soil moisture, and first GDPC covariate series over the May 29, 1987 through December 25, 2022 daily window used by the representative December 25, 2022 cutoff-specific input bundle. The figure is rendered directly from the raw cutoff-specific covariate files used by that bundle.
 }
 \label{fig:covariates}
 \end{figure*}
 
 The external product families come from two agencies: the Global Flood Awareness System (GloFAS) operated by ECMWF, and the National Weather Service (NWS) operated by NOAA. Each agency contributes both a retrospective product and an operational forecast product. The retrospective products are useful because they provide historically aligned external series that can be compared against the target observations before the cutoff, allowing the model to learn source-specific discrepancy patterns before those same sources enter the forecast window.
 
-The retrospective products enter the estimation period and are used to learn source-specific discrepancies relative to the USGS target series. Figure~\ref{fig:retrospectives} shows the corresponding retrospective series over the same representative historical support window used by the December 25, 2022 cutoff-specific input bundle.
+The retrospective products enter the estimation period and are used to learn source-specific discrepancies relative to the USGS target series. Figure~\ref{fig:retrospectives} shows the corresponding retrospective series over the support window actually preserved for the representative December 25, 2022 cutoff-specific input bundle. For this cutoff, the selected short-window synthetic-retrospective bundle begins on January 10, 2020 rather than at the 1987 study start, whereas the full-history support remains available in the USGS and covariate files.
 
 The operational forecast products are used only after a cutoff date. The NWS ensemble has 7 members: 6 members provide medium-range forecasts up to 8.5 days, and one control member extends to 10 days. The GloFAS ensemble contains 51 members, all providing medium-range forecasts for up to 28 days. These products therefore differ not only in source but also in forecast horizon and operational update pattern, which is why the forecast window must be modeled source by source rather than as a single homogeneous input stream.
 
 \begin{figure*}[hbt!]
 \centering
 \centerline{\includegraphics[width=450pt]{DISC/retrospective_log_discharge_plot_faceted.png}}
-\caption{Selected GloFAS and NWS retrospective series over the January 10, 2020 through December 25, 2022 support window used by the representative December 25, 2022 cutoff-specific input bundle. The NWS panel follows the synthetic-retrospective lane used in that bundle, while the GloFAS panel follows the corresponding cutoff-era historical retrospective selection.}
+\caption{Selected GloFAS and NWS retrospective series over the retrospective support window preserved for the representative December 25, 2022 cutoff-specific input bundle, spanning January 10, 2020 through December 25, 2022. The NWS panel follows the synthetic-retrospective lane used in that bundle, while the GloFAS panel follows the corresponding cutoff-era historical retrospective selection.}
 \label{fig:retrospectives}
 \end{figure*}
 
@@ -321,13 +321,13 @@ We choose discount factors componentwise to reflect each component’s time scal
 
 The out-of-sample evaluation uses five rolling-origin cutoff dates that span contrasting hydrological conditions and remain compatible with the archived retrospective and forecast products available from each agency. At a cutoff \(c\), the model is fit using USGS observations and retrospective products available through \(c\). Forecasts are then generated over the subsequent forecast window using the latest forecast products issued at or before \(c\) together with the forecast covariates available at that origin. Post-cutoff USGS observations are reserved strictly for verification and are not used to fit or update the predictive distributions.
 
-GloFAS issues forecast products daily, whereas NWS issues them hourly. To maintain temporal consistency across sources, we aggregate the NWS products to daily resolution and then retain only the most recent daily issue available at each cutoff. Figure~\ref{fig:ensembles} illustrates the resulting information structure for the representative cutoff on December 25, 2022, using the same cutoff-specific support window shown in Figures~\ref{fig:sanlorenzo}--\ref{fig:retrospectives}. The GloFAS forecast window extends from December 26, 2022 to January 22, 2023, whereas the NWS forecast window extends from December 26, 2022 to January 5, 2023.
+GloFAS issues forecast products daily, whereas NWS issues them hourly. To maintain temporal consistency across sources, we aggregate the NWS products to daily resolution and then retain only the most recent daily issue available at each cutoff. Figure~\ref{fig:ensembles} illustrates the resulting information structure for the representative cutoff on December 25, 2022 in a compact display that spans 28 days before and 28 days after the cutoff. The GloFAS forecast window extends from December 26, 2022 to January 22, 2023, whereas the NWS forecast window extends from December 26, 2022 to January 2, 2023.
 
 \begin{figure*}[hbt!]
 \centering
 \centerline{\includegraphics[width=450pt]{DISC/forecats.png}}
 \caption{
-\textbf{Historical support window (2020-01-10 to 2022-12-25):} Green—USGS observations; Purple—NWS synthetic retrospective product; Orange—GloFAS retrospective product. \textbf{Forecast window (from 2022-12-26 onward):} Red—future USGS observations used only for verification; Purple—NWS 7-member forecast product, covering 2022-12-26 to 2023-01-05; Orange—GloFAS 51-member forecast product, covering 2022-12-26 to 2023-01-22. Horizontal dashed lines indicate official flood-stage thresholds for the river.
+\textbf{Cutoff-centered display (2022-11-27 to 2023-01-22):} The panel shows 28 days before and 28 days after the December 25, 2022 cutoff. Before the cutoff, Green—USGS observations; Purple—NWS synthetic retrospective product; Orange—GloFAS retrospective product. After the cutoff, Red—future USGS observations used only for verification; Purple—NWS 7-member forecast product, covering 2022-12-26 to 2023-01-02; Orange—GloFAS 51-member forecast product, covering 2022-12-26 to 2023-01-22. Horizontal dashed lines indicate official flood-stage thresholds for the river.
 }
 \label{fig:ensembles}
 \end{figure*}

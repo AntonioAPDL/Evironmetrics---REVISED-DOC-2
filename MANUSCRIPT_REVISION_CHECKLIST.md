@@ -46,6 +46,11 @@ The corrected cutoff-specific setup/support family is now:
 - `generated/setup_support_by_cutoff_v2/`
 - `generated/setup_support_by_cutoff_v2_review/`
 
+Current corrected `v2` plotting contract:
+- `usgs.png` and `precip_soilmoisture_climatePC1_faceted_labeled.png` use the full `1987-05-29 -> cutoff` daily history available in the selected-run shared inputs
+- `forecats.png` uses a strict `cutoff - 28 days` to `cutoff + 28 days` display window
+- `retrospective_log_discharge_plot_faceted.png` uses the retrospective support actually available for the cutoff-specific bundle, with per-cutoff availability recorded in `generated/setup_support_by_cutoff_v2_review/SETUP_SUPPORT_BY_CUTOFF_V2_REVIEW.md`
+
 It is built from the validated `v2` workflow:
 - `/data/muscat_data/jaguir26/project1_ucsc_phd/repro/run/EXAL_M_T1_SETUP_SUPPORT_BY_CUTOFF_V2_WORKFLOW.md`
 - `/data/muscat_data/jaguir26/project1_ucsc_phd/repro/run/EXAL_M_T1_SETUP_SUPPORT_V2_SOURCE_MANIFEST.md`
