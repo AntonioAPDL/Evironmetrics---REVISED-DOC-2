@@ -175,7 +175,7 @@ def render_markdown(audits: list[CutoffAudit]) -> str:
     lines.append("")
     lines.append("1. `retros_daily.csv` is only a single `log1p` transform of the raw retrospective lineage.")
     lines.append("2. forecast ensemble inputs staged into the long-history figure bundles match the representative selected-run forecast bundles exactly.")
-    lines.append("3. the visually odd low-flow retrospective behavior is already present in the raw source lineage and is not introduced by an extra `log(log(1+x))` transform.")
+    lines.append("3. the visually odd low-flow retrospective behavior is already present in the raw source lineage; the revised support figures now display flow on the `log1p` support scale rather than the harsher internal `log(log(1+x))` scale.")
     lines.append("")
     full_history = next((a for a in audits if a.slug == "20221225_exal_m_t1"), None)
     if full_history is not None:
@@ -185,8 +185,12 @@ def render_markdown(audits: list[CutoffAudit]) -> str:
             f"- `2022-12-25` now renders with full retrospective support from `{full_history.support_start}` through `{full_history.support_end}`."
         )
         lines.append(
-            f"- display scale is explicitly `{full_history.display_scale}` and the axis label is standardized to `Water Flow (log(log(1 + m^3/s)))`."
+            f"- display scale is explicitly `{full_history.display_scale}` and the axis label is standardized to `Water Flow (log(1 + m^3/s))`."
         )
+        if full_history.display_scale != "log1p_cms":
+            lines.append(
+                f"- warning: representative display scale is `{full_history.display_scale}`, expected `log1p_cms`."
+            )
         lines.append("")
     lines.append("## Cutoff Checks")
     lines.append("")
@@ -244,14 +248,14 @@ def render_markdown(audits: list[CutoffAudit]) -> str:
                 )
         if audit.slug == "20220511_exal_m_t1":
             lines.append(
-                "- note: the long-history bundle and the representative selected run are numerically identical across the full overlap, confirming that the visually sharp panel-C behavior is intrinsic to the retrospective source series rather than a transform bug."
+                "- note: the long-history bundle and the representative selected run are numerically identical across the full overlap. The earlier sharp panel-C behavior came from combining full-history low-flow floor values with the old `log(log(1+x))` display scale rather than from a source mismatch."
             )
         lines.append("")
     lines.append("## Conclusion")
     lines.append("")
-    lines.append("- No evidence of double transformation was found in the revised setup/support workflow.")
+    lines.append("- No evidence of accidental double transformation was found in the revised setup/support workflow.")
     lines.append("- Forecast ensembles used in the support figures remain aligned with the representative selected-run forecast bundles.")
-    lines.append("- The unusual low-flow sawtooth patterns in the long-history retrospective panels are already present in the raw retrospective source lineage and are therefore source-product behavior, not a plotting transform error.")
+    lines.append("- The unusual low-flow sawtooth patterns in the long-history retrospective panels are already present in the raw retrospective source lineage, but the support figures now render them on the `log1p` support scale to avoid pathological near-zero `log(log(1+x))` spikes.")
     lines.append("")
     return "\n".join(lines)
 

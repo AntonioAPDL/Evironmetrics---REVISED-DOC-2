@@ -35,6 +35,43 @@ forecast_start_date <- opt[["forecast-start-date"]]
 
 source(file.path(project_root, "scripts", "figure_style_contract.R"))
 
+DISPLAY_FLOW_SCALE <- "log1p_cms"
+INTERNAL_FLOW_SCALE <- "log_log1p_cms"
+
+convert_internal_flow_to_display <- function(x, internal_scale = INTERNAL_FLOW_SCALE, display_scale = DISPLAY_FLOW_SCALE) {
+  vals <- suppressWarnings(as.numeric(x))
+  if (identical(internal_scale, display_scale)) {
+    return(vals)
+  }
+  if (identical(internal_scale, "log_log1p_cms") && identical(display_scale, "log1p_cms")) {
+    return(exp(vals))
+  }
+  stop(sprintf("Unsupported flow-scale conversion: %s -> %s", internal_scale, display_scale), call. = FALSE)
+}
+
+convert_internal_bounds_to_display <- function(bounds, internal_scale = INTERNAL_FLOW_SCALE, display_scale = DISPLAY_FLOW_SCALE) {
+  convert_internal_flow_to_display(bounds, internal_scale = internal_scale, display_scale = display_scale)
+}
+
+compute_display_ylim <- function(values, include_zero = TRUE, pad_frac = 0.08) {
+  vals <- suppressWarnings(as.numeric(values))
+  vals <- vals[is.finite(vals)]
+  if (length(vals) == 0L) {
+    return(c(0, 1))
+  }
+  lo <- min(vals, na.rm = TRUE)
+  hi <- max(vals, na.rm = TRUE)
+  if (include_zero) {
+    lo <- min(lo, 0)
+  }
+  span <- hi - lo
+  if (!is.finite(span) || span <= 0) {
+    span <- max(abs(hi), 1)
+  }
+  pad <- max(span * pad_frac, 0.05)
+  c(lo, hi + pad)
+}
+
 dir.create(out_dir, recursive = TRUE, showWarnings = FALSE)
 cache_dir <- file.path(out_dir, "cache")
 dir.create(cache_dir, recursive = TRUE, showWarnings = FALSE)
@@ -187,11 +224,18 @@ build_quant_df <- function(arr, idx, dates) {
 render_quantile_window <- function(xbs_retro, idx, title_text, out_file) {
   flood_stages_ft <- c(21.76, 16.5)^3
   flood_stages_cm <- flood_stages_ft * CFSToCMS_CONVERSION_FACTOR
-  flood_stages_trans <- log(log(flood_stages_cm + 1))
+  flood_stages_trans <- log1p(flood_stages_cm)
   dates <- as.Date(dates_ts_usgs[idx])
   quant_df <- build_quant_df(xbs_retro, idx, dates)
-  obs_df <- data.frame(Date = dates, Value = Y[1, idx])
+  quant_df <- quant_df %>%
+    mutate(
+      Lower = convert_internal_flow_to_display(Lower),
+      Median = convert_internal_flow_to_display(Median),
+      Upper = convert_internal_flow_to_display(Upper)
+    )
+  obs_df <- data.frame(Date = dates, Value = convert_internal_flow_to_display(Y[1, idx]))
   flood_lines <- data.frame(y = flood_stages_trans)
+  ylim <- compute_display_ylim(c(quant_df$Lower, quant_df$Upper, obs_df$Value, flood_lines$y), include_zero = TRUE)
 
   alpha_val <- 0.11
   p <- ggplot() +
@@ -300,10 +344,10 @@ render_quantile_window <- function(xbs_retro, idx, title_text, out_file) {
     labs(
       title = title_text,
       x = NULL,
-      y = figure_flow_axis_label("log_log1p_cms")
+      y = figure_flow_axis_label(DISPLAY_FLOW_SCALE)
     ) +
     scale_x_date(date_breaks = "6 months", date_labels = "%Y-%m") +
-    coord_cartesian(ylim = c(-2, 3)) +
+    coord_cartesian(ylim = ylim) +
     theme_manuscript_standard(base_size = 14, title_size = 15, legend_position = "none")
 
   ggsave(out_file, plot = p, width = 12, height = 6, units = "in", dpi = 900)
@@ -535,13 +579,20 @@ render_quantile_window(
 idx_component <- ceiling(TT / 10):TT
 obs_df <- tibble(Date = as.Date(dates_ts_usgs[idx_component]), Value = Y[1, idx_component])
 comp_df <- build_component_df(component = 6, idx = idx_component, q_d_50 = q_d_50, q_d_05 = q_d_05, q_d_95 = q_d_95)
+obs_df <- obs_df %>% mutate(Value = convert_internal_flow_to_display(Value))
+comp_df <- comp_df %>%
+  mutate(
+    Lower = convert_internal_flow_to_display(Lower),
+    Median = convert_internal_flow_to_display(Median),
+    Upper = convert_internal_flow_to_display(Upper)
+  )
 render_component_quantiles(
   comp_df = comp_df,
   obs_df = obs_df,
   time_cuts = time_cuts,
-  ylab = figure_flow_axis_label("log_log1p_cms"),
+  ylab = figure_flow_axis_label(DISPLAY_FLOW_SCALE),
   title_text = "80-month Effect – 1991–2022",
-  ylim = c(-2, 2),
+  ylim = compute_display_ylim(c(comp_df$Lower, comp_df$Upper, obs_df$Value), include_zero = TRUE),
   out_file = file.path(out_dir, "80_component_1991_2022.png")
 )
 
@@ -555,6 +606,8 @@ meta <- list(
     "All_exal_2017-2019_DISC.png",
     "80_component_1991_2022.png"
   ),
+  display_flow_scale = DISPLAY_FLOW_SCALE,
+  internal_flow_scale = INTERNAL_FLOW_SCALE,
   time_cuts = as.integer(time_cuts),
   time_cut_dates = as.character(as.Date(timestamps[time_cuts])),
   rendered_at_utc = format(Sys.time(), tz = "UTC", usetz = TRUE)

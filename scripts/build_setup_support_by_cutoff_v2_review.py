@@ -30,13 +30,14 @@ def main() -> None:
         support = yaml.safe_load((cutoff_dir / 'metadata' / 'support_window.yaml').read_text())
         policy = yaml.safe_load((cutoff_dir / 'metadata' / 'policy_summary.yaml').read_text())
         coverage = yaml.safe_load((cutoff_dir / 'metadata' / 'coverage_audit.yaml').read_text())
+        scale = yaml.safe_load((cutoff_dir / 'metadata' / 'scale_contract.yaml').read_text())
         rows = list(csv.DictReader((cutoff_dir / 'review' / 'figure_manifest.csv').open()))
-        records.append((cutoff_dir, meta, support, policy, coverage, rows))
+        records.append((cutoff_dir, meta, support, policy, coverage, scale, rows))
 
     with (out_root / 'figure_manifest.csv').open('w', newline='') as f:
         writer = csv.writer(f, lineterminator='\n')
-        writer.writerow(['cutoff_dir', 'cutoff_date', 'published_crps', 'bundle_class', 'support_start', 'support_end', 'retrospective_available_start', 'retrospective_full_history_available', 'plot_start', 'plot_end', 'forecast_start_date', 'figure_name', 'article_bundle_path', 'sha256', 'bytes'])
-        for cutoff_dir, meta, support, _policy, coverage, rows in records:
+        writer.writerow(['cutoff_dir', 'cutoff_date', 'published_crps', 'bundle_class', 'support_start', 'support_end', 'retrospective_available_start', 'retrospective_full_history_available', 'plot_start', 'plot_end', 'forecast_start_date', 'display_scale', 'selected_run_internal_analysis_scale', 'figure_name', 'article_bundle_path', 'sha256', 'bytes'])
+        for cutoff_dir, meta, support, _policy, coverage, scale, rows in records:
             for row in rows:
                 writer.writerow([
                     cutoff_dir.name,
@@ -50,6 +51,8 @@ def main() -> None:
                     support['plot_start'],
                     support['plot_end'],
                     support['forecast_start_date'],
+                    scale['display_scale'],
+                    scale.get('selected_run_internal_analysis_scale', ''),
                     row['figure_name'],
                     str((cutoff_dir / 'figures' / row['figure_name']).relative_to(article_root)),
                     row['sha256'],
@@ -61,20 +64,20 @@ def main() -> None:
         'This review bundle mirrors the corrected cutoff-specific setup/input/support figures derived from the validated exAL-M-T1 v2 runtime family.\n\n',
         'See also: `INPUT_ALIGNMENT_AUDIT.md` in this same directory for the exact selected-run input alignment and the explanation of why three retrospective panels remain short-window.\n\n',
         '## Cutoff summary\n',
-        '| Cutoff | Directory | Bundle class | Requested history | Retrospective available from | Forecast window | Published CRPS |\n',
-        '|---|---|---|---|---|---|---:|\n',
+        '| Cutoff | Directory | Bundle class | Requested history | Retrospective available from | Forecast window | Flow display scale | Published CRPS |\n',
+        '|---|---|---|---|---|---|---|---:|\n',
     ]
-    for cutoff_dir, meta, support, policy, coverage, _rows in records:
-        md.append(f"| {meta['cutoff_date']} | `{cutoff_dir.name}` | `{meta['bundle_class']}` | {support['support_start']} to {support['support_end']} | {support['retrospective_available_start']} | {support['plot_start']} to {support['plot_end']} | {meta['published_crps']} |\n")
+    for cutoff_dir, meta, support, policy, coverage, scale, _rows in records:
+        md.append(f"| {meta['cutoff_date']} | `{cutoff_dir.name}` | `{meta['bundle_class']}` | {support['support_start']} to {support['support_end']} | {support['retrospective_available_start']} | {support['plot_start']} to {support['plot_end']} | {scale['display_scale']} | {meta['published_crps']} |\n")
     md.append('\n## Policy summary\n')
     md.append('| Cutoff | NWS policy | GloFAS policy | Notes |\n')
     md.append('|---|---|---|---|\n')
-    for cutoff_dir, meta, support, policy, coverage, _rows in records:
+    for cutoff_dir, meta, support, policy, coverage, _scale, _rows in records:
         md.append(f"| {meta['cutoff_date']} | {policy['nws_policy_summary']} | {policy['glofas_policy_summary']} | {policy.get('notes','')} |\n")
     md.append('\n## Coverage audit\n')
     md.append('| Cutoff | USGS full history | PPT full history | SOIL full history | PCA full history | Retros full history | Retros available start |\n')
     md.append('|---|---|---|---|---|---|---|\n')
-    for cutoff_dir, meta, support, policy, coverage, _rows in records:
+    for cutoff_dir, meta, support, policy, coverage, _scale, _rows in records:
         md.append(
             f"| {meta['cutoff_date']} | {coverage['usgs']['full_history_available']} | {coverage['ppt']['full_history_available']} | "
             f"{coverage['soil']['full_history_available']} | {coverage['pca']['full_history_available']} | "
@@ -89,9 +92,9 @@ def main() -> None:
         '<p>These figures are generated from the validated exAL-M-T1 v2 cutoff-specific setup/support workflow and mirrored into the revised-article repo for review.</p>',
         '<p>See <code>INPUT_ALIGNMENT_AUDIT.md</code> in this same directory for the exact selected-run input alignment and the short-window retrospective explanation.</p>'
     ]
-    for cutoff_dir, meta, support, policy, coverage, rows in records:
+    for cutoff_dir, meta, support, policy, coverage, scale, rows in records:
         html.append(f'<div class="cutoff"><h2>{meta["cutoff_date"]}</h2>')
-        html.append(f'<p class="meta"><strong>Directory:</strong> <code>{cutoff_dir.name}</code><br><strong>Bundle class:</strong> <code>{meta["bundle_class"]}</code><br><strong>Requested history:</strong> {support["support_start"]} to {support["support_end"]}<br><strong>Retrospective available from:</strong> {support["retrospective_available_start"]}<br><strong>Forecast window:</strong> {support["plot_start"]} to {support["plot_end"]}<br><strong>NWS policy:</strong> {policy["nws_policy_summary"]}<br><strong>GloFAS policy:</strong> {policy["glofas_policy_summary"]}<br><strong>Coverage audit:</strong> USGS={coverage["usgs"]["full_history_available"]}, PPT={coverage["ppt"]["full_history_available"]}, SOIL={coverage["soil"]["full_history_available"]}, PCA={coverage["pca"]["full_history_available"]}, Retros={coverage["retrospective"]["full_history_available"]}</p>')
+        html.append(f'<p class="meta"><strong>Directory:</strong> <code>{cutoff_dir.name}</code><br><strong>Bundle class:</strong> <code>{meta["bundle_class"]}</code><br><strong>Requested history:</strong> {support["support_start"]} to {support["support_end"]}<br><strong>Retrospective available from:</strong> {support["retrospective_available_start"]}<br><strong>Forecast window:</strong> {support["plot_start"]} to {support["plot_end"]}<br><strong>Flow display scale:</strong> <code>{scale["display_scale"]}</code><br><strong>Selected-run internal scale:</strong> <code>{scale.get("selected_run_internal_analysis_scale", "")}</code><br><strong>NWS policy:</strong> {policy["nws_policy_summary"]}<br><strong>GloFAS policy:</strong> {policy["glofas_policy_summary"]}<br><strong>Coverage audit:</strong> USGS={coverage["usgs"]["full_history_available"]}, PPT={coverage["ppt"]["full_history_available"]}, SOIL={coverage["soil"]["full_history_available"]}, PCA={coverage["pca"]["full_history_available"]}, Retros={coverage["retrospective"]["full_history_available"]}</p>')
         html.append('<div class="grid">')
         for row in rows:
             rel = Path(os.path.relpath(cutoff_dir / 'figures' / row['figure_name'], out_root))
