@@ -1,5 +1,7 @@
-display_scale: log_log1p_cms
-display_axis_label: Water Flow (log(log(1 + m^3/s)))
+display_scale: log1p_cms
+display_axis_label: Water Flow (log(1 + m^3/s))
+display_scale_basis: workflow_support_display_contract
+selected_run_internal_analysis_scale: log_log1p_cms
 figure_inputs:
   usgs_daily:
     path: /data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_publication_replay_representatives_20260506/20210123_exal_m_t1/runs/multimodel_20210123_v8_eps360cf1_exdqlm_multivar_keep_featurecov_cf1/inputs/shared/usgs/usgs_daily.csv

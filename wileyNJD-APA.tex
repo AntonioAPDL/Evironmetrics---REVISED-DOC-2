@@ -240,7 +240,7 @@ The San Lorenzo River is a major water resource for the Santa Cruz area and is r
 \centering
 \includegraphics[width=450pt]{DISC/usgs.png}
 \caption{
-Observed USGS daily water flow on the $\log(\log(1 + x))$ scale, with $x$ measured in m$^3$/s, over the full historical daily record used for the representative December 25, 2022 cutoff-specific input bundle, spanning May 29, 1987 through December 25, 2022. Horizontal dashed lines indicate NOAA-defined minor (16.5 ft, 503 cm) and major (21.76 ft, 663 cm) flooding thresholds, converted to the plotting scale.
+Observed USGS daily water flow on the $\log(1 + x)$ scale, with $x$ measured in m$^3$/s, over the full historical daily record used for the representative December 25, 2022 cutoff-specific input bundle, spanning May 29, 1987 through December 25, 2022. Horizontal dashed lines indicate NOAA-defined minor (16.5 ft, 503 cm) and major (21.76 ft, 663 cm) flooding thresholds, converted to the plotting scale.
 }
 \label{fig:sanlorenzo}
 \end{figure}
@@ -275,7 +275,7 @@ The operational forecast products are used only after a cutoff date. The NWS ens
 \begin{figure*}[hbt!]
 \centering
 \centerline{\includegraphics[width=450pt]{DISC/retrospective_log_discharge_plot_faceted.png}}
-\caption{Selected GloFAS and NWS retrospective series over the corrected full-history retrospective support window preserved for the representative December 25, 2022 cutoff-specific input bundle, spanning May 29, 1987 through December 25, 2022. The representative bundle follows the revised long-history retrospective contract used for the updated figure workflow.}
+\caption{Selected GloFAS and NWS retrospective series over the corrected full-history retrospective support window preserved for the representative December 25, 2022 cutoff-specific input bundle, spanning May 29, 1987 through December 25, 2022. The representative bundle follows the revised long-history retrospective contract used for the updated figure workflow, and the displayed flow values use the $\log(1+x)$ support scale with $x$ in m$^3$/s.}
 \label{fig:retrospectives}
 \end{figure*}
 
@@ -327,7 +327,7 @@ GloFAS issues forecast products daily, whereas NWS issues them hourly. To mainta
 \centering
 \centerline{\includegraphics[width=450pt]{DISC/forecats.png}}
 \caption{
-\textbf{Cutoff-centered display (2022-11-27 to 2023-01-22):} The panel shows 28 days before and 28 days after the December 25, 2022 cutoff. Before the cutoff, Green—USGS observations; Purple—NWS synthetic retrospective product; Orange—GloFAS retrospective product. After the cutoff, Red—future USGS observations used only for verification; Purple—NWS 7-member forecast product, covering 2022-12-26 to 2023-01-02; Orange—GloFAS 51-member forecast product, covering 2022-12-26 to 2023-01-22. Horizontal dashed lines indicate official flood-stage thresholds for the river.
+\textbf{Cutoff-centered display (2022-11-27 to 2023-01-22):} The panel shows 28 days before and 28 days after the December 25, 2022 cutoff on the $\log(1+x)$ support scale with $x$ in m$^3$/s. Before the cutoff, Green—USGS observations; Purple—NWS synthetic retrospective product; Orange—GloFAS retrospective product. After the cutoff, Red—future USGS observations used only for verification; Purple—NWS 7-member forecast product, covering 2022-12-26 to 2023-01-02; Orange—GloFAS 51-member forecast product, covering 2022-12-26 to 2023-01-22. Horizontal dashed lines indicate official flood-stage thresholds for the river.
 }
 \label{fig:ensembles}
 \end{figure*}

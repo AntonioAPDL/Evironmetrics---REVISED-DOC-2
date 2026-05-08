@@ -11,7 +11,7 @@
       "current_model_output_wired": true,
       "generated_source": "generated/setup_support_by_cutoff_v2/20221225_exal_m_t1/figures/usgs.png",
       "disc_target": "DISC/usgs.png",
-      "sha256": "6a8ba17b657c8d91fe9fa66a10d37521536981827ff1ab525d3d8c1e2740d2f6",
+      "sha256": "6cc79947d8a9af830c014b8c7dbddee1a9e01857cee49f403daa74dc94300831",
       "note": "Representative 2022-12-25 setup/support v2 figure"
     },
     {
@@ -35,7 +35,7 @@
       "current_model_output_wired": true,
       "generated_source": "generated/setup_support_by_cutoff_v2/20221225_exal_m_t1/figures/retrospective_log_discharge_plot_faceted.png",
       "disc_target": "DISC/retrospective_log_discharge_plot_faceted.png",
-      "sha256": "50b1278dd4ab7ca710bd9d5fcc92a9546487fcdff0e2891c31b8f91257a9f254",
+      "sha256": "0371bf4028f48e090bc7d0f7babbb8217898a625ce48b2aa0e42ac0b2e8d0292",
       "note": "Representative 2022-12-25 setup/support v2 figure"
     },
     {
@@ -47,7 +47,7 @@
       "current_model_output_wired": true,
       "generated_source": "generated/setup_support_by_cutoff_v2/20221225_exal_m_t1/figures/forecats.png",
       "disc_target": "DISC/forecats.png",
-      "sha256": "e67a5d3a1d9c9090064735aaf6a8b8699459ec85e160702fda8d9b111e013c47",
+      "sha256": "2f5874c6995b2fa88ed602f90f8389649d09188a71d69f380be9d2d787f6f34d",
       "note": "Representative 2022-12-25 setup/support v2 figure"
     },
     {
@@ -59,7 +59,7 @@
       "current_model_output_wired": true,
       "generated_source": "generated/current_model_output_support/figures/All_exal_2012-2016_DISC.png",
       "disc_target": "DISC/All_exal_2012-2016_DISC.png",
-      "sha256": "6b9fb30f2280a8770997286b45ec7f760cd22339c0287fb66a7ff32fd75ed426",
+      "sha256": "c24a6911e7188ba1853dc5154ce820c3f44b3425ae2b72fca61ac963948b6f40",
       "note": "Rendered from the current 2022-05-11 exAL-M-T1 full-history multivariate run"
     },
     {
@@ -71,7 +71,7 @@
       "current_model_output_wired": true,
       "generated_source": "generated/current_model_output_support/figures/All_exal_2017-2019_DISC.png",
       "disc_target": "DISC/All_exal_2017-2019_DISC.png",
-      "sha256": "d1224fc5f732d7991bf4a9c8a9a0bb2cc6d5e655518ec738a19f0805b7407440",
+      "sha256": "d7f89edc74096a443ce883a4a0a9af940b000ae7fa241c60b0ac4382f8568c76",
       "note": "Rendered from the current 2022-05-11 exAL-M-T1 full-history multivariate run"
     },
     {
@@ -95,7 +95,7 @@
       "current_model_output_wired": true,
       "generated_source": "generated/current_model_output_support/figures/80_component_1991_2022.png",
       "disc_target": "DISC/80_component_1991_2022.png",
-      "sha256": "f05cfc5907f029b64d88ef2422e6abf559e23b845dd7dbb34febebf81d9c9eb7",
+      "sha256": "1801db8d4e93313a6561700cbdf60992bf34f4b458c193c660d4178a73bb2caf",
       "note": "Rendered from the current 2022-05-11 exAL-M-T1 full-history multivariate run"
     },
     {
