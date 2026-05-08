@@ -1,0 +1,26 @@
+display_scale: log_log1p_cms
+display_axis_label: Water Flow (log(log(1 + m^3/s)))
+figure_inputs:
+  usgs_daily:
+    path: /data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_publication_replay_representatives_20260506/20210123_exal_m_t1/runs/multimodel_20210123_v8_eps360cf1_exdqlm_multivar_keep_featurecov_cf1/inputs/shared/usgs/usgs_daily.csv
+    storage_scale: raw_cms
+  covariate_ppt:
+    path: /data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_publication_replay_representatives_20260506/20210123_exal_m_t1/runs/multimodel_20210123_v8_eps360cf1_exdqlm_multivar_keep_featurecov_cf1/inputs/shared/covariates/cov_01_PPT.csv
+    storage_scale: native_covariate_scale
+  covariate_soil:
+    path: /data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_publication_replay_representatives_20260506/20210123_exal_m_t1/runs/multimodel_20210123_v8_eps360cf1_exdqlm_multivar_keep_featurecov_cf1/inputs/shared/covariates/cov_02_SOIL.csv
+    storage_scale: native_covariate_scale
+  covariate_pca:
+    path: /data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_publication_replay_representatives_20260506/20210123_exal_m_t1/runs/multimodel_20210123_v8_eps360cf1_exdqlm_multivar_keep_featurecov_cf1/inputs/shared/covariates/cov_03_PCA.csv
+    storage_scale: native_covariate_scale
+  forecast_glofas_weighted:
+    path: /data/muscat_data/jaguir26/project1_ucsc_phd/repro/frozen_shared_inputs/exalm_t1_authoritative_20260505/cutoff_date=2021-01-23/forecats_bundle/inputs/glofas_weighted_daily.csv
+    storage_scale: raw_cms
+  forecast_nws_weighted:
+    path: /data/muscat_data/jaguir26/project1_ucsc_phd/repro/frozen_shared_inputs/exalm_t1_authoritative_20260505/cutoff_date=2021-01-23/forecats_bundle/inputs/nws_weighted_daily.csv
+    storage_scale: raw_cms
+  retrospective_history:
+    path: /data/muscat_data/jaguir26/project1_ucsc_phd/repro/frozen_shared_inputs/exalm_t1_authoritative_20260505/cutoff_date=2021-01-23/forecats_bundle/inputs/retros_daily.csv
+    storage_scale: raw_cms
+    note: selected source coverage follows the bundle selection policy recorded in
+      meta.yaml.

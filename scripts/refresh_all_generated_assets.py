@@ -30,6 +30,7 @@ def main() -> None:
     run([py, str(article_root / 'scripts' / 'refresh_he2_manifest_snapshot.py'), '--article-root', str(article_root), '--workflow-root', str(workflow_root)])
     run([py, str(article_root / 'scripts' / 'refresh_setup_support_by_cutoff_v2.py'), '--article-root', str(article_root)])
     run([py, str(article_root / 'scripts' / 'build_setup_support_by_cutoff_v2_review.py'), '--article-root', str(article_root)])
+    run([py, str(article_root / 'scripts' / 'build_setup_support_transform_lineage_audit.py'), '--article-root', str(article_root)])
     run([py, str(article_root / 'scripts' / 'build_setup_support_by_cutoff_v2_appendix.py'), '--article-root', str(article_root)])
     run([py, str(article_root / 'scripts' / 'promote_setup_support_v2_to_disc.py'), '--article-root', str(article_root)])
     run([py, str(article_root / 'scripts' / 'build_generated_table_includes.py'), '--article-root', str(article_root)])

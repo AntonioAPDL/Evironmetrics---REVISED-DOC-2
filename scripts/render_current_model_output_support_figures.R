@@ -33,6 +33,8 @@ out_dir <- normalizePath(opt[["output-dir"]], mustWork = FALSE)
 cutoff_date <- opt[["cutoff-date"]]
 forecast_start_date <- opt[["forecast-start-date"]]
 
+source(file.path(project_root, "scripts", "figure_style_contract.R"))
+
 dir.create(out_dir, recursive = TRUE, showWarnings = FALSE)
 cache_dir <- file.path(out_dir, "cache")
 dir.create(cache_dir, recursive = TRUE, showWarnings = FALSE)
@@ -298,16 +300,11 @@ render_quantile_window <- function(xbs_retro, idx, title_text, out_file) {
     labs(
       title = title_text,
       x = NULL,
-      y = expression("Water Flow (Log-Log cm^3/s)")
+      y = figure_flow_axis_label("log_log1p_cms")
     ) +
     scale_x_date(date_breaks = "6 months", date_labels = "%Y-%m") +
     coord_cartesian(ylim = c(-2, 3)) +
-    theme_minimal(base_size = 14) +
-    theme(
-      plot.title = element_text(size = 15, face = "bold", hjust = 0.5),
-      axis.title = element_text(face = "bold"),
-      panel.grid.minor = element_blank()
-    )
+    theme_manuscript_standard(base_size = 14, title_size = 15, legend_position = "none")
 
   ggsave(out_file, plot = p, width = 12, height = 6, units = "in", dpi = 900)
 }
@@ -448,16 +445,15 @@ render_component_quantiles <- function(comp_df, obs_df, time_cuts, ylab, title_t
     labs(title = title_text, x = NULL, y = ylab) +
     coord_cartesian(ylim = ylim, expand = TRUE) +
     scale_x_date(date_breaks = "24 months", date_labels = "%Y-%m") +
-    theme_minimal(base_size = 15) +
-    theme(
-      plot.title = element_text(size = 16, face = "bold", hjust = 0.5, margin = margin(b = 8)),
-      axis.title = element_text(face = "bold"),
-      axis.text.x = element_text(angle = 35, hjust = 1, vjust = 1, size = 11),
-      axis.text.y = element_text(size = 12),
-      panel.grid.minor = element_blank(),
-      panel.grid.major.x = element_line(linewidth = 0.3, color = "#e5e5e5"),
-      panel.grid.major.y = element_line(linewidth = 0.4, color = "#e5e5e5"),
-      plot.margin = margin(12, 12, 12, 12)
+    theme_manuscript_standard(
+      base_size = 15,
+      title_size = 16,
+      legend_position = "none",
+      axis_text_y_size = 12,
+      x_angle = 35,
+      major_grid_x = TRUE,
+      major_grid_y = TRUE,
+      plot_margin = margin(12, 12, 12, 12)
     )
 
   ggsave(out_file, plot = p, width = 12, height = 6, units = "in", dpi = 350)
@@ -543,7 +539,7 @@ render_component_quantiles(
   comp_df = comp_df,
   obs_df = obs_df,
   time_cuts = time_cuts,
-  ylab = expression("Water Flow (Log-Log cm^3/s)"),
+  ylab = figure_flow_axis_label("log_log1p_cms"),
   title_text = "80-month Effect – 1991–2022",
   ylim = c(-2, 2),
   out_file = file.path(out_dir, "80_component_1991_2022.png")
