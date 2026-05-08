@@ -6,7 +6,10 @@
     "tab:benchmark_crps_models_body": "generated/article_table_includes/table_benchmark_body.tex",
     "tab:benchmark_crps_models_block": "generated/article_table_includes/table_benchmark_crps_block.tex",
     "tab:components_23_31": "generated/article_table_includes/table_components_23_31_rows.tex",
+    "tab:components_23_31_block": "generated/article_table_includes/table_components_23_31_block.tex",
     "tab:gamma_sigma_intervals1": "generated/article_table_includes/table_gamma_rows.tex",
-    "tab:gamma_sigma_intervals2": "generated/article_table_includes/table_sigma_rows.tex"
+    "tab:gamma_sigma_intervals1_block": "generated/article_table_includes/table_gamma_block.tex",
+    "tab:gamma_sigma_intervals2": "generated/article_table_includes/table_sigma_rows.tex",
+    "tab:gamma_sigma_intervals2_block": "generated/article_table_includes/table_sigma_block.tex"
   }
 }

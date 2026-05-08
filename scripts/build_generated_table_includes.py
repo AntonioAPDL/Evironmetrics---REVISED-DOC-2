@@ -187,14 +187,86 @@ def main() -> None:
     component_lines, rows = build_component_rows(article_root, manifest['tables']['tab:components_23_31'])
     manifest_rows.extend(rows)
     write_lines(out_root / 'table_components_23_31_rows.tex', component_lines)
+    component_block_lines = [
+        r'\begin{table*}[htbp]',
+        r'\centering',
+        r'\begin{threeparttable}',
+        r'\caption{Selected Posterior Means and 95\% Credible Intervals for Transfer-Function Covariates}',
+        r'\label{tab:components_23_31}',
+        r'\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} l c S[table-format=-1.3] l }',
+        r'\toprule',
+        r'\textbf{Covariate} & \textbf{Quantile} & \textbf{Mean} & \textbf{95\% CI} \\',
+        r'\midrule',
+        *component_lines,
+        r'\bottomrule',
+        r'\end{tabular*}',
+        r'\begin{tablenotes}',
+        r'\item \textit{Note:} Posterior means and 95\% credible intervals $[{\rm Q2.5}, {\rm Q97.5}]$ for selected transfer-function coefficients at the representative December 25, 2022 cutoff, for the 5th, 50th, and 95th quantile models. \texttt{First GDPC factor} refers to the first generalized dynamic principal component introduced in Section~\ref{sec:data}.',
+        r'\end{tablenotes}',
+        r'\end{threeparttable}',
+        r'\end{table*}',
+    ]
+    write_lines(out_root / 'table_components_23_31_block.tex', component_block_lines)
 
     gamma_lines, rows = build_source_summary_rows(article_root, manifest['tables']['tab:gamma_sigma_intervals1'], 'tab:gamma_sigma_intervals1', 3)
     manifest_rows.extend(rows)
     write_lines(out_root / 'table_gamma_rows.tex', gamma_lines)
+    gamma_block_lines = [
+        r'\begin{table*}[htbp]',
+        r'\centering',
+        r'\begin{threeparttable}',
+        r'\caption{Posterior Means and 95\% Credible Intervals for the Source-Specific Weight Coefficients $\gamma_j(\tau)$ at the Representative December 25, 2022 Cutoff}',
+        r'\label{tab:gamma_sigma_intervals1}',
+        r'\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} l',
+        r' S[table-format=-1.3] l',
+        r' S[table-format=-1.3] l',
+        r' S[table-format=-1.3] l',
+        r'@{}}',
+        r'\toprule',
+        r' & \multicolumn{2}{c}{\textbf{USGS}} & \multicolumn{2}{c}{\textbf{GLOFAS}} & \multicolumn{2}{c}{\textbf{NWS}} \\',
+        r'\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}',
+        r'\textbf{Quantile} & \textbf{Mean} & \textbf{95\% CI} & \textbf{Mean} & \textbf{95\% CI} & \textbf{Mean} & \textbf{95\% CI} \\',
+        r'\midrule',
+        *gamma_lines,
+        r'\bottomrule',
+        r'\end{tabular*}',
+        r'\begin{tablenotes}',
+        r'\item \textit{Note:} Posterior means and 95\% credible intervals $[{\rm Q2.5}, {\rm Q97.5}]$ for the source-specific synthesis weights $\gamma_j(\tau)$ at the representative December 25, 2022 cutoff. The quantile labels 05th through 95th correspond to the seven fitted quantile models. These summaries are included as supplementary appendix support rather than as primary forecast-validation evidence.',
+        r'\end{tablenotes}',
+        r'\end{threeparttable}',
+        r'\end{table*}',
+    ]
+    write_lines(out_root / 'table_gamma_block.tex', gamma_block_lines)
 
     sigma_lines, rows = build_source_summary_rows(article_root, manifest['tables']['tab:gamma_sigma_intervals2'], 'tab:gamma_sigma_intervals2', 5)
     manifest_rows.extend(rows)
     write_lines(out_root / 'table_sigma_rows.tex', sigma_lines)
+    sigma_block_lines = [
+        r'\begin{table*}[htbp]',
+        r'\centering',
+        r'\begin{threeparttable}',
+        r'\caption{Posterior Means and 95\% Credible Intervals for the Source-Specific Scale Parameters $\sigma_j(\tau)$ at the Representative December 25, 2022 Cutoff}',
+        r'\label{tab:gamma_sigma_intervals2}',
+        r'\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} l',
+        r' S[table-format=1.5] l',
+        r' S[table-format=1.5] l',
+        r' S[table-format=1.5] l',
+        r'@{}}',
+        r'\toprule',
+        r' & \multicolumn{2}{c}{\textbf{USGS}} & \multicolumn{2}{c}{\textbf{GLOFAS}} & \multicolumn{2}{c}{\textbf{NWS}} \\',
+        r'\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}',
+        r'\textbf{Quantile} & \textbf{Mean} & \textbf{95\% CI} & \textbf{Mean} & \textbf{95\% CI} & \textbf{Mean} & \textbf{95\% CI} \\',
+        r'\midrule',
+        *sigma_lines,
+        r'\bottomrule',
+        r'\end{tabular*}',
+        r'\begin{tablenotes}',
+        r'\item \textit{Note:} Posterior means and 95\% credible intervals $[{\rm Q2.5}, {\rm Q97.5}]$ for the source-specific scale parameters $\sigma_j(\tau)$ at the representative December 25, 2022 cutoff. These summaries are included as supplementary appendix support rather than as primary forecast-validation evidence.',
+        r'\end{tablenotes}',
+        r'\end{threeparttable}',
+        r'\end{table*}',
+    ]
+    write_lines(out_root / 'table_sigma_block.tex', sigma_block_lines)
 
     with (out_root / 'manifest.csv').open('w', newline='') as f:
         writer = csv.DictWriter(f, fieldnames=['table_label', 'row_label', 'source_class', 'source_note'])
@@ -209,8 +281,11 @@ def main() -> None:
             'tab:benchmark_crps_models_body': 'generated/article_table_includes/table_benchmark_body.tex',
             'tab:benchmark_crps_models_block': 'generated/article_table_includes/table_benchmark_crps_block.tex',
             'tab:components_23_31': 'generated/article_table_includes/table_components_23_31_rows.tex',
+            'tab:components_23_31_block': 'generated/article_table_includes/table_components_23_31_block.tex',
             'tab:gamma_sigma_intervals1': 'generated/article_table_includes/table_gamma_rows.tex',
-            'tab:gamma_sigma_intervals2': 'generated/article_table_includes/table_sigma_rows.tex'
+            'tab:gamma_sigma_intervals1_block': 'generated/article_table_includes/table_gamma_block.tex',
+            'tab:gamma_sigma_intervals2': 'generated/article_table_includes/table_sigma_rows.tex',
+            'tab:gamma_sigma_intervals2_block': 'generated/article_table_includes/table_sigma_block.tex'
         }
     }
     (out_root / 'build_metadata.json').write_text(json.dumps(metadata, indent=2) + '\n')
