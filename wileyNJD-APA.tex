@@ -353,24 +353,7 @@ Because exAL-M-T1 attains the lowest CRPS in all five rolling-origin cutoffs, th
 
 \subsection{Covariate Effects}
 
-\begin{table*}[htbp]
-\centering
-\renewcommand{\arraystretch}{1.13}
-\begin{threeparttable}
-\caption{Selected Posterior Means and 95\% Credible Intervals for Transfer-Function Covariates}
-\label{tab:components_23_31}
-\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} l c S[table-format=-1.3] l }
-\toprule
-\textbf{Covariate} & \textbf{Quantile} & \textbf{Mean} & \textbf{95\% CI} \\
-\midrule
-\input{generated/article_table_includes/table_components_23_31_rows.tex}
-\bottomrule
-\end{tabular*}
-\begin{tablenotes}
-\item \textit{Note:} Posterior means and 95\% credible intervals $[{\rm Q2.5}, {\rm Q97.5}]$ for selected transfer-function coefficients at the representative December 25, 2022 cutoff, for the 5th, 50th, and 95th quantile models. \texttt{First GDPC factor} refers to the first generalized dynamic principal component introduced in Section~\ref{sec:data}.
-\end{tablenotes}
-\end{threeparttable}
-\end{table*}
+\input{generated/article_table_includes/table_components_23_31_block.tex}
 
 Table~\ref{tab:components_23_31} reports posterior means and 95\% credible intervals for three reader-facing transfer-function coefficients at the 5th, 50th, and 95th quantiles. The precipitation effect is near zero at the lower and central quantiles, but becomes clearly positive in the upper tail, indicating that it contributes most strongly to high-flow episodes. Soil moisture is positive at all three quantiles and increases toward the upper tail, which is consistent with antecedent wetness amplifying runoff during storms.
 
@@ -463,61 +446,9 @@ Applying that workflow to a new basin still requires constructing a basin-specif
 \subsection{Supplementary Source-Specific Shape and Scale Parameters}
 \label{app:sourceparams}
 
-\begin{table*}[htbp]
-\caption{Posterior Medians and 95\% Credible Intervals for $\gamma$ by Source and Quantile Level}
-\label{tab:gamma_sigma_intervals1}
-\centering
-\renewcommand{\arraystretch}{1.08}
-\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} l
-  S[table-format=-1.3] l
-  S[table-format=-1.3] l
-  S[table-format=-1.3] l
-  }
-\toprule
-\multirow{2}{*}{\textbf{Quantile}} &
-\multicolumn{2}{c}{\textbf{USGS}} &
-\multicolumn{2}{c}{\textbf{GloFAS}} &
-\multicolumn{2}{c}{\textbf{NWS}} \\
-\cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7}
-& {\textbf{Median}} & {\textbf{95\% CI}}
-& {\textbf{Median}} & {\textbf{95\% CI}}
-& {\textbf{Median}} & {\textbf{95\% CI}} \\
-\midrule
-\input{generated/article_table_includes/table_gamma_rows.tex}
-\bottomrule
-\end{tabular*}
-\begin{tablenotes}
-\item \textit{Note:} Entries show the posterior median and the 95\% credible interval $[{\rm Q2.5}, {\rm Q97.5}]$ for each source and quantile at the representative December 25, 2022 cutoff. USGS = U.S. Geological Survey; GloFAS = Global Flood Awareness System; NWS = National Weather Service.
-\end{tablenotes}
-\end{table*}
+\input{generated/article_table_includes/table_gamma_block.tex}
 
-\begin{table*}[htbp]
-\caption{Posterior Medians and 95\% Credible Intervals for $\sigma$ by Source and Quantile Level}
-\label{tab:gamma_sigma_intervals2}
-\centering
-\renewcommand{\arraystretch}{1.08}
-\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} l
-  S[table-format=1.5] l
-  S[table-format=1.5] l
-  S[table-format=1.5] l
-  }
-\toprule
-\multirow{2}{*}{\textbf{Quantile}} &
-\multicolumn{2}{c}{\textbf{USGS}} &
-\multicolumn{2}{c}{\textbf{GloFAS}} &
-\multicolumn{2}{c}{\textbf{NWS}} \\
-\cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7}
-& {\textbf{Median}} & {\textbf{95\% CI}}
-& {\textbf{Median}} & {\textbf{95\% CI}}
-& {\textbf{Median}} & {\textbf{95\% CI}} \\
-\midrule
-\input{generated/article_table_includes/table_sigma_rows.tex}
-\bottomrule
-\end{tabular*}
-\begin{tablenotes}
-\item \textit{Note:} Entries show the posterior median and the 95\% credible interval $[{\rm Q2.5}, {\rm Q97.5}]$ for each source and quantile at the representative December 25, 2022 cutoff. USGS = U.S. Geological Survey; GloFAS = Global Flood Awareness System; NWS = National Weather Service.
-\end{tablenotes}
-\end{table*}
+\input{generated/article_table_includes/table_sigma_block.tex}
 
 Tables~\ref{tab:gamma_sigma_intervals1} and \ref{tab:gamma_sigma_intervals2} provide supplementary appendix summaries of the source-specific skewness (\(\gamma\)) and scale (\(\sigma\)) parameters in the exAL observation model, reported for the representative December 25, 2022 cutoff. They are included as supporting parameter summaries rather than as central forecast-validation evidence.
 
