@@ -144,7 +144,7 @@ def main() -> None:
         '- USGS observations to cutoff\n',
         '- PPT/SOIL/PCA histories to cutoff\n',
         '- retrospective support used by fit\n',
-        '- forecast-product context over the cutoff-centered review window\n\n',
+        '- forecast-product context over the short forecast review window\n\n',
         'Canonical source family:\n',
         '- `generated/setup_support_by_cutoff_v2/`\n\n',
         'Manifest:\n',

@@ -99,7 +99,7 @@ This is the expected and documented behavior for the `2022-05-11` histfix cutoff
 
 ### `forecats.png`
 
-- Uses the selected cutoff-specific forecast products and the cutoff-centered `+/- 28 day` display window.
+- Uses the selected cutoff-specific forecast products and the `+/- 28 day` forecast-context display window.
 - Forecast bundles align with the selected model-input forecast files for all five cutoffs.
 
 ## Honest limitation
@@ -118,7 +118,7 @@ But it cannot honestly claim that **all retrospective figures should show 1987-t
 The clean interpretation is:
 
 - `usgs.png` and the covariate figure are full-history context figures through the cutoff;
-- `forecats.png` is the cutoff-centered forecast-context figure;
+- `forecats.png` is the short forecast-context figure;
 - `retrospective_log_discharge_plot_faceted.png` is the selected-model-input retrospective support figure, which is full-history only for the histfix cutoffs.
 
 If a full-history retrospective-source figure is still desired for all cutoffs, it should be introduced as a **different figure class** derived from raw retrospective source histories, not as the exact selected model-input retrospective figure.
