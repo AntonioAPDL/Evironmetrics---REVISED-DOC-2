@@ -238,7 +238,7 @@ The San Lorenzo River is a major water resource for the Santa Cruz area and is r
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=450pt]{DISC/usgs.png}
+\includegraphics[width=450pt]{figures/manuscript/site_context_usgs.png}
 \caption{
 Observed USGS daily water flow on the $\log(1 + x)$ scale, with $x$ measured in m$^3$/s, over the full historical daily record used for the representative December 25, 2022 cutoff-specific input bundle, spanning May 29, 1987 through December 25, 2022. Horizontal dashed lines indicate NOAA-defined minor (16.5 ft, 503 cm) and major (21.76 ft, 663 cm) flooding thresholds, converted to the plotting scale.
 }
@@ -259,7 +259,7 @@ The transfer covariates used in the application are therefore daily precipitatio
 
 \begin{figure*}[hbt!]
 \centering
-\centerline{\includegraphics[width=450pt]{DISC/precip_soilmoisture_climatePC1_faceted_labeled.png}}
+\centerline{\includegraphics[width=450pt]{figures/manuscript/covariate_context_precip_soil_pca.png}}
 \caption{
 Historical daily precipitation [mm], soil moisture [m$^3$/m$^3$], and first GDPC series over the May 29, 1987 through December 25, 2022 support window used by the representative December 25, 2022 cutoff-specific input bundle. The panel is rendered directly from the raw cutoff-specific covariate files used by that bundle.
 }
@@ -274,7 +274,7 @@ The operational forecast products are used only after a cutoff date. The NWS ens
 
 \begin{figure*}[hbt!]
 \centering
-\centerline{\includegraphics[width=450pt]{DISC/retrospective_log_discharge_plot_faceted.png}}
+\centerline{\includegraphics[width=450pt]{figures/manuscript/retrospective_products_context.png}}
 \caption{Selected GloFAS and NWS retrospective product series over the corrected full-history support window preserved for the representative December 25, 2022 cutoff-specific input bundle, spanning May 29, 1987 through December 25, 2022. Displayed flow values use the $\log(1+x)$ scale with $x$ in m$^3$/s.}
 \label{fig:retrospectives}
 \end{figure*}
@@ -325,7 +325,7 @@ GloFAS issues forecast products daily, whereas NWS issues them hourly. To mainta
 
 \begin{figure*}[hbt!]
 \centering
-\centerline{\includegraphics[width=450pt]{DISC/forecats.png}}
+\centerline{\includegraphics[width=450pt]{figures/manuscript/forecast_products_context.png}}
 \caption{
 Forecast-context display for the representative December 25, 2022 origin, spanning November 27, 2022 through January 22, 2023 on the $\log(1+x)$ scale with $x$ in m$^3$/s. Before the origin, the panel shows USGS observations together with the selected NWS and GloFAS retrospective products used by fit; after the origin, it shows held-out USGS verification plus the operational NWS and GloFAS forecast ensembles. Horizontal dashed lines indicate official minor and major flood thresholds for the river.
 }
@@ -342,7 +342,7 @@ We fit the framework separately at the seven target quantile levels \(0.05\), \(
 
 Table~\ref{tab:benchmark_crps_models} compares the raw forecast products with nine Bayesian variants of the common state-space framework. These variants differ only in three respects: the observation likelihood, whether the synthesis uses only the USGS channel or all source channels jointly, and whether the transfer component remains active during the forecast window. We summarize them with the label \(L\)-\(S\)-\(T\), where \(L\in\{\mathrm{N},\mathrm{AL},\mathrm{exAL}\}\) denotes a Gaussian, asymmetric Laplace, or extended asymmetric Laplace observation likelihood, \(S\in\{\mathrm{U},\mathrm{M}\}\) indicates whether the synthesis uses only the USGS channel or all source channels jointly, and \(T\in\{\mathrm{T0},\mathrm{T1}\}\) indicates whether the transfer component is suppressed or retained during the forecast window. The raw baselines are the daily GloFAS and NWS forecast products evaluated without statistical correction.
 
-\input{generated/article_table_includes/table_benchmark_crps_block.tex}
+\input{tables/generated_tex/benchmark_crps_main_table.tex}
 
 Table~\ref{tab:benchmark_crps_models} yields a consistent ranking across the five cutoffs. The \(U\) versus \(M\) comparison isolates whether the external source channels improve forecast skill beyond using the observation channel alone, whereas the \(T0\) versus \(T1\) comparison isolates whether carrying the transfer component into the forecast window is beneficial. The two multivariate specifications with an active forecast-window transfer component, AL-M-T1 and exAL-M-T1, dominate the comparison, with exAL-M-T1 attaining the lowest CRPS in every cutoff. AL-M-T1 is the closest competitor, especially at 01/23/2021 and 05/11/2022, but it remains second in each case. The best corrected model also improves on the best raw forecast-product baseline in all five cutoffs. Forecast skill is therefore highest when retrospective products are synthesized jointly with the observations and when the transfer component remains active during the forecast window. We use exAL-M-T1 as the reference specification for the remaining summaries.
 
@@ -353,7 +353,7 @@ Because exAL-M-T1 attains the lowest CRPS in all five rolling-origin cutoffs, th
 
 \subsection{Covariate Effects}
 
-\input{generated/article_table_includes/table_components_23_31_block.tex}
+\input{tables/generated_tex/representative_covariate_effects_table.tex}
 
 Table~\ref{tab:components_23_31} reports posterior means and 95\% credible intervals for three reader-facing transfer-function coefficients at the 5th, 50th, and 95th quantiles. The precipitation effect is near zero at the lower and central quantiles, but becomes clearly positive in the upper tail, indicating that it contributes most strongly to high-flow episodes. Soil moisture is positive at all three quantiles and increases toward the upper tail, which is consistent with antecedent wetness amplifying runoff during storms.
 
@@ -365,7 +365,7 @@ To illustrate how the selected specification behaves across contrasting hydrolog
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=450pt]{DISC/All_exal_2012-2016_DISC.png}
+\includegraphics[width=450pt]{figures/manuscript/historical_summary_dry_period.png}
 \caption{
 Historical posterior mean and 95\% credible intervals of river-flow quantiles during the dry period (2012--2016), shown as a descriptive historical summary under the selected specification. Shown are the 5th (red), 50th (green), and 95th (blue) quantile models together with observed daily USGS flow (black). Horizontal dashed lines mark the official minor and major flood thresholds.
 }
@@ -374,7 +374,7 @@ Historical posterior mean and 95\% credible intervals of river-flow quantiles du
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=450pt]{DISC/All_exal_2017-2019_DISC.png}
+\includegraphics[width=450pt]{figures/manuscript/historical_summary_wet_period.png}
 \caption{
 Historical posterior mean and 95\% credible intervals of river-flow quantiles during the wet period (2017--2019), shown as a descriptive historical summary under the selected specification. Shown are the 5th (red), 50th (green), and 95th (blue) quantile models together with observed daily USGS flow (black). Horizontal dashed lines mark the official minor and major flood thresholds.
 }
@@ -392,7 +392,7 @@ Figure~\ref{fig:synth1} shows the synthesized predictive distribution for the De
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=450pt]{DISC/posterior_samples_valid.png}
+\includegraphics[width=450pt]{figures/manuscript/representative_synthesis_multivariate.png}
 \caption{
 Representative synthesized posterior predictive distribution for river flow on the $\log(1+x)$ scale, with $x$ measured in m$^3$/s, at the December 25, 2022 forecast origin under the selected exAL-M-T1 specification. Observed USGS measurements before the origin are shown in green, held-out USGS verification after the origin is shown in red, and the synthesized posterior predictive distribution is shown by the pink band and dark center line. Thin overlaid lines correspond to displayed forecast quantiles at levels 0.05, 0.20, 0.35, 0.50, 0.65, 0.80, and 0.95.
 }
@@ -446,9 +446,9 @@ Applying that workflow to a new basin still requires constructing a basin-specif
 \subsection{Supplementary Source-Specific Shape and Scale Parameters}
 \label{app:sourceparams}
 
-\input{generated/article_table_includes/table_gamma_block.tex}
+\input{tables/generated_tex/appendix_gamma_summary_table.tex}
 
-\input{generated/article_table_includes/table_sigma_block.tex}
+\input{tables/generated_tex/appendix_sigma_summary_table.tex}
 
 Tables~\ref{tab:gamma_sigma_intervals1} and \ref{tab:gamma_sigma_intervals2} provide supplementary appendix summaries of the source-specific skewness (\(\gamma\)) and scale (\(\sigma\)) parameters in the exAL observation model, reported for the representative December 25, 2022 cutoff. They are included as supporting parameter summaries rather than as central forecast-validation evidence.
 
@@ -457,7 +457,7 @@ Tables~\ref{tab:gamma_sigma_intervals1} and \ref{tab:gamma_sigma_intervals2} pro
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=450pt]{DISC/80_component_1991_2022.png}
+\includegraphics[width=450pt]{figures/manuscript/historical_component_80month.png}
 \caption{
 Historical posterior mean and 95\% credible intervals for the 80-month component after shifting by the posterior mean trend level, shown from 1991 to 2022 as a descriptive long-cycle summary under the selected specification. Estimates are shown for the 5th (red), 50th (green), and 95th (blue) quantiles, with observed USGS daily flow in black for reference.
 }
@@ -471,7 +471,7 @@ Figure~\ref{fig:80_components} shows that the 80-month seasonal component is bro
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=450pt]{DISC/posterior_samples_counter_valid.png}
+\includegraphics[width=450pt]{figures/manuscript/reference_synthesis_univariate.png}
 \caption{
 Historical-only reference predictive distribution for river flow on the $\log(1+x)$ scale, with $x$ measured in m$^3$/s, at the December 25, 2022 forecast origin, based only on observed USGS measurements. Observed measurements before the origin are shown in green, held-out USGS verification after the origin is shown in red, and the historical-only synthesized reference distribution is shown by the pink band and dark center line. No retrospective products or forecast ensembles are included.
 }
@@ -487,7 +487,7 @@ The main text shows the representative December 25, 2022 setup and support figur
 
 \begin{figure}[p]
 \centering
-\includegraphics[width=450pt]{generated/setup_support_by_cutoff_v2_appendix/20210123_exal_m_t1_panel.png}
+\includegraphics[width=450pt]{figures/appendix_cutoff_panels/cutoff_2021_01_23_setup_support.png}
 \caption{
 Supplementary setup/support panel for the January 23, 2021 cutoff. The panel documents the historical observations, covariate histories, retrospective support used by fit, and forecast-product context associated with the published Bayesian validation rows at this cutoff.
 }
@@ -496,7 +496,7 @@ Supplementary setup/support panel for the January 23, 2021 cutoff. The panel doc
 
 \begin{figure}[p]
 \centering
-\includegraphics[width=450pt]{generated/setup_support_by_cutoff_v2_appendix/20211112_exal_m_t1_panel.png}
+\includegraphics[width=450pt]{figures/appendix_cutoff_panels/cutoff_2021_11_12_setup_support.png}
 \caption{
 Supplementary setup/support panel for the November 12, 2021 cutoff. As in Figure~\ref{fig:setupsupport_20210123}, the panel documents the cutoff-specific observation, covariate, retrospective, and forecast-product inputs linked to the published Bayesian validation rows.
 }
@@ -505,7 +505,7 @@ Supplementary setup/support panel for the November 12, 2021 cutoff. As in Figure
 
 \begin{figure}[p]
 \centering
-\includegraphics[width=450pt]{generated/setup_support_by_cutoff_v2_appendix/20211221_exal_m_t1_panel.png}
+\includegraphics[width=450pt]{figures/appendix_cutoff_panels/cutoff_2021_12_21_setup_support.png}
 \caption{
 Supplementary setup/support panel for the December 21, 2021 cutoff. This cutoff belongs to the full-history histfix class, so the retrospective component extends back to the common historical start used by the fitted models.
 }
@@ -514,7 +514,7 @@ Supplementary setup/support panel for the December 21, 2021 cutoff. This cutoff 
 
 \begin{figure}[p]
 \centering
-\includegraphics[width=450pt]{generated/setup_support_by_cutoff_v2_appendix/20220511_exal_m_t1_panel.png}
+\includegraphics[width=450pt]{figures/appendix_cutoff_panels/cutoff_2022_05_11_setup_support.png}
 \caption{
 Supplementary setup/support panel for the May 11, 2022 cutoff. This is the second full-history histfix cutoff retained in the Bayesian rolling-origin validation.
 }

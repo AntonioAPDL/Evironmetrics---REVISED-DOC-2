@@ -5,13 +5,13 @@ import json
 from pathlib import Path
 from typing import Any
 
-MANIFEST_FILENAME = 'ARTICLE_GENERATED_ASSET_MANIFEST.json'
+from article_repo_layout import MANIFEST_FILENAME, build_layout
 
 
 def load_manifest(article_root: Path) -> dict[str, Any]:
-    path = article_root / MANIFEST_FILENAME
+    path = build_layout(article_root).manifest_path
     return json.loads(path.read_text())
 
 
 def manifest_path(article_root: Path) -> Path:
-    return article_root / MANIFEST_FILENAME
+    return build_layout(article_root).manifest_path

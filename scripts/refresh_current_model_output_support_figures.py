@@ -9,6 +9,7 @@ import shutil
 import subprocess
 from pathlib import Path
 
+from article_repo_layout import build_layout
 
 MULTIVAR_SPEC = {
     "slug": "20220511_exal_m_t1",
@@ -23,14 +24,22 @@ UNIVAR_SPEC = {
     "source_png": "exdqlm_univar_synth_cutoff_window_posterior_samples.png",
 }
 
+RENAMES = {
+    "All_exal_2012-2016_DISC.png": "historical_summary_dry_period.png",
+    "All_exal_2017-2019_DISC.png": "historical_summary_wet_period.png",
+    "All_exal_2017-2019_DISC_fullrange.png": "historical_summary_wet_period_fullrange.png",
+    "80_component_1991_2022.png": "historical_component_80month.png",
+    "posterior_samples_counter_valid.png": "reference_synthesis_univariate.png",
+}
+
 HISTORICAL_FIGURES = [
-    ("fig:dry_quantile", "All_exal_2012-2016_DISC.png", "Dry-period historical summary"),
-    ("fig:rainy_quantile", "All_exal_2017-2019_DISC.png", "Rainy-period historical summary"),
-    ("companion:rainy_quantile_fullrange", "All_exal_2017-2019_DISC_fullrange.png", "Wet-period historical summary (0-20 companion range)"),
-    ("fig:80_components", "80_component_1991_2022.png", "Long-cycle component summary"),
+    ("fig:dry_quantile", "historical_summary_dry_period.png", "Dry-period historical summary"),
+    ("fig:rainy_quantile", "historical_summary_wet_period.png", "Rainy-period historical summary"),
+    ("companion:rainy_quantile_fullrange", "historical_summary_wet_period_fullrange.png", "Wet-period historical summary (0-20 companion range)"),
+    ("fig:80_components", "historical_component_80month.png", "Long-cycle component summary"),
 ]
 
-APPENDIX_FIGURE = ("fig:synth2", "posterior_samples_counter_valid.png", "Historical-only reference synthesis")
+APPENDIX_FIGURE = ("fig:synth2", "reference_synthesis_univariate.png", "Historical-only reference synthesis")
 
 
 def sha256(path: Path) -> str:
@@ -40,6 +49,16 @@ def sha256(path: Path) -> str:
 def run(cmd: list[str]) -> None:
     print("+", " ".join(str(x) for x in cmd))
     subprocess.run(cmd, check=True)
+
+
+def apply_renames(figures_dir: Path) -> None:
+    for src_name, dst_name in RENAMES.items():
+        src = figures_dir / src_name
+        dst = figures_dir / dst_name
+        if src.exists():
+            if dst.exists():
+                dst.unlink()
+            shutil.move(src, dst)
 
 
 def write_bundle(bundle_root: Path, multivar_run_root: Path, univar_output_root: Path) -> None:
@@ -56,7 +75,7 @@ def write_bundle(bundle_root: Path, multivar_run_root: Path, univar_output_root:
             role,
             "rendered_from_current_multivar_run",
             str(multivar_run_root),
-            str(path),
+            str(path.relative_to(bundle_root.parent.parent)),
             digest,
         ])
         sums.append(f"{digest}  figures/{filename}")
@@ -70,7 +89,7 @@ def write_bundle(bundle_root: Path, multivar_run_root: Path, univar_output_root:
         role,
         "copied_from_current_univar_output",
         str(univar_output_root / UNIVAR_SPEC["source_png"]),
-        str(path),
+        str(path.relative_to(bundle_root.parent.parent)),
         digest,
     ])
     sums.append(f"{digest}  figures/{filename}")
@@ -92,11 +111,11 @@ def write_bundle(bundle_root: Path, multivar_run_root: Path, univar_output_root:
     (bundle_root / "bundle_metadata.json").write_text(json.dumps(metadata, indent=2) + "\n")
 
     (bundle_root / "README.md").write_text(
-        "# Current Model Output Support Figures\n\n"
-        "This bundle regenerates the remaining manuscript support figures from current model outputs.\n\n"
+        "# Historical Support From Current Models\n\n"
+        "This article-side artifact bundle regenerates the historical-support manuscript figures from current model outputs.\n\n"
         "Sources:\n"
         f"- Historical multivariate support figures: `{multivar_run_root}`\n"
-        f"- Appendix univariate reference figure: `{univar_output_root / UNIVAR_SPEC['source_png']}`\n\n"
+        f"- Historical-only univariate reference figure: `{univar_output_root / UNIVAR_SPEC['source_png']}`\n\n"
         "Refresh entrypoint:\n"
         "- `scripts/refresh_current_model_output_support_figures.py`\n"
     )
@@ -138,7 +157,9 @@ def main() -> None:
     multivar_runtime_root = args.multivar_runtime_root.resolve()
     univar_runtime_root = args.univar_runtime_root.resolve()
 
-    bundle_root = article_root / "generated" / "current_model_output_support"
+    layout = build_layout(article_root)
+    layout.ensure_base_dirs()
+    bundle_root = layout.historical_support_dir
     figures_dir = bundle_root / "figures"
     figures_dir.mkdir(parents=True, exist_ok=True)
 
@@ -164,6 +185,7 @@ def main() -> None:
     ])
 
     shutil.copy2(univar_png, figures_dir / "posterior_samples_counter_valid.png")
+    apply_renames(figures_dir)
     write_bundle(bundle_root, multivar_run_root, univar_output_root)
     print("Refreshed current-model output support figures successfully.")
 

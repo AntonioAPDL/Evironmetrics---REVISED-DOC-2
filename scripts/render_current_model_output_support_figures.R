@@ -30,6 +30,7 @@ if (length(missing) > 0L) {
 project_root <- normalizePath(opt[["workflow-root"]], mustWork = TRUE)
 run_root <- normalizePath(opt[["run-root"]], mustWork = TRUE)
 out_dir <- normalizePath(opt[["output-dir"]], mustWork = FALSE)
+setwd(project_root)
 cutoff_date <- opt[["cutoff-date"]]
 forecast_start_date <- opt[["forecast-start-date"]]
 
