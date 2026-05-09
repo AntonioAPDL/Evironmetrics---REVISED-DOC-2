@@ -1,5 +1,5 @@
 display_scale: log1p_cms
-display_axis_label: Water Flow (log(1 + m^3/s))
+display_axis_label: River flow [log(1 + m^3 s^-1)]
 display_scale_basis: workflow_support_display_contract
 selected_run_internal_analysis_scale: log_log1p_cms
 figure_inputs:

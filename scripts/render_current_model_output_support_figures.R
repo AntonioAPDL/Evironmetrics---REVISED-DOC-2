@@ -221,10 +221,7 @@ build_quant_df <- function(arr, idx, dates) {
   }))
 }
 
-render_quantile_window <- function(xbs_retro, idx, title_text, out_file) {
-  flood_stages_ft <- c(21.76, 16.5)^3
-  flood_stages_cm <- flood_stages_ft * CFSToCMS_CONVERSION_FACTOR
-  flood_stages_trans <- log1p(flood_stages_cm)
+render_quantile_window <- function(xbs_retro, idx, title_text, out_file, ylim_override = NULL) {
   dates <- as.Date(dates_ts_usgs[idx])
   quant_df <- build_quant_df(xbs_retro, idx, dates)
   quant_df <- quant_df %>%
@@ -234,137 +231,158 @@ render_quantile_window <- function(xbs_retro, idx, title_text, out_file) {
       Upper = convert_internal_flow_to_display(Upper)
     )
   obs_df <- data.frame(Date = dates, Value = convert_internal_flow_to_display(Y[1, idx]))
-  flood_lines <- data.frame(y = flood_stages_trans)
-  ylim <- compute_display_ylim(c(quant_df$Lower, quant_df$Upper, obs_df$Value, flood_lines$y), include_zero = TRUE)
+  flood_df <- figure_flood_label_df(
+    plot_scale = DISPLAY_FLOW_SCALE,
+    values = c(quant_df$Lower, quant_df$Upper, obs_df$Value)
+  )
+  flood_style <- figure_flood_stage_style()
+  ylim <- if (is.null(ylim_override)) {
+    compute_display_ylim(c(quant_df$Lower, quant_df$Upper, obs_df$Value, flood_df$y), include_zero = TRUE)
+  } else {
+    as.numeric(ylim_override)
+  }
 
   alpha_val <- 0.11
+  col_95 <- "#2171b5"
+  col_50 <- "#238b45"
+  col_05 <- "#b2182b"
   p <- ggplot() +
     annotate(
       "text",
       x = max(as.Date(dates_ts_usgs[idx])),
-      y = flood_stages_trans,
-      label = flood_stage_labels,
-      hjust = 10.5,
-      vjust = -0.5,
-      color = "black",
-      fontface = "italic",
-      size = 3.5
+      y = flood_df$label_y,
+      label = flood_df$label,
+      hjust = 1.02,
+      vjust = 0.2,
+      color = flood_style$label_color,
+      fontface = flood_style$label_face,
+      size = flood_style$label_size
     ) +
     geom_hline(
-      data = flood_lines,
+      data = flood_df,
       aes(yintercept = y),
-      linetype = "dashed",
-      color = "gray50",
-      linewidth = 0.6
+      linetype = flood_style$line_type,
+      color = flood_style$line_color,
+      linewidth = flood_style$line_width
     ) +
     geom_ribbon(
       data = quant_df %>% filter(Quantile == "95th"),
       aes(x = Date, ymin = Lower, ymax = Upper),
-      fill = "#2171b5",
+      fill = col_95,
       alpha = alpha_val
     ) +
     geom_line(
       data = quant_df %>% filter(Quantile == "95th"),
       aes(x = Date, y = Median),
-      color = "#2171b5",
-      linewidth = 0.2
+      color = col_95,
+      linewidth = 0.45
     ) +
     geom_line(
       data = quant_df %>% filter(Quantile == "95th"),
       aes(x = Date, y = Lower),
-      color = "blue",
-      linewidth = 0.05
+      color = col_95,
+      linewidth = 0.14
     ) +
     geom_line(
       data = quant_df %>% filter(Quantile == "95th"),
       aes(x = Date, y = Upper),
-      color = "blue",
-      linewidth = 0.05
+      color = col_95,
+      linewidth = 0.14
     ) +
     geom_ribbon(
       data = quant_df %>% filter(Quantile == "5th"),
       aes(x = Date, ymin = Lower, ymax = Upper),
-      fill = "#b2182b",
+      fill = col_05,
       alpha = alpha_val
     ) +
     geom_line(
       data = quant_df %>% filter(Quantile == "5th"),
       aes(x = Date, y = Median),
-      color = "#b2182b",
-      linewidth = 0.2
+      color = col_05,
+      linewidth = 0.45
     ) +
     geom_line(
       data = quant_df %>% filter(Quantile == "5th"),
       aes(x = Date, y = Lower),
-      color = "red",
-      linewidth = 0.05
+      color = col_05,
+      linewidth = 0.14
     ) +
     geom_line(
       data = quant_df %>% filter(Quantile == "5th"),
       aes(x = Date, y = Upper),
-      color = "red",
-      linewidth = 0.05
+      color = col_05,
+      linewidth = 0.14
     ) +
     geom_ribbon(
       data = quant_df %>% filter(Quantile == "50th"),
       aes(x = Date, ymin = Lower, ymax = Upper),
-      fill = "#238b45",
+      fill = col_50,
       alpha = alpha_val
     ) +
     geom_line(
       data = quant_df %>% filter(Quantile == "50th"),
       aes(x = Date, y = Median),
-      color = "#238b45",
-      linewidth = 0.2
+      color = col_50,
+      linewidth = 0.45
     ) +
     geom_line(
       data = quant_df %>% filter(Quantile == "50th"),
       aes(x = Date, y = Lower),
-      color = "green",
-      linewidth = 0.05
+      color = col_50,
+      linewidth = 0.14
     ) +
     geom_line(
       data = quant_df %>% filter(Quantile == "50th"),
       aes(x = Date, y = Upper),
-      color = "green",
-      linewidth = 0.05
+      color = col_50,
+      linewidth = 0.14
     ) +
     geom_point(
       data = obs_df,
       aes(x = Date, y = Value),
       color = "black",
-      size = 0.2
+      size = 0.35
     ) +
     geom_line(
       data = obs_df,
       aes(x = Date, y = Value),
       color = "black",
-      linewidth = 0.1
+      linewidth = 0.22
     ) +
     labs(
       title = title_text,
       x = NULL,
       y = figure_flow_axis_label(DISPLAY_FLOW_SCALE)
     ) +
-    scale_x_date(date_breaks = "6 months", date_labels = "%Y-%m") +
+    scale_x_date(date_breaks = "1 year", date_labels = "%Y-%m") +
     coord_cartesian(ylim = ylim) +
-    theme_manuscript_standard(base_size = 14, title_size = 15, legend_position = "none")
+    theme_manuscript_standard(
+      base_size = 14,
+      title_size = 15,
+      legend_position = "none",
+      axis_text_y_size = 12,
+      x_angle = 35,
+      major_grid_x = TRUE,
+      major_grid_y = TRUE,
+      plot_margin = margin(12, 12, 12, 12)
+    )
 
   ggsave(out_file, plot = p, width = 12, height = 6, units = "in", dpi = 900)
 }
 
-build_component_df <- function(component, idx, q_d_50, q_d_05, q_d_95) {
+build_component_df <- function(component, idx, q_d_50, q_d_05, q_d_95, shift_map = NULL) {
   build_quantile_df <- function(arr, component, idx, date_vec, quantile_name) {
     vals <- arr[component, idx, , drop = FALSE]
     vals <- matrix(vals, nrow = length(idx), ncol = dim(arr)[3])
     qts <- t(fast_row_quantiles_t(vals, probs = c(0.025, 0.5, 0.975)))
     colnames(qts) <- c("Lower", "Median", "Upper")
+    shift_vec <- shift_map[[quantile_name]] %||% rep(0, length(idx))
     tibble(
       Date = as.Date(date_vec[idx]),
       Quantile = quantile_name,
-      Lower = qts[, "Lower"],
-      Median = qts[, "Median"],
-      Upper = qts[, "Upper"]
+      Lower = qts[, "Lower"] + shift_vec,
+      Median = qts[, "Median"] + shift_vec,
+      Upper = qts[, "Upper"] + shift_vec
     )
   }
 
@@ -372,6 +390,21 @@ build_component_df <- function(component, idx, q_d_50, q_d_05, q_d_95) {
     build_quantile_df(q_d_50, component, idx, dates_ts_usgs, "50th"),
     build_quantile_df(q_d_05, component, idx, dates_ts_usgs, "5th"),
     build_quantile_df(q_d_95, component, idx, dates_ts_usgs, "95th")
+  )
+}
+
+build_trend_mean_shift_map <- function(theta_50, theta_05, theta_95, idx, trend_component = 1L) {
+  shift_for <- function(theta_arr) {
+    mat <- theta_arr[trend_component, idx, , drop = TRUE]
+    if (is.null(dim(mat))) {
+      return(rep(as.numeric(mat), length(idx)))
+    }
+    rowMeans(mat, na.rm = TRUE)
+  }
+  list(
+    "50th" = shift_for(theta_50),
+    "5th" = shift_for(theta_05),
+    "95th" = shift_for(theta_95)
   )
 }
 
@@ -503,7 +536,9 @@ render_component_quantiles <- function(comp_df, obs_df, time_cuts, ylab, title_t
   ggsave(out_file, plot = p, width = 12, height = 6, units = "in", dpi = 350)
 }
 
-if (file.exists(state_cache_path)) {
+rebuild_state_cache <- !file.exists(state_cache_path)
+
+if (!rebuild_state_cache) {
   message("Loading cached historical-support state summaries...")
   cached <- readRDS(state_cache_path)
   xbs_retro <- cached$xbs_retro
@@ -511,7 +546,14 @@ if (file.exists(state_cache_path)) {
   q_d_05 <- cached$q_d_05
   q_d_95 <- cached$q_d_95
   time_cuts <- cached$time_cuts
-} else {
+  trend_shift_map <- cached$trend_shift_map %||% NULL
+  if (is.null(trend_shift_map)) {
+    message("Cached historical-support state summaries predate the trend-shift contract. Rebuilding cache...")
+    rebuild_state_cache <- TRUE
+  }
+}
+
+if (rebuild_state_cache) {
   message("Loading only the state objects needed for the support figures...")
   load_selected_objects(
     q_paths[[1]],
@@ -544,6 +586,14 @@ if (file.exists(state_cache_path)) {
   q_d_50 <- fast_prepare_quantile_data(samp.theta_50_exAL_synth_DISC$samp_theta, probs = c(0.975, 0.5, 0.025), type = 7L)
   q_d_05 <- fast_prepare_quantile_data(samp.theta_5_exAL_synth_DISC$samp_theta, probs = c(0.975, 0.5, 0.025), type = 7L)
   q_d_95 <- fast_prepare_quantile_data(samp.theta_95_exAL_synth_DISC$samp_theta, probs = c(0.975, 0.5, 0.025), type = 7L)
+  idx_component <- ceiling(TT / 10):TT
+  trend_shift_map <- build_trend_mean_shift_map(
+    theta_50 = samp.theta_50_exAL_synth_DISC$samp_theta,
+    theta_05 = samp.theta_5_exAL_synth_DISC$samp_theta,
+    theta_95 = samp.theta_95_exAL_synth_DISC$samp_theta,
+    idx = idx_component,
+    trend_component = 1L
+  )
   rm(
     samp.theta_5_exAL_synth_DISC,
     samp.theta_50_exAL_synth_DISC,
@@ -557,7 +607,8 @@ if (file.exists(state_cache_path)) {
       q_d_50 = q_d_50,
       q_d_05 = q_d_05,
       q_d_95 = q_d_95,
-      time_cuts = time_cuts
+      time_cuts = time_cuts,
+      trend_shift_map = trend_shift_map
     ),
     state_cache_path
   )
@@ -567,18 +618,34 @@ render_quantile_window(
   xbs_retro = xbs_retro,
   idx = time_cuts[1]:time_cuts[2],
   title_text = "Quantile Dynamics: 2012–2016",
-  out_file = file.path(out_dir, "All_exal_2012-2016_DISC.png")
+  out_file = file.path(out_dir, "All_exal_2012-2016_DISC.png"),
+  ylim_override = c(0, 7)
 )
 render_quantile_window(
   xbs_retro = xbs_retro,
   idx = time_cuts[3]:time_cuts[4],
   title_text = "Quantile Dynamics: 2017–2019",
-  out_file = file.path(out_dir, "All_exal_2017-2019_DISC.png")
+  out_file = file.path(out_dir, "All_exal_2017-2019_DISC.png"),
+  ylim_override = c(0, 7)
+)
+render_quantile_window(
+  xbs_retro = xbs_retro,
+  idx = time_cuts[3]:time_cuts[4],
+  title_text = "Quantile Dynamics: 2017–2019",
+  out_file = file.path(out_dir, "All_exal_2017-2019_DISC_fullrange.png"),
+  ylim_override = c(0, 20)
 )
 
 idx_component <- ceiling(TT / 10):TT
 obs_df <- tibble(Date = as.Date(dates_ts_usgs[idx_component]), Value = Y[1, idx_component])
-comp_df <- build_component_df(component = 6, idx = idx_component, q_d_50 = q_d_50, q_d_05 = q_d_05, q_d_95 = q_d_95)
+comp_df <- build_component_df(
+  component = 6,
+  idx = idx_component,
+  q_d_50 = q_d_50,
+  q_d_05 = q_d_05,
+  q_d_95 = q_d_95,
+  shift_map = trend_shift_map
+)
 obs_df <- obs_df %>% mutate(Value = convert_internal_flow_to_display(Value))
 comp_df <- comp_df %>%
   mutate(
@@ -591,7 +658,7 @@ render_component_quantiles(
   obs_df = obs_df,
   time_cuts = time_cuts,
   ylab = figure_flow_axis_label(DISPLAY_FLOW_SCALE),
-  title_text = "80-month Effect – 1991–2022",
+  title_text = "80-month Component Evolution: 1991–2022",
   ylim = compute_display_ylim(c(comp_df$Lower, comp_df$Upper, obs_df$Value), include_zero = TRUE),
   out_file = file.path(out_dir, "80_component_1991_2022.png")
 )
@@ -604,10 +671,12 @@ meta <- list(
   rendered_files = c(
     "All_exal_2012-2016_DISC.png",
     "All_exal_2017-2019_DISC.png",
+    "All_exal_2017-2019_DISC_fullrange.png",
     "80_component_1991_2022.png"
   ),
   display_flow_scale = DISPLAY_FLOW_SCALE,
   internal_flow_scale = INTERNAL_FLOW_SCALE,
+  component_display_contract = "80-month component shifted by posterior mean trend level",
   time_cuts = as.integer(time_cuts),
   time_cut_dates = as.character(as.Date(timestamps[time_cuts])),
   rendered_at_utc = format(Sys.time(), tz = "UTC", usetz = TRUE)

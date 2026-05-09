@@ -26,6 +26,7 @@ UNIVAR_SPEC = {
 HISTORICAL_FIGURES = [
     ("fig:dry_quantile", "All_exal_2012-2016_DISC.png", "Dry-period historical summary"),
     ("fig:rainy_quantile", "All_exal_2017-2019_DISC.png", "Rainy-period historical summary"),
+    ("companion:rainy_quantile_fullrange", "All_exal_2017-2019_DISC_fullrange.png", "Wet-period historical summary (0-20 companion range)"),
     ("fig:80_components", "80_component_1991_2022.png", "Long-cycle component summary"),
 ]
 

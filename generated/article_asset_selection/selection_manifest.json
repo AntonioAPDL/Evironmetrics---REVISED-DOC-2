@@ -11,7 +11,7 @@
       "current_model_output_wired": true,
       "generated_source": "generated/setup_support_by_cutoff_v2/20221225_exal_m_t1/figures/usgs.png",
       "disc_target": "DISC/usgs.png",
-      "sha256": "6cc79947d8a9af830c014b8c7dbddee1a9e01857cee49f403daa74dc94300831",
+      "sha256": "ebd36a3f2a3dcce2d8b5bf9a8bc39f17e770bb387b038b7ae8b1e1da7a8ab098",
       "note": "Representative 2022-12-25 setup/support v2 figure"
     },
     {
@@ -23,7 +23,7 @@
       "current_model_output_wired": true,
       "generated_source": "generated/setup_support_by_cutoff_v2/20221225_exal_m_t1/figures/precip_soilmoisture_climatePC1_faceted_labeled.png",
       "disc_target": "DISC/precip_soilmoisture_climatePC1_faceted_labeled.png",
-      "sha256": "82af64a5f8df2ca5e9a292acd85d972d82dd9d9fd5b57076a77daeba9d38e427",
+      "sha256": "2a9d3a7d82de8c578351c3014963415a907cf612f93e22110c91d3d2b7b4511c",
       "note": "Representative 2022-12-25 setup/support v2 figure"
     },
     {
@@ -35,7 +35,7 @@
       "current_model_output_wired": true,
       "generated_source": "generated/setup_support_by_cutoff_v2/20221225_exal_m_t1/figures/retrospective_log_discharge_plot_faceted.png",
       "disc_target": "DISC/retrospective_log_discharge_plot_faceted.png",
-      "sha256": "0371bf4028f48e090bc7d0f7babbb8217898a625ce48b2aa0e42ac0b2e8d0292",
+      "sha256": "8e4519e083b0ca0c8a8533dfcdabba6b544204124cb7993752efa2e4e9a5ffa8",
       "note": "Representative 2022-12-25 setup/support v2 figure"
     },
     {
@@ -47,7 +47,7 @@
       "current_model_output_wired": true,
       "generated_source": "generated/setup_support_by_cutoff_v2/20221225_exal_m_t1/figures/forecats.png",
       "disc_target": "DISC/forecats.png",
-      "sha256": "7b1339c7ea1bcdce7a2b96e298b11250fd669327fe5e36ed206b448efb767328",
+      "sha256": "c3b641db219510a14f7de9e7bf47ca3a7c92211483f03ab4f53072b0e9ec3b20",
       "note": "Representative 2022-12-25 setup/support v2 figure"
     },
     {
@@ -59,7 +59,7 @@
       "current_model_output_wired": true,
       "generated_source": "generated/current_model_output_support/figures/All_exal_2012-2016_DISC.png",
       "disc_target": "DISC/All_exal_2012-2016_DISC.png",
-      "sha256": "c24a6911e7188ba1853dc5154ce820c3f44b3425ae2b72fca61ac963948b6f40",
+      "sha256": "48208f532cb34f2639260c7c398f637c929a512f206ed3e64582b9cb0697f3f3",
       "note": "Rendered from the current 2022-05-11 exAL-M-T1 full-history multivariate run"
     },
     {
@@ -71,7 +71,7 @@
       "current_model_output_wired": true,
       "generated_source": "generated/current_model_output_support/figures/All_exal_2017-2019_DISC.png",
       "disc_target": "DISC/All_exal_2017-2019_DISC.png",
-      "sha256": "d7f89edc74096a443ce883a4a0a9af940b000ae7fa241c60b0ac4382f8568c76",
+      "sha256": "1c2c2f35843a249efd18586d9b49021f4ad9290aae19f416e22f359a4705d1c8",
       "note": "Rendered from the current 2022-05-11 exAL-M-T1 full-history multivariate run"
     },
     {
@@ -83,7 +83,7 @@
       "current_model_output_wired": true,
       "generated_source": "generated/exal_m_t1_20221225/posterior_samples_valid.png",
       "disc_target": "DISC/posterior_samples_valid.png",
-      "sha256": "3fcfcc2186216b0a02901b6e0a53058cfa144ab5a2e3a6af3640fea3a974befe",
+      "sha256": "6cd2ebdabc00d56baee1cec01d478e97b686a5c0be19af09346dd9a69192ed39",
       "note": "Verified representative 2022-12-25 exAL-M-T1 output"
     },
     {
@@ -95,7 +95,7 @@
       "current_model_output_wired": true,
       "generated_source": "generated/current_model_output_support/figures/80_component_1991_2022.png",
       "disc_target": "DISC/80_component_1991_2022.png",
-      "sha256": "1801db8d4e93313a6561700cbdf60992bf34f4b458c193c660d4178a73bb2caf",
+      "sha256": "f7fefd1c5e9709a63710dd01682b9e5019a74ea05664336356c6bba01c677d13",
       "note": "Rendered from the current 2022-05-11 exAL-M-T1 full-history multivariate run"
     },
     {
@@ -107,7 +107,7 @@
       "current_model_output_wired": true,
       "generated_source": "generated/current_model_output_support/figures/posterior_samples_counter_valid.png",
       "disc_target": "DISC/posterior_samples_counter_valid.png",
-      "sha256": "309f78249508ee938766120576dcaa7f6565afbc62a11b357f9af66cb97e1f26",
+      "sha256": "88222698abb001b4a3e4b343e7bbd2664348e391043a18a53c21b84f2b9abbb8",
       "note": "Copied from the current 2022-12-25 exdqlm_univar publication-style output bundle"
     }
   ]
