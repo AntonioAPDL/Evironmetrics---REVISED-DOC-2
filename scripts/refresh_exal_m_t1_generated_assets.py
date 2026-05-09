@@ -8,6 +8,8 @@ import json
 import shutil
 from pathlib import Path
 
+from article_repo_layout import build_layout
+
 FIVE_RUN_SPECS = [
     {
         'slug': '20210123_exal_m_t1',
@@ -63,6 +65,11 @@ REPRESENTATIVE_FILES = [
     'tables/sigma_summary.tex',
 ]
 
+ALIAS_FIGURES = {
+    'exdqlm_multivar_synth_keep_cutoff_window_posterior_samples.png': 'representative_synthesis_multivariate.png',
+    'exdqlm_multivar_synth_keep_cutoff_window_posterior_samples_with_raw_ensembles.png': 'representative_synthesis_multivariate_with_reference_ensembles.png',
+}
+
 
 def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
@@ -81,8 +88,8 @@ def read_mean_crps(path: Path) -> str:
     return target['mean_crps']
 
 
-def refresh_five_run_sources(article_root: Path, runtime_root: Path) -> None:
-    bundle_root = article_root / 'generated' / 'exal_m_t1_five_run_sources'
+def refresh_five_run_sources(layout, runtime_root: Path) -> None:
+    bundle_root = layout.five_cutoff_crps_validation_dir
     bundle_root.mkdir(parents=True, exist_ok=True)
     manifest_rows = []
     sums = []
@@ -115,21 +122,21 @@ def refresh_five_run_sources(article_root: Path, runtime_root: Path) -> None:
             str(src_summary),
             str(src_compare),
             str(src_crps),
-            f'generated/exal_m_t1_five_run_sources/{spec["slug"]}/summary.json',
-            f'generated/exal_m_t1_five_run_sources/{spec["slug"]}/compare_report.json',
-            f'generated/exal_m_t1_five_run_sources/{spec["slug"]}/crps_forecast_summary.csv',
+            str(out_summary.relative_to(layout.root)),
+            str(out_compare.relative_to(layout.root)),
+            str(out_crps.relative_to(layout.root)),
         ])
 
     (bundle_root / 'README.md').write_text(
-        '# exAL-M-T1 Five-Run Source Freeze\n\n'
-        'This bundle freezes the five verified publication `exAL-M-T1` run roots used by the revised article.\n\n'
+        '# Five-Cutoff CRPS Validation Sources\n\n'
+        'This artifact bundle freezes the five verified publication `exAL-M-T1` run roots used by the revised article benchmark table.\n\n'
         'Refresh script:\n'
         '- `scripts/refresh_exal_m_t1_generated_assets.py`\n\n'
         'For each cutoff, the local freeze contains:\n'
         '- `summary.json`\n'
         '- `compare_report.json`\n'
         '- `crps_forecast_summary.csv`\n\n'
-        'These files are copied from the verified publication replay representatives runtime roots.\n'
+        'These files are copied from the verified publication replay representative runtime roots.\n'
     )
 
     with (bundle_root / 'manifest.csv').open('w', newline='') as f:
@@ -143,11 +150,11 @@ def refresh_five_run_sources(article_root: Path, runtime_root: Path) -> None:
     (bundle_root / 'SHA256SUMS.txt').write_text('\n'.join(sorted(sums)) + '\n')
 
 
-def refresh_representative_bundle(article_root: Path, runtime_root: Path) -> None:
+def refresh_representative_bundle(layout, runtime_root: Path) -> None:
     spec = next(s for s in FIVE_RUN_SPECS if s['slug'] == '20221225_exal_m_t1')
     run_root = runtime_root / spec['slug'] / 'runs' / spec['run_id']
     output_root = run_root / 'post' / 'outputs' / spec['run_id']
-    bundle_root = article_root / 'generated' / 'exal_m_t1_20221225'
+    bundle_root = layout.representative_selected_model_dir
     bundle_root.mkdir(parents=True, exist_ok=True)
 
     manifest_rows = []
@@ -157,17 +164,19 @@ def refresh_representative_bundle(article_root: Path, runtime_root: Path) -> Non
         dst = bundle_root / Path(rel).name
         digest = copy_file(src, dst)
         sums.append(f'{digest}  {dst.name}')
-        manifest_rows.append([rel, dst.name, str(src), f'generated/exal_m_t1_20221225/{dst.name}', digest])
+        manifest_rows.append([rel, dst.name, str(src), str(dst.relative_to(layout.root)), digest])
 
-    alias_src = bundle_root / 'exdqlm_multivar_synth_keep_cutoff_window_posterior_samples.png'
-    alias_dst = bundle_root / 'posterior_samples_valid.png'
-    shutil.copy2(alias_src, alias_dst)
-    sums.append(f'{sha256(alias_dst)}  posterior_samples_valid.png')
+    for src_name, alias_name in ALIAS_FIGURES.items():
+        src = bundle_root / src_name
+        dst = bundle_root / alias_name
+        shutil.copy2(src, dst)
+        sums.append(f'{sha256(dst)}  {alias_name}')
+        manifest_rows.append([src_name, alias_name, str(src), str(dst.relative_to(layout.root)), sha256(dst)])
 
     for src, dst_name in ((run_root / 'report' / 'summary.json', 'summary.json'), (run_root / 'validate' / 'compare_report.json', 'compare_report.json')):
         digest = copy_file(src, bundle_root / dst_name)
         sums.append(f'{digest}  {dst_name}')
-        manifest_rows.append([str(src.relative_to(run_root)), dst_name, str(src), f'generated/exal_m_t1_20221225/{dst_name}', digest])
+        manifest_rows.append([str(src.relative_to(run_root)), dst_name, str(src), str((bundle_root / dst_name).relative_to(layout.root)), digest])
 
     metadata = {
         'cutoff': spec['cutoff'],
@@ -180,13 +189,13 @@ def refresh_representative_bundle(article_root: Path, runtime_root: Path) -> Non
     (bundle_root / 'bundle_metadata.json').write_text(json.dumps(metadata, indent=2) + '\n')
 
     (bundle_root / 'README.md').write_text(
-        '# exAL-M-T1 Representative Selected-Model Bundle\n\n'
-        'This bundle freezes the verified representative `2022-12-25 exAL-M-T1` outputs used by the revised article.\n\n'
+        '# Representative Selected Model: 2022-12-25\n\n'
+        'This artifact bundle freezes the verified representative `2022-12-25 exAL-M-T1` outputs used by the revised article.\n\n'
         'Refresh script:\n'
         '- `scripts/refresh_exal_m_t1_generated_assets.py`\n\n'
         'Included content:\n'
         '- selected synthesis figures\n'
-        '- quantile/sample exports\n'
+        '- quantile and sample exports\n'
         '- CRPS summaries\n'
         '- posterior table exports\n'
         '- figure manifests\n'
@@ -207,8 +216,10 @@ def main() -> None:
 
     article_root = args.article_root.resolve()
     runtime_root = args.runtime_root.resolve()
-    refresh_five_run_sources(article_root, runtime_root)
-    refresh_representative_bundle(article_root, runtime_root)
+    layout = build_layout(article_root)
+    layout.ensure_base_dirs()
+    refresh_five_run_sources(layout, runtime_root)
+    refresh_representative_bundle(layout, runtime_root)
     print('Refreshed exAL-M-T1 generated asset bundles successfully.')
 
 

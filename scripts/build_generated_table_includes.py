@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 
 from article_asset_manifest import load_manifest, manifest_path
+from article_repo_layout import TABLE_TEX_FILENAMES, build_layout
 
 CUTOFF_ORDER = ['20210123', '20211112', '20211221', '20220511', '20221225']
 MODEL_ORDER = ['N-U-T1', 'N-M-T0', 'N-M-T1', 'AL-U-T1', 'AL-M-T0', 'AL-M-T1', 'exAL-U-T1', 'exAL-M-T0', 'exAL-M-T1']
@@ -151,17 +152,19 @@ def main() -> None:
     args = parser.parse_args()
 
     article_root = args.article_root.resolve()
+    layout = build_layout(article_root)
+    layout.ensure_base_dirs()
     manifest = load_manifest(article_root)
-    out_root = article_root / 'generated' / 'article_table_includes'
+    out_root = layout.generated_tex_dir
     out_root.mkdir(parents=True, exist_ok=True)
 
     manifest_rows: list[dict[str, str]] = []
 
     benchmark_raw_lines, benchmark_bayesian_lines, benchmark_body_lines, rows = build_benchmark_rows(article_root, manifest['tables']['tab:benchmark_crps_models'])
     manifest_rows.extend(rows)
-    write_lines(out_root / 'table_benchmark_crps_rows.tex', benchmark_raw_lines)
-    write_lines(out_root / 'table_benchmark_bayesian_rows.tex', benchmark_bayesian_lines)
-    write_lines(out_root / 'table_benchmark_body.tex', benchmark_body_lines)
+    write_lines(out_root / TABLE_TEX_FILENAMES['benchmark_rows'], benchmark_raw_lines)
+    write_lines(out_root / TABLE_TEX_FILENAMES['benchmark_bayesian_rows'], benchmark_bayesian_lines)
+    write_lines(out_root / TABLE_TEX_FILENAMES['benchmark_body'], benchmark_body_lines)
     benchmark_block_lines = [
         r'\begin{table*}[htbp]',
         r'\centering',
@@ -182,11 +185,11 @@ def main() -> None:
         r'\end{threeparttable}',
         r'\end{table*}',
     ]
-    write_lines(out_root / 'table_benchmark_crps_block.tex', benchmark_block_lines)
+    write_lines(out_root / TABLE_TEX_FILENAMES['benchmark_block'], benchmark_block_lines)
 
     component_lines, rows = build_component_rows(article_root, manifest['tables']['tab:components_23_31'])
     manifest_rows.extend(rows)
-    write_lines(out_root / 'table_components_23_31_rows.tex', component_lines)
+    write_lines(out_root / TABLE_TEX_FILENAMES['components_rows'], component_lines)
     component_block_lines = [
         r'\begin{table*}[htbp]',
         r'\centering',
@@ -206,11 +209,11 @@ def main() -> None:
         r'\end{threeparttable}',
         r'\end{table*}',
     ]
-    write_lines(out_root / 'table_components_23_31_block.tex', component_block_lines)
+    write_lines(out_root / TABLE_TEX_FILENAMES['components_block'], component_block_lines)
 
     gamma_lines, rows = build_source_summary_rows(article_root, manifest['tables']['tab:gamma_sigma_intervals1'], 'tab:gamma_sigma_intervals1', 3)
     manifest_rows.extend(rows)
-    write_lines(out_root / 'table_gamma_rows.tex', gamma_lines)
+    write_lines(out_root / TABLE_TEX_FILENAMES['gamma_rows'], gamma_lines)
     gamma_block_lines = [
         r'\begin{table*}[htbp]',
         r'\centering',
@@ -236,11 +239,11 @@ def main() -> None:
         r'\end{threeparttable}',
         r'\end{table*}',
     ]
-    write_lines(out_root / 'table_gamma_block.tex', gamma_block_lines)
+    write_lines(out_root / TABLE_TEX_FILENAMES['gamma_block'], gamma_block_lines)
 
     sigma_lines, rows = build_source_summary_rows(article_root, manifest['tables']['tab:gamma_sigma_intervals2'], 'tab:gamma_sigma_intervals2', 5)
     manifest_rows.extend(rows)
-    write_lines(out_root / 'table_sigma_rows.tex', sigma_lines)
+    write_lines(out_root / TABLE_TEX_FILENAMES['sigma_rows'], sigma_lines)
     sigma_block_lines = [
         r'\begin{table*}[htbp]',
         r'\centering',
@@ -266,7 +269,7 @@ def main() -> None:
         r'\end{threeparttable}',
         r'\end{table*}',
     ]
-    write_lines(out_root / 'table_sigma_block.tex', sigma_block_lines)
+    write_lines(out_root / TABLE_TEX_FILENAMES['sigma_block'], sigma_block_lines)
 
     with (out_root / 'manifest.csv').open('w', newline='') as f:
         writer = csv.DictWriter(f, fieldnames=['table_label', 'row_label', 'source_class', 'source_note'])
@@ -276,22 +279,22 @@ def main() -> None:
     metadata = {
         'manifest_path': str(manifest_path(article_root)),
         'outputs': {
-            'tab:benchmark_crps_models': 'generated/article_table_includes/table_benchmark_crps_rows.tex',
-            'tab:benchmark_crps_models_bayesian': 'generated/article_table_includes/table_benchmark_bayesian_rows.tex',
-            'tab:benchmark_crps_models_body': 'generated/article_table_includes/table_benchmark_body.tex',
-            'tab:benchmark_crps_models_block': 'generated/article_table_includes/table_benchmark_crps_block.tex',
-            'tab:components_23_31': 'generated/article_table_includes/table_components_23_31_rows.tex',
-            'tab:components_23_31_block': 'generated/article_table_includes/table_components_23_31_block.tex',
-            'tab:gamma_sigma_intervals1': 'generated/article_table_includes/table_gamma_rows.tex',
-            'tab:gamma_sigma_intervals1_block': 'generated/article_table_includes/table_gamma_block.tex',
-            'tab:gamma_sigma_intervals2': 'generated/article_table_includes/table_sigma_rows.tex',
-            'tab:gamma_sigma_intervals2_block': 'generated/article_table_includes/table_sigma_block.tex'
+            'tab:benchmark_crps_models': str((layout.generated_tex_dir / TABLE_TEX_FILENAMES['benchmark_rows']).relative_to(article_root)),
+            'tab:benchmark_crps_models_bayesian': str((layout.generated_tex_dir / TABLE_TEX_FILENAMES['benchmark_bayesian_rows']).relative_to(article_root)),
+            'tab:benchmark_crps_models_body': str((layout.generated_tex_dir / TABLE_TEX_FILENAMES['benchmark_body']).relative_to(article_root)),
+            'tab:benchmark_crps_models_block': str((layout.generated_tex_dir / TABLE_TEX_FILENAMES['benchmark_block']).relative_to(article_root)),
+            'tab:components_23_31': str((layout.generated_tex_dir / TABLE_TEX_FILENAMES['components_rows']).relative_to(article_root)),
+            'tab:components_23_31_block': str((layout.generated_tex_dir / TABLE_TEX_FILENAMES['components_block']).relative_to(article_root)),
+            'tab:gamma_sigma_intervals1': str((layout.generated_tex_dir / TABLE_TEX_FILENAMES['gamma_rows']).relative_to(article_root)),
+            'tab:gamma_sigma_intervals1_block': str((layout.generated_tex_dir / TABLE_TEX_FILENAMES['gamma_block']).relative_to(article_root)),
+            'tab:gamma_sigma_intervals2': str((layout.generated_tex_dir / TABLE_TEX_FILENAMES['sigma_rows']).relative_to(article_root)),
+            'tab:gamma_sigma_intervals2_block': str((layout.generated_tex_dir / TABLE_TEX_FILENAMES['sigma_block']).relative_to(article_root))
         }
     }
     (out_root / 'build_metadata.json').write_text(json.dumps(metadata, indent=2) + '\n')
     (out_root / 'README.md').write_text(
-        '# Article Table Includes\n\n'
-        'These TeX row snippets are generated from the article-side frozen data sources named in `ARTICLE_GENERATED_ASSET_MANIFEST.json`.\n\n'
+        '# Generated Table Includes\n\n'
+        'These TeX table fragments are generated from the article-side artifact bundles named in `MANUSCRIPT_ASSET_MANIFEST.json`.\n\n'
         'Refresh path:\n'
         '- `scripts/build_generated_table_includes.py`\n\n'
         'The manuscript uses `\\input{}` to consume these files directly.\n'

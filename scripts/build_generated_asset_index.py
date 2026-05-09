@@ -5,27 +5,30 @@ import argparse
 import csv
 from pathlib import Path
 
-FAMILY_DESCRIPTIONS = {
-    'article_asset_review': 'Top-level review report, gallery, and wiring audit for current article figures and tables.',
-    'article_asset_selection': 'Manifest showing which generated figure files are currently promoted into DISC/.',
-    'article_table_includes': 'Generated TeX row includes for the manuscript tables, rebuilt from frozen article-side data sources.',
-    'exal_m_t1_20221225': 'Representative selected-model bundle from the verified 2022-12-25 exAL-M-T1 rerun.',
-    'exal_m_t1_five_run_sources': 'Five-cutoff publication source freeze for exAL-M-T1.',
-    'he2_historical_support_audit_20260507': 'Audit snapshot showing which published Bayesian rows use full historical support versus short-window support.',
-    'he2_publication_manifest_snapshot': 'Frozen local snapshot of the current HE2 Bayesian publication manifest and alignment tables.',
-    'current_model_output_support': 'Canonical current-output support bundle for manuscript historical summaries and supporting appendix figures.',
-    'setup_support_by_cutoff_v2': 'Canonical cutoff-specific setup/support figure family mirrored from the validated v2 workflow.',
-    'setup_support_by_cutoff_v2_appendix': 'Appendix-ready composite panels built from the canonical v2 cutoff-specific setup/support figure family.',
-    'setup_support_by_cutoff_v2_article_selection': 'Manifest for which cutoff-specific v2 figures are promoted into DISC/.',
-    'setup_support_by_cutoff_v2_review': 'Review markdown/gallery and audits for the canonical v2 setup/support figure family.',
+from article_repo_layout import build_layout
+
+ARTIFACT_DESCRIPTIONS = {
+    'five_cutoff_crps_validation_sources': 'Five-cutoff CRPS validation freeze used by the benchmark table.',
+    'representative_selected_model_2022_12_25': 'Representative selected-model bundle for the verified 2022-12-25 exAL-M-T1 rerun.',
+    'historical_support_from_current_models': 'Current-model historical-support figures used by manuscript Figures 5, 6, A1, and A2.',
+    'five_cutoff_setup_support': 'Canonical five-cutoff setup/support figure family mirrored from the validated workflow runtime bundle.',
+    'he2_publication_freeze': 'Frozen local snapshot of the current HE2 Bayesian publication manifest and alignment tables.',
+    'he2_historical_support_audit': 'Workflow-side audit snapshot showing which publication rows use full historical support versus short-window support.',
+}
+
+REPORT_DESCRIPTIONS = {
+    'manuscript_asset_review': 'Top-level review report, gallery, and wiring audit for manuscript figures and tables.',
+    'manuscript_figure_selection': 'Manifest recording which artifact figures are currently promoted into the manuscript-facing figure directory.',
+    'five_cutoff_setup_support_review': 'Review markdown, gallery, and audits for the five-cutoff setup/support figure family.',
+    'representative_setup_selection': 'Selection manifest recording which cutoff-specific setup/support bundle feeds Figures 1-4.',
 }
 
 PREFERRED_REVIEW_FILES = [
     'ARTICLE_ASSET_REVIEW.md',
-    'SETUP_SUPPORT_BY_CUTOFF_V2_REVIEW.md',
-    'SETUP_SUPPORT_BY_CUTOFF_V2_REVIEW.md',
-    'SETUP_SUPPORT_BY_CUTOFF_REVIEW.md',
-    'INPUT_ALIGNMENT_AUDIT.md',
+    'FIVE_CUTOFF_SETUP_SUPPORT_REVIEW.md',
+    'CURRENT_MODEL_OUTPUT_WIRING_AUDIT.md',
+    'TRANSFORM_AND_LINEAGE_AUDIT.md',
+    'figure_gallery.html',
     'gallery.html',
     'README.md',
 ]
@@ -50,61 +53,92 @@ def pick_review_targets(root: Path) -> list[str]:
     return picks[:6]
 
 
+def write_inventory_csv(path: Path, rows: list[dict[str, object]]) -> None:
+    with path.open('w', newline='') as f:
+        writer = csv.DictWriter(f, fieldnames=['name', 'path', 'description', 'file_count', 'png_count', 'has_readme', 'review_targets'])
+        writer.writeheader()
+        writer.writerows(rows)
+
+
 def main() -> None:
-    parser = argparse.ArgumentParser(description='Build an index of article-side generated asset families.')
+    parser = argparse.ArgumentParser(description='Build advisor-facing inventory guides for article artifacts and reports.')
     parser.add_argument('--article-root', type=Path, default=Path(__file__).resolve().parents[1])
     args = parser.parse_args()
 
     article_root = args.article_root.resolve()
-    generated_root = article_root / 'generated'
-    families = [p for p in sorted(generated_root.iterdir()) if p.is_dir()]
+    layout = build_layout(article_root)
+    layout.ensure_base_dirs()
 
-    rows = []
-    for family in families:
-        rows.append({
-            'family': family.name,
-            'path': str(family),
-            'description': FAMILY_DESCRIPTIONS.get(family.name, 'Generated asset family.'),
-            'file_count': count_files(family),
-            'png_count': count_png(family),
-            'has_readme': 'yes' if (family / 'README.md').exists() else 'no',
-            'review_targets': ' | '.join(pick_review_targets(family)),
+    artifact_rows = []
+    for path in sorted(p for p in layout.artifacts_dir.iterdir() if p.is_dir()):
+        artifact_rows.append({
+            'name': path.name,
+            'path': str(path.relative_to(article_root)),
+            'description': ARTIFACT_DESCRIPTIONS.get(path.name, 'Artifact bundle.'),
+            'file_count': count_files(path),
+            'png_count': count_png(path),
+            'has_readme': 'yes' if (path / 'README.md').exists() else 'no',
+            'review_targets': ' | '.join(pick_review_targets(path)),
         })
 
-    csv_path = generated_root / 'asset_inventory.csv'
-    with csv_path.open('w', newline='') as f:
-        fieldnames = ['family', 'path', 'description', 'file_count', 'png_count', 'has_readme', 'review_targets']
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
-        writer.writeheader()
-        writer.writerows(rows)
+    report_rows = []
+    for path in sorted(p for p in layout.reports_dir.iterdir() if p.is_dir()):
+        report_rows.append({
+            'name': path.name,
+            'path': str(path.relative_to(article_root)),
+            'description': REPORT_DESCRIPTIONS.get(path.name, 'Report bundle.'),
+            'file_count': count_files(path),
+            'png_count': count_png(path),
+            'has_readme': 'yes' if (path / 'README.md').exists() else 'no',
+            'review_targets': ' | '.join(pick_review_targets(path)),
+        })
 
-    md: list[str] = []
-    md.append('# Generated Asset Index\n\n')
-    md.append('This directory is the article-side freeze point for generated figures, tables, manifests, and audit bundles used by the revised manuscript.\n\n')
-    md.append('Primary article repo:\n')
-    md.append(f'- `{article_root}`\n\n')
-    md.append('Preferred refresh entrypoint:\n')
-    md.append('- `scripts/refresh_all_generated_assets.py`\n\n')
-    md.append('Companion workflow runbook:\n')
-    md.append('- `/data/muscat_data/jaguir26/project1_ucsc_phd/repro/run/CANONICAL_REVISED_ARTICLE_WORKFLOW.md`\n\n')
-    md.append('Future full-history repair plan:\n')
-    md.append('- `/data/muscat_data/jaguir26/project1_ucsc_phd/repro/run/HE2_FULL_HISTORY_REPAIR_FORWARD_PLAN.md`\n\n')
-    md.append('## Asset families\n\n')
-    md.append('| Family | Description | Files | PNGs | README | Review entrypoints |\n')
-    md.append('|---|---|---:|---:|---|---|\n')
-    for row in rows:
-        md.append(
-            f"| `{row['family']}` | {row['description']} | {row['file_count']} | {row['png_count']} | {row['has_readme']} | `{row['review_targets']}` |\n"
-        )
-    md.append('\n## Working rules\n\n')
-    md.append('1. Refresh generated bundles through article-side scripts rather than manual copying.\n')
-    md.append('2. Treat `generated/` as the manuscript-local freeze point, not the authoritative build factory.\n')
-    md.append('3. Keep workflow-side source-of-truth manifests and runbooks in the workflow repo.\n')
-    md.append('4. Promote files into `DISC/` only from a generated family with a manifest or review trail.\n')
-    md.append('5. When future reruns change model outputs, refresh the generated families first and only then update manuscript-facing files.\n')
-    md.append('\n## Important note\n\n')
-    md.append('The current publication state and the future corrected full-history rerun state must remain separate until a deliberate update is made.\n')
-    (generated_root / 'README.md').write_text(''.join(md))
+    write_inventory_csv(layout.artifacts_dir / 'artifact_inventory.csv', artifact_rows)
+    write_inventory_csv(layout.reports_dir / 'report_inventory.csv', report_rows)
+
+    (layout.artifacts_dir / 'README.md').write_text(
+        '# Article Artifacts\n\n'
+        'These folders are the article-side frozen artifact bundles that feed the manuscript figures, tables, and supporting audits.\n\n'
+        '| Artifact family | Description | Files | PNGs | README | Review entrypoints |\n'
+        '|---|---|---:|---:|---|---|\n' + ''.join(
+            f"| `{row['name']}` | {row['description']} | {row['file_count']} | {row['png_count']} | {row['has_readme']} | `{row['review_targets']}` |\n"
+            for row in artifact_rows
+        ) +
+        '\nPreferred refresh entrypoint:\n- `scripts/refresh_all_generated_assets.py`\n'
+    )
+
+    (layout.reports_dir / 'README.md').write_text(
+        '# Article Reports\n\n'
+        'These folders contain advisor-facing review reports, galleries, and manifest summaries for the current revised article state.\n\n'
+        '| Report family | Description | Files | PNGs | README | Review entrypoints |\n'
+        '|---|---|---:|---:|---|---|\n' + ''.join(
+            f"| `{row['name']}` | {row['description']} | {row['file_count']} | {row['png_count']} | {row['has_readme']} | `{row['review_targets']}` |\n"
+            for row in report_rows
+        ) +
+        '\nPreferred review starting points:\n- `reports/manuscript_asset_review/ARTICLE_ASSET_REVIEW.md`\n- `reports/five_cutoff_setup_support_review/FIVE_CUTOFF_SETUP_SUPPORT_REVIEW.md`\n'
+    )
+
+    (article_root / 'README.md').write_text(
+        '# Revised Article Repository\n\n'
+        'This repository is the advisor-facing freeze of the revised manuscript, its manuscript-facing figures and tables, and the article-local artifact bundles used to regenerate them.\n\n'
+        '## Where to look first\n\n'
+        '- `wileyNJD-APA.tex`: manuscript source used by Overleaf\n'
+        '- `figures/manuscript/`: the exact figure files used by the manuscript\n'
+        '- `tables/generated_tex/`: the exact generated table blocks included by the manuscript\n'
+        '- `docs/figure_table_provenance.md`: figure/table provenance summary\n'
+        '- `reports/manuscript_asset_review/ARTICLE_ASSET_REVIEW.md`: review report for the current article assets\n\n'
+        '## Directory roles\n\n'
+        '- `figures/`: manuscript-facing figures and appendix cutoff panels\n'
+        '- `tables/`: generated TeX tables used by the manuscript\n'
+        '- `artifacts/`: frozen local bundles copied from validated workflow outputs\n'
+        '- `reports/`: review reports, galleries, audits, and selection manifests\n'
+        '- `docs/`: advisor-facing documentation and provenance notes\n'
+        '- `scripts/`: refresh and audit scripts used to rebuild the article-side bundles\n\n'
+        '## Standard refresh command\n\n'
+        '```bash\npython3 scripts/refresh_all_generated_assets.py\n```\n\n'
+        '## Standard compile command\n\n'
+        '```bash\npdflatex -interaction=nonstopmode -halt-on-error -jobname=output wileyNJD-APA.tex\nbibtex output\npdflatex -interaction=nonstopmode -halt-on-error -jobname=output wileyNJD-APA.tex\npdflatex -interaction=nonstopmode -halt-on-error -jobname=output wileyNJD-APA.tex\n```\n'
+    )
 
 
 if __name__ == '__main__':

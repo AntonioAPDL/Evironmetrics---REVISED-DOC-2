@@ -5,15 +5,16 @@ import argparse
 import csv
 import json
 from pathlib import Path
-from typing import Iterable
 
 from PIL import Image, ImageDraw, ImageFont
+
+from article_repo_layout import APPENDIX_PANEL_FILENAMES, build_layout
 
 FIGURE_ORDER = [
     ('usgs.png', 'A. USGS observations to cutoff'),
     ('precip_soilmoisture_climatePC1_faceted_labeled.png', 'B. PPT, SOIL, and PCA histories'),
     ('retrospective_log_discharge_plot_faceted.png', 'C. Retrospective support used by fit'),
-    ('forecats.png', 'D. Forecast-product context (cutoff +/- 28 days)'),
+    ('forecats.png', 'D. Forecast-product context'),
 ]
 
 APPENDIX_ORDER = [
@@ -49,8 +50,6 @@ def _draw_text(draw: ImageDraw.ImageDraw, xy: tuple[int, int], text: str, font: 
 
 def build_panel(cutoff_dir: Path, out_path: Path) -> dict[str, str]:
     meta = json.loads((cutoff_dir / 'metadata' / 'cutoff_entry.json').read_text())
-    support = json.loads(json.dumps({}))
-    # lightweight YAML-free read of support window for heading values
     lines = (cutoff_dir / 'metadata' / 'support_window.yaml').read_text().splitlines()
     support_map = {}
     for line in lines:
@@ -89,7 +88,6 @@ def build_panel(cutoff_dir: Path, out_path: Path) -> dict[str, str]:
         (outer_pad + panel_w + gap, outer_pad + header_h + label_h + panel_h + gap),
     ]
 
-    manifest_rows = []
     for (fig_name, label), (x, y) in zip(FIGURE_ORDER, positions):
         fig_path = cutoff_dir / 'figures' / fig_name
         im = Image.open(fig_path).convert('RGB')
@@ -98,7 +96,6 @@ def build_panel(cutoff_dir: Path, out_path: Path) -> dict[str, str]:
         ix = x + (panel_w - fitted.size[0]) // 2
         iy = y + label_h + (panel_h - fitted.size[1]) // 2
         canvas.paste(fitted, (ix, iy))
-        manifest_rows.append({'figure_name': fig_name, 'source_path': str(fig_path)})
 
     out_path.parent.mkdir(parents=True, exist_ok=True)
     canvas.save(out_path)
@@ -115,13 +112,15 @@ def build_panel(cutoff_dir: Path, out_path: Path) -> dict[str, str]:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description='Build appendix-ready composite panels for setup/support-by-cutoff v2 figures.')
+    parser = argparse.ArgumentParser(description='Build appendix-ready composite panels for the five-cutoff setup/support figures.')
     parser.add_argument('--article-root', type=Path, default=Path(__file__).resolve().parents[1])
     args = parser.parse_args()
 
     article_root = args.article_root.resolve()
-    src_root = article_root / 'generated' / 'setup_support_by_cutoff_v2'
-    out_root = article_root / 'generated' / 'setup_support_by_cutoff_v2_appendix'
+    layout = build_layout(article_root)
+    layout.ensure_base_dirs()
+    src_root = layout.five_cutoff_setup_support_dir
+    out_root = layout.appendix_cutoff_panels_dir
     out_root.mkdir(parents=True, exist_ok=True)
 
     rows = []
@@ -129,29 +128,29 @@ def main() -> None:
         cutoff_dir = src_root / slug
         if not cutoff_dir.exists():
             raise FileNotFoundError(f'Missing cutoff directory: {cutoff_dir}')
-        out_path = out_root / f'{slug}_panel.png'
+        out_path = out_root / APPENDIX_PANEL_FILENAMES[slug]
         rows.append(build_panel(cutoff_dir, out_path))
 
     with (out_root / 'manifest.csv').open('w', newline='') as f:
-        writer = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
+        writer = csv.DictWriter(f, fieldnames=list(rows[0].keys()), lineterminator='\n')
         writer.writeheader()
         writer.writerows(rows)
 
     readme = [
-        '# Setup/Support by Cutoff v2 Appendix Panels\n\n',
-        'This generated family provides appendix-ready composite panels for the validated `setup_support_by_cutoff_v2` figure set.\n\n',
+        '# Appendix Cutoff Panels\n\n',
+        'This figure family contains appendix-ready composite setup/support panels for the five rolling-origin cutoffs used in the revised article.\n\n',
         'Each panel contains four subplots for one cutoff:\n',
         '- USGS observations to cutoff\n',
         '- PPT/SOIL/PCA histories to cutoff\n',
         '- retrospective support used by fit\n',
         '- forecast-product context over the short forecast review window\n\n',
         'Canonical source family:\n',
-        '- `generated/setup_support_by_cutoff_v2/`\n\n',
+        f'- `{layout.five_cutoff_setup_support_dir.relative_to(article_root)}/`\n\n',
         'Manifest:\n',
         '- `manifest.csv`\n',
     ]
     (out_root / 'README.md').write_text(''.join(readme))
-    print(f'Built setup/support-by-cutoff v2 appendix panels in {out_root}')
+    print(f'Built appendix cutoff panels in {out_root}')
 
 
 if __name__ == '__main__':

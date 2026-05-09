@@ -10,6 +10,8 @@ import numpy as np
 import pandas as pd
 import yaml
 
+from article_repo_layout import build_layout
+
 
 @dataclass
 class CutoffAudit:
@@ -266,8 +268,9 @@ def main() -> None:
     args = parser.parse_args()
 
     article_root = args.article_root.resolve()
-    base = article_root / "generated" / "setup_support_by_cutoff_v2"
-    review_root = article_root / "generated" / "setup_support_by_cutoff_v2_review"
+    layout = build_layout(article_root)
+    base = layout.five_cutoff_setup_support_dir
+    review_root = layout.five_cutoff_setup_support_review_dir
     review_root.mkdir(parents=True, exist_ok=True)
 
     slugs = sorted(
