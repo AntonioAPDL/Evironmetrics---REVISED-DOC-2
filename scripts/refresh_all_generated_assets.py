@@ -39,6 +39,7 @@ def main() -> None:
     run([py, str(article_root / 'scripts' / 'build_figure_polish_status_audit.py'), '--article-root', str(article_root)])
     run([py, str(article_root / 'scripts' / 'clean_article_legacy_assets.py'), '--article-root', str(article_root)])
     run([py, str(article_root / 'scripts' / 'build_generated_asset_index.py'), '--article-root', str(article_root)])
+    run([py, str(article_root / 'scripts' / 'validate_manuscript_figure_paths.py'), '--article-root', str(article_root)])
     print('Refreshed all article-side generated assets successfully.')
 
 

@@ -11,6 +11,7 @@ This repository is the advisor-facing freeze of the revised manuscript, its manu
 - `docs/figure_table_provenance.md`: figure/table provenance summary
 - `reports/manuscript_asset_review/ARTICLE_ASSET_REVIEW.md`: review report for the current article assets
 - `reports/manuscript_asset_review/FIGURE_POLISH_STATUS_AUDIT.md`: point-by-point status audit for the earlier figure-polish request
+- `scripts/validate_manuscript_figure_paths.py`: validates that every `\includegraphics{}` call in the manuscript resolves through the canonical figure search paths
 
 ## Directory roles
 
@@ -26,6 +27,11 @@ This repository is the advisor-facing freeze of the revised manuscript, its manu
 ```bash
 python3 scripts/refresh_all_generated_assets.py
 ```
+
+The refresh path now includes a figure-path validation step. The manuscript keeps
+the lowercase `figures/` tree as canonical, while `wileyNJD-APA.tex` also
+accepts the legacy uppercase `Figures/` tree as a compile-time fallback for
+Overleaf Git-sync compatibility.
 
 ## Standard compile command
 
