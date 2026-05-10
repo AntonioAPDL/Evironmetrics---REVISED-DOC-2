@@ -12,7 +12,7 @@
     },
     {
       "label": "fig:covariates",
-      "manuscript_path": "figures/manuscript/covariate_context_precip_soil_pca.png",
+      "manuscript_path": "figures/manuscript/covariate_context_precip_soil_gdpc.png",
       "category": "Setup / Inputs",
       "role": "Covariate setup figure",
       "source_path": "artifacts/five_cutoff_setup_support/20221225_exal_m_t1/figures/precip_soilmoisture_climatePC1_faceted_labeled.png",

@@ -25,7 +25,7 @@ The repository is organized so that a reader can separate three roles immediatel
 ### Figures used directly by the manuscript
 
 - `figures/manuscript/site_context_usgs.png`
-- `figures/manuscript/covariate_context_precip_soil_pca.png`
+- `figures/manuscript/covariate_context_precip_soil_gdpc.png`
 - `figures/manuscript/retrospective_products_context.png`
 - `figures/manuscript/forecast_products_context.png`
 - `figures/manuscript/historical_summary_dry_period.png`

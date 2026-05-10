@@ -4,7 +4,7 @@ This figure family contains appendix-ready composite setup/support panels for th
 
 Each panel contains four subplots for one cutoff:
 - USGS observations to cutoff
-- PPT/SOIL/PCA histories to cutoff
+- PPT/SOIL/GDPC histories to cutoff
 - retrospective support used by fit
 - forecast-product context over the short forecast review window
 

@@ -45,10 +45,10 @@ def build_items(root: Path) -> list[dict[str, object]]:
         },
         {
             'item': 2,
-            'request': 'Figure 2 should remove support-window subtitle, show units for precipitation and soil moisture, keep PCA label concise, and keep caption compact/high quality.',
+            'request': 'Figure 2 should remove support-window subtitle, show units for precipitation and soil moisture, keep the large-scale climate-factor label concise, and keep caption compact/high quality.',
             'status': 'complete' if no_support_window_phrase else 'partial',
             'evidence': [
-                'figures/manuscript/covariate_context_precip_soil_pca.png',
+                'figures/manuscript/covariate_context_precip_soil_gdpc.png',
                 'scripts/figure_style_contract.R:86-92',
                 'scripts/setup_support_bundle_v2_helpers.R:376-401',
                 'wileyNJD-APA.tex:259-264',

@@ -5,7 +5,7 @@ These folders are the article-side frozen artifact bundles that feed the manuscr
 | Artifact family | Description | Files | PNGs | README | Review entrypoints |
 |---|---|---:|---:|---|---|
 | `five_cutoff_crps_validation_sources` | Five-cutoff CRPS validation freeze used by the benchmark table. | 18 | 0 | yes | `README.md` |
-| `five_cutoff_setup_support` | Canonical five-cutoff setup/support figure family mirrored from the validated workflow runtime bundle. | 74 | 20 | yes | `review/gallery.html | README.md` |
+| `five_cutoff_setup_support` | Canonical five-cutoff setup/support figure family mirrored from the validated workflow runtime bundle. | 84 | 20 | yes | `review/gallery.html | README.md` |
 | `he2_historical_support_audit` | Workflow-side audit snapshot showing which publication rows use full historical support versus short-window support. | 5 | 0 | yes | `README.md` |
 | `he2_publication_freeze` | Frozen local snapshot of the current HE2 Bayesian publication manifest and alignment tables. | 7 | 0 | yes | `README.md` |
 | `historical_support_from_current_models` | Current-model historical-support figures used by manuscript Figures 5, 6, A1, and A2. | 14 | 5 | yes | `README.md` |

@@ -78,12 +78,12 @@ def main() -> None:
     for cutoff_dir, meta, support, policy, coverage, _scale, _rows in records:
         md.append(f"| {meta['cutoff_date']} | {policy['nws_policy_summary']} | {policy['glofas_policy_summary']} | {policy.get('notes','')} |\n")
     md.append('\n## Coverage audit\n')
-    md.append('| Cutoff | USGS full history | PPT full history | SOIL full history | PCA full history | Retros full history | Retros available start |\n')
+    md.append('| Cutoff | USGS full history | PPT full history | SOIL full history | GDPC full history | Retros full history | Retros available start |\n')
     md.append('|---|---|---|---|---|---|---|\n')
     for cutoff_dir, meta, support, policy, coverage, _scale, _rows in records:
         md.append(
             f"| {meta['cutoff_date']} | {coverage['usgs']['full_history_available']} | {coverage['ppt']['full_history_available']} | "
-            f"{coverage['soil']['full_history_available']} | {coverage['pca']['full_history_available']} | "
+            f"{coverage['soil']['full_history_available']} | {coverage['gdpc']['full_history_available']} | "
             f"{coverage['retrospective']['full_history_available']} | {coverage['retrospective']['available_start']} |\n"
         )
     (out_root / 'FIVE_CUTOFF_SETUP_SUPPORT_REVIEW.md').write_text(''.join(md))
@@ -92,7 +92,7 @@ def main() -> None:
     audit.append('# Input Alignment Audit\n\n')
     audit.append('This audit summarizes the selected-run input alignment assumptions for the cutoff-specific setup/support family mirrored into the article repo.\n\n')
     audit.append('## What this family represents\n\n')
-    audit.append('- `usgs.png` and the covariate figure document the cutoff-specific history carried by the selected-run shared inputs.\n')
+    audit.append('- `usgs.png` documents the cutoff-specific USGS history carried by the selected-run shared inputs, while the covariate figure combines cutoff-specific PPT/SOIL histories with the canonical master GDPC factor sliced to the cutoff.\n')
     audit.append('- `retrospective_log_discharge_plot_faceted.png` documents the retrospective support actually available to the selected run for that cutoff.\n')
     audit.append('- `forecats.png` documents the short forecast-context window tied to the selected forecast products.\n\n')
     audit.append('## Cutoff summary\n\n')
@@ -117,7 +117,7 @@ def main() -> None:
     ]
     for cutoff_dir, meta, support, policy, coverage, scale, rows in records:
         html.append(f'<div class="cutoff"><h2>{meta["cutoff_date"]}</h2>')
-        html.append(f'<p class="meta"><strong>Directory:</strong> <code>{cutoff_dir.name}</code><br><strong>Bundle class:</strong> <code>{meta["bundle_class"]}</code><br><strong>Requested history:</strong> {support["support_start"]} to {support["support_end"]}<br><strong>Retrospective available from:</strong> {support["retrospective_available_start"]}<br><strong>Forecast window:</strong> {support["plot_start"]} to {support["plot_end"]}<br><strong>Flow display scale:</strong> <code>{scale["display_scale"]}</code><br><strong>Selected-run internal scale:</strong> <code>{scale.get("selected_run_internal_analysis_scale", "")}</code><br><strong>NWS policy:</strong> {policy["nws_policy_summary"]}<br><strong>GloFAS policy:</strong> {policy["glofas_policy_summary"]}<br><strong>Coverage audit:</strong> USGS={coverage["usgs"]["full_history_available"]}, PPT={coverage["ppt"]["full_history_available"]}, SOIL={coverage["soil"]["full_history_available"]}, PCA={coverage["pca"]["full_history_available"]}, Retros={coverage["retrospective"]["full_history_available"]}</p>')
+        html.append(f'<p class="meta"><strong>Directory:</strong> <code>{cutoff_dir.name}</code><br><strong>Bundle class:</strong> <code>{meta["bundle_class"]}</code><br><strong>Requested history:</strong> {support["support_start"]} to {support["support_end"]}<br><strong>Retrospective available from:</strong> {support["retrospective_available_start"]}<br><strong>Forecast window:</strong> {support["plot_start"]} to {support["plot_end"]}<br><strong>Flow display scale:</strong> <code>{scale["display_scale"]}</code><br><strong>Selected-run internal scale:</strong> <code>{scale.get("selected_run_internal_analysis_scale", "")}</code><br><strong>NWS policy:</strong> {policy["nws_policy_summary"]}<br><strong>GloFAS policy:</strong> {policy["glofas_policy_summary"]}<br><strong>Coverage audit:</strong> USGS={coverage["usgs"]["full_history_available"]}, PPT={coverage["ppt"]["full_history_available"]}, SOIL={coverage["soil"]["full_history_available"]}, GDPC={coverage["gdpc"]["full_history_available"]}, Retros={coverage["retrospective"]["full_history_available"]}</p>')
         html.append('<div class="grid">')
         for row in rows:
             rel = Path(os.path.relpath(cutoff_dir / 'figures' / row['figure_name'], out_root))

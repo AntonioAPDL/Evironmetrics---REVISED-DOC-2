@@ -4,7 +4,7 @@ This audit summarizes the selected-run input alignment assumptions for the cutof
 
 ## What this family represents
 
-- `usgs.png` and the covariate figure document the cutoff-specific history carried by the selected-run shared inputs.
+- `usgs.png` documents the cutoff-specific USGS history carried by the selected-run shared inputs, while the covariate figure combines cutoff-specific PPT/SOIL histories with the canonical master GDPC factor sliced to the cutoff.
 - `retrospective_log_discharge_plot_faceted.png` documents the retrospective support actually available to the selected run for that cutoff.
 - `forecats.png` documents the short forecast-context window tied to the selected forecast products.
 

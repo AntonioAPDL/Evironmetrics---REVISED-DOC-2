@@ -8,7 +8,7 @@ MANIFEST_FILENAME = 'MANUSCRIPT_ASSET_MANIFEST.json'
 
 MANUSCRIPT_FIGURE_FILENAMES = {
     'fig:sanlorenzo': 'site_context_usgs.png',
-    'fig:covariates': 'covariate_context_precip_soil_pca.png',
+    'fig:covariates': 'covariate_context_precip_soil_gdpc.png',
     'fig:retrospectives': 'retrospective_products_context.png',
     'fig:ensembles': 'forecast_products_context.png',
     'fig:dry_quantile': 'historical_summary_dry_period.png',

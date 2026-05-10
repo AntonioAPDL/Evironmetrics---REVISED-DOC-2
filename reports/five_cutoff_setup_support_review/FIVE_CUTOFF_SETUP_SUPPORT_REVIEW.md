@@ -23,7 +23,7 @@ See also: `INPUT_ALIGNMENT_AUDIT.md` and `TRANSFORM_AND_LINEAGE_AUDIT.md` in thi
 | 2022-12-25 | nws_retro_v21 with nws_retro_v30 tail fill after natural v21 coverage end | glofas_hist_v31_lisflood_cons | histfix lineage should show nws_retro_v21 early support and nws_retro_v30 tail fill near cutoff |
 
 ## Coverage audit
-| Cutoff | USGS full history | PPT full history | SOIL full history | PCA full history | Retros full history | Retros available start |
+| Cutoff | USGS full history | PPT full history | SOIL full history | GDPC full history | Retros full history | Retros available start |
 |---|---|---|---|---|---|---|
 | 2021-01-23 | True | True | True | True | False | 2018-02-08 |
 | 2021-11-12 | True | True | True | True | False | 2018-11-28 |

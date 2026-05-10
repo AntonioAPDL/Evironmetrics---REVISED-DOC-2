@@ -12,7 +12,7 @@ from article_repo_layout import APPENDIX_PANEL_FILENAMES, build_layout
 
 FIGURE_ORDER = [
     ('usgs.png', 'A. USGS observations to cutoff'),
-    ('precip_soilmoisture_climatePC1_faceted_labeled.png', 'B. PPT, SOIL, and PCA histories'),
+    ('precip_soilmoisture_climatePC1_faceted_labeled.png', 'B. PPT, SOIL, and 1st GDPC histories'),
     ('retrospective_log_discharge_plot_faceted.png', 'C. Retrospective support used by fit'),
     ('forecats.png', 'D. Forecast-product context'),
 ]
@@ -141,7 +141,7 @@ def main() -> None:
         'This figure family contains appendix-ready composite setup/support panels for the five rolling-origin cutoffs used in the revised article.\n\n',
         'Each panel contains four subplots for one cutoff:\n',
         '- USGS observations to cutoff\n',
-        '- PPT/SOIL/PCA histories to cutoff\n',
+        '- PPT/SOIL/GDPC histories to cutoff\n',
         '- retrospective support used by fit\n',
         '- forecast-product context over the short forecast review window\n\n',
         'Canonical source family:\n',
