@@ -100,12 +100,24 @@ The current publication state and the future corrected full-history rerun state 
 
 Forward repair planning documents:
 - `/data/muscat_data/jaguir26/project1_ucsc_phd/repro/run/HE2_FULL_HISTORY_REPAIR_FORWARD_PLAN.md`
+- `/data/muscat_data/jaguir26/project1_ucsc_phd/repro/run/CANONICAL_GDPC_MASTER_COVARIATE_REPORT_20260509.md`
+- `/data/muscat_data/jaguir26/project1_ucsc_phd/repro/run/CANONICAL_GDPC_IMPLEMENTATION_TRACKER_20260509.md`
+- `/data/muscat_data/jaguir26/project1_ucsc_phd/repro/run/CANONICAL_GDPC_SOURCE_PIPELINE_RUNBOOK_20260509.md`
+- `/data/muscat_data/jaguir26/project1_ucsc_phd/repro/run/CANONICAL_GDPC_MASTER_PIPELINE_RUNBOOK_20260509.md`
 - `artifacts/he2_historical_support_audit/historical_support_audit.md`
 
 Important future TODOs now explicitly tracked:
-- PCA covariate reproducibility hardening
+- canonical GDPC master-covariate reproducibility hardening
 - full-history bundle reconstruction for `2021-01-23`, `2021-11-12`, and `2022-12-25`
 - corrected reruns for the affected Bayesian publication rows only after the bundle contract is rebuilt
+
+Current canonical GDPC decision snapshot:
+- use the full 17 daily climate indices over `1987-05-29 -> 2023-01-22`
+- standardize each index over that canonical window
+- keep the standardized daily series in levels for GDPC
+- do not difference or detrend them before fitting the canonical `GDPC1`
+- use fixed lag `k = 1`, `tol = 1e-3`, `niter_max = 200`, and criterion label `BIC`
+- orient the final `GDPC1` so it has positive correlation with `oni`
 
 ---
 
