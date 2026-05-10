@@ -27,6 +27,14 @@ def find_line(text: str, needle: str) -> int:
     return -1
 
 
+def find_first_line(text: str, needles: list[str]) -> int:
+    for needle in needles:
+        line = find_line(text, needle)
+        if line != -1:
+            return line
+    return -1
+
+
 def grouped(items, key):
     out = {}
     for item in items:
@@ -88,7 +96,7 @@ def main() -> None:
             'bundle_path': str(bundle_path.relative_to(article_root)),
             'sha256': sha256(article_path),
             'size_bytes': article_path.stat().st_size,
-            'tex_line': find_line(tex, fig['manuscript_path']),
+            'tex_line': find_first_line(tex, [fig['manuscript_path'], Path(fig['manuscript_path']).name]),
         })
 
     table_rows = []

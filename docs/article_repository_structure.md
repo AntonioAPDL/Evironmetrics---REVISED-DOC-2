@@ -20,6 +20,11 @@ The repository is organized so that a reader can separate three roles immediatel
 - `docs/`: advisor-facing documentation and provenance notes
 - `scripts/`: refresh, promotion, and audit scripts used to regenerate the article-side state
 
+The manuscript now resolves figures through a validated `\graphicspath` layer.
+The canonical asset tree remains lowercase `figures/`, but the TeX compile path
+also tolerates the legacy uppercase `Figures/` tree so Overleaf Git-sync
+transitions do not break figure rendering.
+
 ## Manuscript-facing paths
 
 ### Figures used directly by the manuscript
@@ -113,6 +118,8 @@ This refresh path now does all of the following:
 5. regenerate manuscript table blocks
 6. remove the retired `DISC/` and `generated/` naming layers
 7. rebuild the advisor-facing README and inventory guides
+8. validate that every manuscript `\includegraphics{}` call resolves to an
+   existing figure asset
 
 ## Standard compile workflow
 

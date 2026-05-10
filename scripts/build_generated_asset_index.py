@@ -56,7 +56,11 @@ def pick_review_targets(root: Path) -> list[str]:
 
 def write_inventory_csv(path: Path, rows: list[dict[str, object]]) -> None:
     with path.open('w', newline='') as f:
-        writer = csv.DictWriter(f, fieldnames=['name', 'path', 'description', 'file_count', 'png_count', 'has_readme', 'review_targets'])
+        writer = csv.DictWriter(
+            f,
+            fieldnames=['name', 'path', 'description', 'file_count', 'png_count', 'has_readme', 'review_targets'],
+            lineterminator='\n',
+        )
         writer.writeheader()
         writer.writerows(rows)
 
@@ -129,7 +133,8 @@ def main() -> None:
         '- `tables/generated_tex/`: the exact generated table blocks included by the manuscript\n'
         '- `docs/figure_table_provenance.md`: figure/table provenance summary\n'
         '- `reports/manuscript_asset_review/ARTICLE_ASSET_REVIEW.md`: review report for the current article assets\n'
-        '- `reports/manuscript_asset_review/FIGURE_POLISH_STATUS_AUDIT.md`: point-by-point status audit for the earlier figure-polish request\n\n'
+        '- `reports/manuscript_asset_review/FIGURE_POLISH_STATUS_AUDIT.md`: point-by-point status audit for the earlier figure-polish request\n'
+        '- `scripts/validate_manuscript_figure_paths.py`: validates that every `\\includegraphics{}` call in the manuscript resolves through the canonical figure search paths\n\n'
         '## Directory roles\n\n'
         '- `figures/`: manuscript-facing figures, appendix cutoff panels, and advisor-facing cutoff forecast-context copies\n'
         '- `tables/`: generated TeX tables used by the manuscript\n'
@@ -139,6 +144,10 @@ def main() -> None:
         '- `scripts/`: refresh and audit scripts used to rebuild the article-side bundles\n\n'
         '## Standard refresh command\n\n'
         '```bash\npython3 scripts/refresh_all_generated_assets.py\n```\n\n'
+        'The refresh path now includes a figure-path validation step. The manuscript keeps\n'
+        'the lowercase `figures/` tree as canonical, while `wileyNJD-APA.tex` also\n'
+        'accepts the legacy uppercase `Figures/` tree as a compile-time fallback for\n'
+        'Overleaf Git-sync compatibility.\n\n'
         '## Standard compile command\n\n'
         '```bash\npdflatex -interaction=nonstopmode -halt-on-error -jobname=output wileyNJD-APA.tex\nbibtex output\npdflatex -interaction=nonstopmode -halt-on-error -jobname=output wileyNJD-APA.tex\npdflatex -interaction=nonstopmode -halt-on-error -jobname=output wileyNJD-APA.tex\n```\n'
     )
