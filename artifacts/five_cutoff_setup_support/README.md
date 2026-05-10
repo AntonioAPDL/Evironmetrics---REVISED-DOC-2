@@ -4,6 +4,8 @@ This runtime family renders the corrected cutoff-specific setup/input/support fi
 
 Config: `/data/muscat_data/jaguir26/project1_ucsc_phd/config/exal_m_t1_setup_support_by_cutoff_v2_20260507.json`
 
+Canonical GDPC factor: `/data/muscat_data/jaguir26/project1_ucsc_phd/data/canonical_gdpc_master/v20260509/outputs/gdpc_master_component_01_19870529_20230122.csv`
+
 Flow-figure display scale: `log1p_cms`
 
 Review outputs:

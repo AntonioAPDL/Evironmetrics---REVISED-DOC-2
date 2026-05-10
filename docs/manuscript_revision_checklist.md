@@ -47,7 +47,7 @@ The corrected cutoff-specific setup/support family is now:
 - `reports/five_cutoff_setup_support_review/`
 
 Current corrected `v2` plotting contract:
-- `usgs.png` and `precip_soilmoisture_climatePC1_faceted_labeled.png` use the full `1987-05-29 -> cutoff` daily history available in the selected-run shared inputs
+- `usgs.png` uses the full `1987-05-29 -> cutoff` USGS history available to the selected-run shared inputs, while `precip_soilmoisture_climatePC1_faceted_labeled.png` now combines cutoff-specific PPT/SOIL histories with the canonical GDPC master factor sliced to the cutoff
 - `forecats.png` uses a strict `cutoff - 28 days` to `cutoff + 28 days` display window
 - `retrospective_log_discharge_plot_faceted.png` uses the retrospective support actually available for the cutoff-specific bundle, with per-cutoff availability recorded in `reports/five_cutoff_setup_support_review/SETUP_SUPPORT_BY_CUTOFF_V2_REVIEW.md`
 

@@ -253,15 +253,15 @@ The transfer component uses both local hydrological covariates and a large-scale
 
 To represent broader climate conditions, we also use a collection of monthly climate and environmental indices from \citet{noaa_climate_indices}, including solar flux, Niño 1+2, the Oceanic Niño Index (ONI), the Southern Oscillation Index (SOI), the Western Hemisphere Warm Pool (WHWP), the Global Mean Temperature (GMT), the Northern Oscillation Index (NOI), the Atlantic Multidecadal Oscillation (AMO), and the Tropical South (TSA) and North Atlantic (TNA) indices. These series are interpolated to daily resolution to align with the hydrological data.
 
-We summarize these climate indices with the first generalized dynamic principal component (GDPC) \citep{JSSv092c02}. This factor serves as a single large-scale climate summary that captures their dominant common variation through time. The number of leads and lags is selected by leave-one-out cross-validation, and the first component explains 53.42\% of the total variability among the indices.
+We summarize these climate indices with the first generalized dynamic principal component (GDPC) \citep{JSSv092c02}. This factor serves as a single large-scale climate summary that captures their dominant common variation through time. In the reproducible workflow, the canonical daily standardized 17-index matrix is fit once over May 29, 1987 through January 22, 2023, and a bounded screening over \(k\in\{1,2,3\}\) selects the fixed-lag GDPC specification with \(k=2\) by converged BIC. The resulting first component explains 44.07\% of the total variability among the standardized indices.
 
 The transfer covariates used in the application are therefore daily precipitation, daily soil moisture, and the first GDPC factor. Figure~\ref{fig:covariates} shows these three explanatory series over the full historical daily window available to the representative December 25, 2022 cutoff-specific input bundle, using the raw cutoff-specific support-file scale for each covariate: precipitation in mm, soil moisture in m$^3$/m$^3$, and the dimensionless first GDPC score.
 
 \begin{figure*}[hbt!]
 \centering
-\centerline{\includegraphics[width=450pt]{figures/manuscript/covariate_context_precip_soil_pca.png}}
+\centerline{\includegraphics[width=450pt]{figures/manuscript/covariate_context_precip_soil_gdpc.png}}
 \caption{
-Historical daily precipitation [mm], soil moisture [m$^3$/m$^3$], and first GDPC series over the May 29, 1987 through December 25, 2022 support window used by the representative December 25, 2022 cutoff-specific input bundle. The panel is rendered directly from the raw cutoff-specific covariate files used by that bundle.
+Historical daily precipitation [mm], soil moisture [m$^3$/m$^3$], and first GDPC score over the May 29, 1987 through December 25, 2022 support window used by the representative December 25, 2022 cutoff-specific input bundle. The precipitation and soil-moisture panels are rendered from the raw cutoff-specific support files, whereas the climate panel shows the canonical master GDPC factor truncated at the cutoff.
 }
 \label{fig:covariates}
 \end{figure*}
@@ -483,7 +483,7 @@ Figure~\ref{fig:synth2} provides a historical-only reference for the December 25
 \subsection{Additional Cutoff-Specific Setup and Support Panels}
 \label{app:cutoffsupportpanels}
 
-The main text shows the representative December 25, 2022 setup and support figures individually. For completeness, this appendix collects the corresponding setup/support panels for the other rolling-origin cutoffs used in the Bayesian forecast validation. Each panel contains four views for the same cutoff: observed USGS history to the cutoff, the historical PPT/SOIL/PCA covariate histories, the retrospective support actually used by the fitted models, and the short forecast-context review window. These supplementary panels are included for documentation and reader inspection rather than as separate forecast-validation evidence.
+The main text shows the representative December 25, 2022 setup and support figures individually. For completeness, this appendix collects the corresponding setup/support panels for the other rolling-origin cutoffs used in the Bayesian forecast validation. Each panel contains four views for the same cutoff: observed USGS history to the cutoff, the historical PPT/SOIL/GDPC covariate histories, the retrospective support actually used by the fitted models, and the short forecast-context review window. These supplementary panels are included for documentation and reader inspection rather than as separate forecast-validation evidence.
 
 \begin{figure}[p]
 \centering

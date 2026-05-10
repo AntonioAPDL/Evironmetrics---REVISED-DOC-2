@@ -4,7 +4,7 @@ This report records the cleanup that removes retired article-side figure/table d
 
 ## Canonical manuscript-facing figures
 
-- `figures/manuscript/covariate_context_precip_soil_pca.png`
+- `figures/manuscript/covariate_context_precip_soil_gdpc.png`
 - `figures/manuscript/forecast_products_context.png`
 - `figures/manuscript/historical_component_80month.png`
 - `figures/manuscript/historical_summary_dry_period.png`

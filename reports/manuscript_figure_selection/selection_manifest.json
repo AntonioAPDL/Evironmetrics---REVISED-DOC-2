@@ -15,13 +15,13 @@
     },
     {
       "label": "fig:covariates",
-      "manuscript_path": "figures/manuscript/covariate_context_precip_soil_pca.png",
+      "manuscript_path": "figures/manuscript/covariate_context_precip_soil_gdpc.png",
       "category": "Setup / Inputs",
       "role": "Covariate setup figure",
       "source_class": "setup_support_v2_representative",
       "current_model_output_wired": true,
       "source_path": "artifacts/five_cutoff_setup_support/20221225_exal_m_t1/figures/precip_soilmoisture_climatePC1_faceted_labeled.png",
-      "sha256": "2a9d3a7d82de8c578351c3014963415a907cf612f93e22110c91d3d2b7b4511c",
+      "sha256": "9ba737ad08af2e20dc5bd4aeed8880674897810d6f80d53e96183e096857c715",
       "note": "Representative 2022-12-25 setup/support figure from the canonical five-cutoff support bundle"
     },
     {

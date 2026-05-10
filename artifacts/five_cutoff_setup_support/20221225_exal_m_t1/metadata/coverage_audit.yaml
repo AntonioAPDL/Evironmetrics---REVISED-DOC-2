@@ -30,7 +30,7 @@ soil:
   missing_days_requested_window: 0
   missing_days_available_window: 0
   full_history_available: true
-pca:
+gdpc:
   requested_start: '1987-05-29'
   requested_end: '2022-12-25'
   available_start: '1987-05-29'
