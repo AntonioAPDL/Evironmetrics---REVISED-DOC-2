@@ -10,7 +10,8 @@ from article_asset_manifest import load_manifest
 from article_repo_layout import build_layout
 
 LIVE_KEEP_ROOT = Path('/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_he2_exdqlm_multivar_keep_all_cutoffs_sharedspec_20260516')
-COMPLETED_KEEP_ROOT = Path('/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_he2_exdqlm_multivar_keep_all_cutoffs_20260512')
+COMPLETED_KEEP_ROOT = Path('/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_he2_exdqlm_multivar_keep_all_cutoffs_sharedspec_20260516')
+COMPLETED_UNIVAR_ROOT = Path('/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_he2_exdqlm_univar_all_cutoffs_sharedspec_20260516')
 SETUP_SUPPORT_RUNTIME = Path('/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/exal_m_t1_setup_support_by_cutoff_v2_20260516')
 
 
@@ -45,18 +46,18 @@ def infer_row(rel_path: str, manuscript_sources: dict[str, dict[str, str]], appe
             return {
                 'classification': 'model-output-driven figure',
                 'source_script': 'scripts/refresh_exal_m_t1_generated_assets.py -> scripts/promote_generated_figures_to_disc.py',
-                'source_lineage': 'completed_keep_outputs_20260512',
-                'status': 'blocked_pending_live_keep_sharedspec_outputs',
-                'blocker': 'Live shared-spec keep rerun 20260516 has not produced final post/report outputs for all cutoffs yet.',
+                'source_lineage': 'completed_keep_outputs_20260516',
+                'status': 'updated_now',
+                'blocker': '',
                 'source_path': source_path,
             }
         if label in {'fig:dry_quantile', 'fig:rainy_quantile', 'fig:80_components', 'fig:synth2'}:
             return {
                 'classification': 'model-output-driven figure',
                 'source_script': 'scripts/refresh_current_model_output_support_figures.py -> scripts/promote_generated_figures_to_disc.py',
-                'source_lineage': 'completed_keep_outputs_20260512',
-                'status': 'blocked_pending_live_keep_sharedspec_outputs',
-                'blocker': 'Current-model support figures still depend on completed 20260512 keep outputs until the live shared-spec rerun finishes and a retained support-artifact contract is available.',
+                'source_lineage': 'historical_support_retained_artifacts_missing_20260516',
+                'status': 'blocked_retained_support_artifacts_missing',
+                'blocker': 'Current-model support renderer still expects retained multivariate fit artifacts that are absent from both the completed 20260516 shared-spec root and the older 20260512 root.',
                 'source_path': source_path,
             }
     if rel_path.startswith('appendix_cutoff_panels/') and name != 'README.md' and name != 'manifest.csv':
@@ -84,9 +85,9 @@ def infer_row(rel_path: str, manuscript_sources: dict[str, dict[str, str]], appe
         return {
             'classification': 'synthesis figure',
             'source_script': 'scripts/refresh_cutoff_synthesis_families.py',
-            'source_lineage': 'completed_keep_outputs_20260512',
-            'status': 'blocked_pending_live_keep_sharedspec_outputs',
-            'blocker': 'Cutoff-wide multivariate synthesis family still reflects the last completed keep-output root (20260512) until the live shared-spec rerun completes.',
+            'source_lineage': 'completed_keep_outputs_20260516',
+            'status': 'updated_now',
+            'blocker': '',
             'source_path': row.get('source_path', ''),
         }
     if rel_path.startswith('reference_synthesis_by_cutoff/') and name not in {'README.md', 'manifest.csv'}:
@@ -94,8 +95,8 @@ def infer_row(rel_path: str, manuscript_sources: dict[str, dict[str, str]], appe
         return {
             'classification': 'synthesis figure',
             'source_script': 'scripts/refresh_cutoff_synthesis_families.py',
-            'source_lineage': 'completed_reference_outputs_20260422',
-            'status': 'unchanged_intentionally',
+            'source_lineage': 'completed_univar_outputs_20260516',
+            'status': 'updated_now',
             'blocker': '',
             'source_path': row.get('source_path', ''),
         }
@@ -172,6 +173,7 @@ def main() -> None:
     summary = {
         'setup_support_runtime_root': str(SETUP_SUPPORT_RUNTIME),
         'completed_keep_output_root': str(COMPLETED_KEEP_ROOT),
+        'completed_univar_output_root': str(COMPLETED_UNIVAR_ROOT),
         'live_keep_sharedspec_root': str(LIVE_KEEP_ROOT),
         'live_keep_sharedspec_complete': keep_sharedspec_complete(),
         'setup_support_full_history_all_cutoffs': full_history_all_setup,
@@ -195,9 +197,9 @@ def main() -> None:
     md.append('| Family | Current status | Source lineage | Notes |\n')
     md.append('|---|---|---|---|\n')
     md.append(f"| Setup/support manuscript figures + appendix panels + forecast-context family | `updated_now` | `exal_m_t1_setup_support_by_cutoff_v2_20260516` | Full USGS/PPT/SOIL/GDPC history from `1987-05-29 -> cutoff`; retrospective support now sourced from repaired canonical shared bundles for all cutoffs. |\n")
-    md.append(f"| Representative keep synthesis + cutoff-wide multivariate synthesis | `blocked_pending_live_keep_sharedspec_outputs` | last completed keep output root `20260512` | Keep-model output figures should move to the live shared-spec rerun after it finishes `post/validate/report`. |\n")
-    md.append(f"| Historical support from current models | `blocked_pending_live_keep_sharedspec_outputs` | current completed keep output root `20260512` | Current-model support renderer still depends on completed keep artifacts until a retained support cache exists for the live rerun. |\n")
-    md.append(f"| Reference synthesis family | `unchanged_intentionally` | existing univariate output lineage | Not part of the current multivariate keep input-bundle correction. |\n\n")
+    md.append(f"| Representative keep synthesis + cutoff-wide multivariate synthesis | `updated_now` | completed keep output root `20260516` | Refreshed from the completed shared-spec keep rerun. |\n")
+    md.append(f"| Historical support from current models | `blocked_retained_support_artifacts_missing` | attempted against completed keep output root `20260516` | Current-model support renderer still expects retained multivariate fit artifacts that are not exported by the completed workflow roots. |\n")
+    md.append(f"| Reference synthesis family | `updated_now` | completed univariate output root `20260516` | Refreshed from the completed shared-spec univariate rerun. |\n\n")
     md.append('## Per-figure status\n\n')
     md.append('| Figure path | Class | Status | Source lineage | Source script | Blocker |\n')
     md.append('|---|---|---|---|---|---|\n')
@@ -207,7 +209,9 @@ def main() -> None:
     md.append(f"- Setup/support keep figure families now use full history: `{'YES' if full_history_all_setup else 'NO'}`.\n")
     md.append(f"- Setup/support keep figure families now use GDPC instead of the legacy PCA interpretation: `{'YES' if gdpc_all_setup else 'NO'}`.\n")
     md.append('- Setup/support keep figure families now use corrected retrospective/forecast bundle lineage from the canonical `20260510` shared-input bundles.\n')
-    md.append('- Keep model-output families are not yet refreshed to the live shared-spec rerun because those outputs are not complete yet; they remain explicitly blocked rather than silently refreshed from stale outputs.\n')
+    md.append('- Keep model-output families are now refreshed to the completed `20260516` shared-spec keep rerun.\n')
+    md.append('- Reference synthesis families are now refreshed to the completed `20260516` shared-spec univariate rerun.\n')
+    md.append('- Historical-support figures remain explicitly blocked because the renderer still requires retained multivariate fit artifacts that the completed workflow roots do not currently export.\n')
     (report_root / 'ARTICLE_FIGURE_LINEAGE_AUDIT_20260516.md').write_text(''.join(md), encoding='utf-8')
     print(report_root)
 

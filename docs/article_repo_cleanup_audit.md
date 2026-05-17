@@ -31,6 +31,7 @@ This report records the cleanup that removes retired article-side figure/table d
 
 ## Retained report families
 
+- `reports/article_figure_lineage_audit_20260516`
 - `reports/five_cutoff_setup_support_review`
 - `reports/five_cutoff_synthesis_review`
 - `reports/manuscript_asset_review`

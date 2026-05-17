@@ -76,7 +76,7 @@
       "source_class": "current_selected_model_representative",
       "current_model_output_wired": true,
       "source_path": "artifacts/representative_selected_model_2022_12_25/representative_synthesis_multivariate.png",
-      "sha256": "5c16421ae35fda59b704b9f55f5548527aee4e8a4850aa7020322b95c9fd00f0",
+      "sha256": "5ff91af827447e466c492c980c3915bae684b2fa52199cfa091901264c717fc8",
       "note": "Corrected representative 2022-12-25 exAL-M-T1 output from the he2pubgdpc1r1 relaunch"
     },
     {

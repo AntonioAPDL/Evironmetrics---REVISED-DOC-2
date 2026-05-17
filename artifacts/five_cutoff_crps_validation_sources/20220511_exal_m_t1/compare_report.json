@@ -3,8 +3,8 @@
   "profile": "production_proof",
   "run_id": "multimodel_20220511_v8_he2pubgdpc1r1_exdqlm_multivar_keep",
   "canonical_run_id": "multimodel_20220511_v8_he2pubgdpc1r1_exdqlm_multivar_keep",
-  "canonical_dir": "/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_he2_exdqlm_multivar_keep_all_cutoffs_20260512/runs/multimodel_20220511_v8_he2pubgdpc1r1_exdqlm_multivar_keep/post/outputs/multimodel_20220511_v8_he2pubgdpc1r1_exdqlm_multivar_keep",
-  "current_dir": "/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_he2_exdqlm_multivar_keep_all_cutoffs_20260512/runs/multimodel_20220511_v8_he2pubgdpc1r1_exdqlm_multivar_keep/post/outputs/multimodel_20220511_v8_he2pubgdpc1r1_exdqlm_multivar_keep",
+  "canonical_dir": "/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_he2_exdqlm_multivar_keep_all_cutoffs_sharedspec_20260516/runs/multimodel_20220511_v8_he2pubgdpc1r1_exdqlm_multivar_keep/post/outputs/multimodel_20220511_v8_he2pubgdpc1r1_exdqlm_multivar_keep",
+  "current_dir": "/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_he2_exdqlm_multivar_keep_all_cutoffs_sharedspec_20260516/runs/multimodel_20220511_v8_he2pubgdpc1r1_exdqlm_multivar_keep/post/outputs/multimodel_20220511_v8_he2pubgdpc1r1_exdqlm_multivar_keep",
   "mode": "none",
   "compare_skipped": true,
   "metrics": {
@@ -22,8 +22,8 @@
         "file": "R_sessionInfo.txt",
         "current_exists": true,
         "canonical_exists": true,
-        "current_sha256": "ac64f32d80d9144dcfb7b8b4856dd91bb73b8af5a01191528ac2184b332d5839",
-        "canonical_sha256": "ac64f32d80d9144dcfb7b8b4856dd91bb73b8af5a01191528ac2184b332d5839",
+        "current_sha256": "b5f68af1b70f65c20f840e98b12a5b9efc0abe50c4514903ac895d383552f203",
+        "canonical_sha256": "b5f68af1b70f65c20f840e98b12a5b9efc0abe50c4514903ac895d383552f203",
         "normalized_equal": true
       },
       {
@@ -46,16 +46,16 @@
         "file": "renviron_snapshot.txt",
         "current_exists": true,
         "canonical_exists": true,
-        "current_sha256": "1e02a409e0231a50b164128d43cce2d631696f0f0bebcc9bda1fd895231f4d61",
-        "canonical_sha256": "1e02a409e0231a50b164128d43cce2d631696f0f0bebcc9bda1fd895231f4d61",
+        "current_sha256": "ddfa01e5c8ad0053a63c4fbad8c644a53e10626471aa2154349480c911eeecda",
+        "canonical_sha256": "ddfa01e5c8ad0053a63c4fbad8c644a53e10626471aa2154349480c911eeecda",
         "normalized_equal": true
       },
       {
         "file": "threads_snapshot.txt",
         "current_exists": true,
         "canonical_exists": true,
-        "current_sha256": "4437e450d38dfa0b4b23734f936b2d871a89895409bee50fbc9a897de6251176",
-        "canonical_sha256": "4437e450d38dfa0b4b23734f936b2d871a89895409bee50fbc9a897de6251176",
+        "current_sha256": "a82ee2de9564b285f0a23d5a3a30deb47e1116dc5b540dcba59949b4f97ef62f",
+        "canonical_sha256": "a82ee2de9564b285f0a23d5a3a30deb47e1116dc5b540dcba59949b4f97ef62f",
         "normalized_equal": true
       }
     ],
@@ -70,29 +70,29 @@
     "horizon_days": 28,
     "require_full_horizon": true,
     "cutoff_date": "2022-05-11",
-    "manifest_summary_sha256": "f816d3b2b686d69fc1e1ecf0a7d98811a36069aecfe72b6291232ba27c1cb291",
+    "manifest_summary_sha256": "6a0e21eed8a3e2652223cddd25ce84f6a2ea70631087e229f0f8ca4ea9455d5c",
     "manifest_summary_sha_match": true,
     "current": {
       "summary": {
-        "path": "/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_he2_exdqlm_multivar_keep_all_cutoffs_20260512/runs/multimodel_20220511_v8_he2pubgdpc1r1_exdqlm_multivar_keep/inputs/shared/deterministic_climate/deterministic_climate_summary.txt",
+        "path": "/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_he2_exdqlm_multivar_keep_all_cutoffs_sharedspec_20260516/runs/multimodel_20220511_v8_he2pubgdpc1r1_exdqlm_multivar_keep/inputs/shared/deterministic_climate/deterministic_climate_summary.txt",
         "exists": true,
-        "sha256": "f816d3b2b686d69fc1e1ecf0a7d98811a36069aecfe72b6291232ba27c1cb291",
-        "bytes": 2185
+        "sha256": "6a0e21eed8a3e2652223cddd25ce84f6a2ea70631087e229f0f8ca4ea9455d5c",
+        "bytes": 2218
       },
       "precip_future": {
-        "path": "/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_he2_exdqlm_multivar_keep_all_cutoffs_20260512/runs/multimodel_20220511_v8_he2pubgdpc1r1_exdqlm_multivar_keep/inputs/shared/deterministic_climate/deterministic_precip_future.csv",
+        "path": "/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_he2_exdqlm_multivar_keep_all_cutoffs_sharedspec_20260516/runs/multimodel_20220511_v8_he2pubgdpc1r1_exdqlm_multivar_keep/inputs/shared/deterministic_climate/deterministic_precip_future.csv",
         "exists": true,
         "sha256": "ac0c581e4c52c433bb6426da5dfeeefc724307296cae1a3bdb7d4c0e098eb461",
         "bytes": 17918
       },
       "soil_future": {
-        "path": "/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_he2_exdqlm_multivar_keep_all_cutoffs_20260512/runs/multimodel_20220511_v8_he2pubgdpc1r1_exdqlm_multivar_keep/inputs/shared/deterministic_climate/deterministic_soil_future.csv",
+        "path": "/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_he2_exdqlm_multivar_keep_all_cutoffs_sharedspec_20260516/runs/multimodel_20220511_v8_he2pubgdpc1r1_exdqlm_multivar_keep/inputs/shared/deterministic_climate/deterministic_soil_future.csv",
         "exists": true,
         "sha256": "7b641e56b6c9ce8a556060472ff0bf90ff7a5dfd0c1e191d2adfea8ed9591e7d",
         "bytes": 20164
       },
       "soil_family_support": {
-        "path": "/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_he2_exdqlm_multivar_keep_all_cutoffs_20260512/runs/multimodel_20220511_v8_he2pubgdpc1r1_exdqlm_multivar_keep/inputs/shared/deterministic_climate/deterministic_soil_family_support.csv",
+        "path": "/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_he2_exdqlm_multivar_keep_all_cutoffs_sharedspec_20260516/runs/multimodel_20220511_v8_he2pubgdpc1r1_exdqlm_multivar_keep/inputs/shared/deterministic_climate/deterministic_soil_family_support.csv",
         "exists": true,
         "sha256": "64adb2c8c5a8c5c9b84bec021d54f574670becd8a9e72851efab0360cb93d6bb",
         "bytes": 14716
@@ -115,7 +115,7 @@
       "precip_observed_blend.observed_weight": "0.5",
       "precip_observed_blend.observed_zero_stay_prob": "0.9",
       "precip_observed_blend.observed_zero_stay_seed_effective": "1592641450",
-      "precip_output": "/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_he2_exdqlm_multivar_keep_all_cutoffs_20260512/runs/multimodel_20220511_v8_he2pubgdpc1r1_exdqlm_multivar_keep/inputs/shared/covariates/cov_01_PPT.csv",
+      "precip_output": "/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_he2_exdqlm_multivar_keep_all_cutoffs_sharedspec_20260516/runs/multimodel_20220511_v8_he2pubgdpc1r1_exdqlm_multivar_keep/inputs/shared/covariates/cov_01_PPT.csv",
       "soil_source": "gefs_soilw_0_0.1m",
       "soil_reduction": "q85",
       "soil_noisy_blend.enabled": "TRUE",
@@ -126,7 +126,7 @@
       "soil_observed_blend.observed_weight": "0.5",
       "soil_observed_blend.observed_zero_stay_prob": "NA",
       "soil_observed_blend.observed_zero_stay_seed_effective": "NA",
-      "soil_output": "/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_he2_exdqlm_multivar_keep_all_cutoffs_20260512/runs/multimodel_20220511_v8_he2pubgdpc1r1_exdqlm_multivar_keep/inputs/shared/covariates/cov_02_SOIL.csv",
+      "soil_output": "/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_he2_exdqlm_multivar_keep_all_cutoffs_sharedspec_20260516/runs/multimodel_20220511_v8_he2pubgdpc1r1_exdqlm_multivar_keep/inputs/shared/covariates/cov_02_SOIL.csv",
       "nwm_soilsat_top_porosity": "NA",
       "nwm_soilsat_top_porosity_q10": "NA",
       "nwm_soilsat_top_porosity_q90": "NA",
@@ -135,13 +135,13 @@
       "ppt_future_rows": "28",
       "soil_history_rows": "12767",
       "soil_future_rows": "28",
-      "pca_passthrough": "/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_he2_exdqlm_multivar_keep_all_cutoffs_20260512/runs/multimodel_20220511_v8_he2pubgdpc1r1_exdqlm_multivar_keep/inputs/shared/covariates/cov_03_PCA.csv"
+      "pca_passthrough": "/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_he2_exdqlm_multivar_keep_all_cutoffs_sharedspec_20260516/runs/multimodel_20220511_v8_he2pubgdpc1r1_exdqlm_multivar_keep/inputs/shared/covariates/cov_03_PCA.csv"
     },
     "canonical": {
       "run_id": "multimodel_20220511_v8_he2pubgdpc1r1_exdqlm_multivar_keep",
-      "summary_path": "/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_he2_exdqlm_multivar_keep_all_cutoffs_20260512/runs/multimodel_20220511_v8_he2pubgdpc1r1_exdqlm_multivar_keep/inputs/shared/deterministic_climate/deterministic_climate_summary.txt",
+      "summary_path": "/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_he2_exdqlm_multivar_keep_all_cutoffs_sharedspec_20260516/runs/multimodel_20220511_v8_he2pubgdpc1r1_exdqlm_multivar_keep/inputs/shared/deterministic_climate/deterministic_climate_summary.txt",
       "summary_exists": true,
-      "summary_sha256": "f816d3b2b686d69fc1e1ecf0a7d98811a36069aecfe72b6291232ba27c1cb291",
+      "summary_sha256": "6a0e21eed8a3e2652223cddd25ce84f6a2ea70631087e229f0f8ca4ea9455d5c",
       "summary_sha_match": true
     }
   }
