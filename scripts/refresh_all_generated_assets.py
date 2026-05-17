@@ -48,13 +48,13 @@ def main() -> None:
     parser = argparse.ArgumentParser(description='Refresh all article-side generated assets and reports.')
     parser.add_argument('--article-root', type=Path, default=Path(__file__).resolve().parents[1])
     parser.add_argument('--workflow-root', type=Path, default=Path(__file__).resolve().parents[2])
-    parser.add_argument('--runtime-root', type=Path, default=Path('/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_he2_exdqlm_multivar_keep_all_cutoffs_20260512'))
+    parser.add_argument('--runtime-root', type=Path, default=Path('/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_he2_exdqlm_multivar_keep_all_cutoffs_sharedspec_20260516'))
     parser.add_argument(
         '--setup-support-runtime-root',
         type=Path,
         default=Path('/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/exal_m_t1_setup_support_by_cutoff_v2_20260516'),
     )
-    parser.add_argument('--univar-runtime-root', type=Path, default=Path('/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_univar_featurecov_he2_rerun_20260422'))
+    parser.add_argument('--univar-runtime-root', type=Path, default=Path('/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_he2_exdqlm_univar_all_cutoffs_sharedspec_20260516'))
     parser.add_argument(
         '--strict-current-model-support',
         action='store_true',

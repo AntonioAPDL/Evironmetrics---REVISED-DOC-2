@@ -97,7 +97,7 @@ That legacy script still relies on notebook-linearized state and hard-coded exte
 The representative selected-model refresh is now partially complete.
 
 Verified source run:
-- `/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_he2_exdqlm_multivar_keep_all_cutoffs_20260512/runs/multimodel_20221225_v8_he2pubgdpc1r1_exdqlm_multivar_keep`
+- `/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_he2_exdqlm_multivar_keep_all_cutoffs_sharedspec_20260516/runs/multimodel_20221225_v8_he2pubgdpc1r1_exdqlm_multivar_keep`
 
 Verified status:
 - `validation_status=pass`
@@ -106,7 +106,7 @@ Verified status:
 - posterior table exports are present
 
 The revised manuscript repo now contains a local copy of the representative selected-model artifacts under:
-- `/data/muscat_data/jaguir26/project1_ucsc_phd/Evironmetrics---REVISED-DOC-2/artifacts/exal_m_t1_20221225`
+- `/data/muscat_data/jaguir26/project1_ucsc_phd/Evironmetrics---REVISED-DOC-2/artifacts/representative_selected_model_2022_12_25`
 
 Those copied artifacts include:
 - `posterior_samples_valid.png`
@@ -357,7 +357,7 @@ The following policy is now adopted for the revised manuscript and should govern
 ## Recent selected-model workflow status
 
 A recent validated family of selected-model runs exists under:
-- `/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_quantile_featurecov_ndlm_discount_probe_20260422/runs/`
+- `/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_he2_exdqlm_multivar_keep_all_cutoffs_sharedspec_20260516/runs/`
 
 For all five manuscript cutoffs, the corresponding `exdqlm_multivar_keep` runs:
 - passed validation,
