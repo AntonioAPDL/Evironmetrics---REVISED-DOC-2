@@ -25,7 +25,7 @@ def keep_sharedspec_complete() -> bool:
     return len(summaries) == 5
 
 
-def infer_row(rel_path: str, manuscript_sources: dict[str, dict[str, str]], appendix_rows: dict[str, dict[str, str]], forecast_rows: dict[str, dict[str, str]], multivar_rows: dict[str, dict[str, str]], reference_rows: dict[str, dict[str, str]]) -> dict[str, str]:
+def infer_row(article_root: Path, rel_path: str, manuscript_sources: dict[str, dict[str, str]], appendix_rows: dict[str, dict[str, str]], forecast_rows: dict[str, dict[str, str]], multivar_rows: dict[str, dict[str, str]], reference_rows: dict[str, dict[str, str]]) -> dict[str, str]:
     prefix = rel_path.split('/', 1)[0]
     name = Path(rel_path).name
 
@@ -52,12 +52,29 @@ def infer_row(rel_path: str, manuscript_sources: dict[str, dict[str, str]], appe
                 'source_path': source_path,
             }
         if label in {'fig:dry_quantile', 'fig:rainy_quantile', 'fig:80_components', 'fig:synth2'}:
+            historical_support_bundle = article_root / 'artifacts' / 'historical_support_from_current_models' / 'bundle_metadata.json'
+            historical_support_refresh = article_root / 'artifacts' / 'historical_support_from_current_models' / 'refresh_status.json'
+            bundle_payload = json.loads(historical_support_bundle.read_text(encoding='utf-8')) if historical_support_bundle.exists() else {}
+            refresh_payload = json.loads(historical_support_refresh.read_text(encoding='utf-8')) if historical_support_refresh.exists() else {}
+            render_mode = bundle_payload.get('multivar_source', {}).get('historical_support_render_generation_mode', '')
+            canonical_root = bundle_payload.get('multivar_source', {}).get('canonical_runtime_run_root', '')
+            refreshed_ok = refresh_payload.get('returncode') == 0
+            canonical_ok = canonical_root.startswith(str(COMPLETED_KEEP_ROOT))
+            if refreshed_ok and canonical_ok and render_mode:
+                return {
+                    'classification': 'model-output-driven figure',
+                    'source_script': 'scripts/refresh_current_model_output_support_figures.py -> scripts/promote_generated_figures_to_disc.py',
+                    'source_lineage': f'completed_keep_outputs_20260516_via_{render_mode}',
+                    'status': 'updated_now',
+                    'blocker': '',
+                    'source_path': source_path,
+                }
             return {
                 'classification': 'model-output-driven figure',
                 'source_script': 'scripts/refresh_current_model_output_support_figures.py -> scripts/promote_generated_figures_to_disc.py',
                 'source_lineage': 'historical_support_retained_artifacts_missing_20260516',
                 'status': 'blocked_retained_support_artifacts_missing',
-                'blocker': 'Current-model support renderer still expects retained multivariate fit artifacts that are absent from both the completed 20260516 shared-spec root and the older 20260512 root.',
+                'blocker': 'Current-model support renderer still expects retained multivariate fit artifacts or a retained corrected state-summary contract that has not been refreshed successfully yet.',
                 'source_path': source_path,
             }
     if rel_path.startswith('appendix_cutoff_panels/') and name != 'README.md' and name != 'manifest.csv':
@@ -150,11 +167,29 @@ def main() -> None:
 
     rows = []
     for rel in sorted(str(p.relative_to(layout.figures_dir)) for p in layout.figures_dir.rglob('*') if p.is_file()):
-        info = infer_row(rel, manuscript_sources, appendix_rows, forecast_rows, multivar_rows, reference_rows)
+        info = infer_row(article_root, rel, manuscript_sources, appendix_rows, forecast_rows, multivar_rows, reference_rows)
         rows.append({
             'figure_path': f'figures/{rel}',
             **info,
         })
+
+    historical_support_refresh = article_root / 'artifacts' / 'historical_support_from_current_models' / 'refresh_status.json'
+    historical_support_bundle = article_root / 'artifacts' / 'historical_support_from_current_models' / 'bundle_metadata.json'
+    refresh_payload = json.loads(historical_support_refresh.read_text(encoding='utf-8')) if historical_support_refresh.exists() else {}
+    bundle_payload = json.loads(historical_support_bundle.read_text(encoding='utf-8')) if historical_support_bundle.exists() else {}
+    historical_render_mode = bundle_payload.get('multivar_source', {}).get('historical_support_render_generation_mode', '')
+    historical_support_ok = refresh_payload.get('returncode') == 0 and bool(historical_render_mode)
+    historical_support_status = 'updated_now' if historical_support_ok else 'blocked_retained_support_artifacts_missing'
+    historical_support_lineage = (
+        f'completed_keep_outputs_20260516_via_{historical_render_mode}'
+        if historical_support_ok
+        else 'historical_support_retained_artifacts_missing_20260516'
+    )
+    historical_support_notes = (
+        'Refreshed from the corrected retained support contract using the dedicated historical-support replay root.'
+        if historical_support_ok
+        else 'Current-model support renderer still expects retained multivariate fit artifacts that are not exported by the completed workflow roots.'
+    )
 
     uppercase_root = article_root / 'Figures'
     lowercase_files = {str(p.relative_to(layout.figures_dir)) for p in layout.figures_dir.rglob('*') if p.is_file()}
@@ -198,7 +233,7 @@ def main() -> None:
     md.append('|---|---|---|---|\n')
     md.append(f"| Setup/support manuscript figures + appendix panels + forecast-context family | `updated_now` | `exal_m_t1_setup_support_by_cutoff_v2_20260516` | Full USGS/PPT/SOIL/GDPC history from `1987-05-29 -> cutoff`; retrospective support now sourced from repaired canonical shared bundles for all cutoffs. |\n")
     md.append(f"| Representative keep synthesis + cutoff-wide multivariate synthesis | `updated_now` | completed keep output root `20260516` | Refreshed from the completed shared-spec keep rerun. |\n")
-    md.append(f"| Historical support from current models | `blocked_retained_support_artifacts_missing` | attempted against completed keep output root `20260516` | Current-model support renderer still expects retained multivariate fit artifacts that are not exported by the completed workflow roots. |\n")
+    md.append(f"| Historical support from current models | `{historical_support_status}` | `{historical_support_lineage}` | {historical_support_notes} |\n")
     md.append(f"| Reference synthesis family | `updated_now` | completed univariate output root `20260516` | Refreshed from the completed shared-spec univariate rerun. |\n\n")
     md.append('## Per-figure status\n\n')
     md.append('| Figure path | Class | Status | Source lineage | Source script | Blocker |\n')
@@ -211,7 +246,10 @@ def main() -> None:
     md.append('- Setup/support keep figure families now use corrected retrospective/forecast bundle lineage from the canonical `20260510` shared-input bundles.\n')
     md.append('- Keep model-output families are now refreshed to the completed `20260516` shared-spec keep rerun.\n')
     md.append('- Reference synthesis families are now refreshed to the completed `20260516` shared-spec univariate rerun.\n')
-    md.append('- Historical-support figures remain explicitly blocked because the renderer still requires retained multivariate fit artifacts that the completed workflow roots do not currently export.\n')
+    if historical_support_ok:
+        md.append('- Historical-support figures are now refreshed from the dedicated retained-support replay contract and promoted into the revised manuscript figure tree.\n')
+    else:
+        md.append('- Historical-support figures remain explicitly blocked because the renderer still requires retained multivariate fit artifacts that the completed workflow roots do not currently export.\n')
     (report_root / 'ARTICLE_FIGURE_LINEAGE_AUDIT_20260516.md').write_text(''.join(md), encoding='utf-8')
     print(report_root)
 

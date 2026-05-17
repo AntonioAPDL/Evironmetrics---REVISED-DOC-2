@@ -101,7 +101,7 @@
         "bayesian_manifest_csv": "artifacts/he2_publication_freeze/he2_bayesian_publication_manifest.csv",
         "five_run_source_root": "artifacts/five_cutoff_crps_validation_sources"
       },
-      "note": "Generated from the frozen HE2 publication manifest plus the raw-baseline rows in the five exAL-M-T1 CRPS summaries"
+      "note": "Generated from the frozen HE2 publication manifest plus the raw-baseline rows in the five exAL-M-T1 CRPS summaries. This remains the manuscript benchmark source pending reconciliation with the completed shared-spec exAL rerun-local synthesis CRPS outputs."
     },
     "tab:components_23_31": {
       "label": "tab:components_23_31",

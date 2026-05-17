@@ -18,6 +18,10 @@ MULTIVAR_SPEC = {
     "run_id": "multimodel_20220511_v8_he2pubgdpc1r1_exdqlm_multivar_keep",
 }
 
+MULTIVAR_SUPPORT_SPEC = {
+    "run_id": "multimodel_20220511_v8_he2pubgdpc1r1_exdqlm_multivar_keep_historical_support_replay",
+}
+
 UNIVAR_SPEC = {
     "cutoff": "2022-12-25",
     "run_id": "multimodel_20221225_v8_he2pubgdpc1r1_exdqlm_univar",
@@ -51,6 +55,22 @@ def run(cmd: list[str]) -> None:
     subprocess.run(cmd, check=True)
 
 
+def multivar_fit_q_paths(run_root: Path) -> list[Path]:
+    return [
+        run_root / "fit/exdqlm_multivar/keep/q=05/outputs/DISC_variables_5_exAL_synth_DISC.RData",
+        run_root / "fit/exdqlm_multivar/keep/q=20/outputs/DISC_variables_20_exAL_synth_DISC.RData",
+        run_root / "fit/exdqlm_multivar/keep/q=35/outputs/DISC_variables_35_exAL_synth_DISC.RData",
+        run_root / "fit/exdqlm_multivar/keep/q=50/outputs/DISC_variables_50_exAL_synth_DISC.RData",
+        run_root / "fit/exdqlm_multivar/keep/q=65/outputs/DISC_variables_65_exAL_synth_DISC.RData",
+        run_root / "fit/exdqlm_multivar/keep/q=80/outputs/DISC_variables_80_exAL_synth_DISC.RData",
+        run_root / "fit/exdqlm_multivar/keep/q=95/outputs/DISC_variables_95_exAL_synth_DISC.RData",
+    ]
+
+
+def has_multivar_fit_contract(run_root: Path) -> bool:
+    return run_root.exists() and all(path.exists() for path in multivar_fit_q_paths(run_root))
+
+
 def apply_renames(figures_dir: Path) -> None:
     for src_name, dst_name in RENAMES.items():
         src = figures_dir / src_name
@@ -61,7 +81,14 @@ def apply_renames(figures_dir: Path) -> None:
             shutil.move(src, dst)
 
 
-def write_bundle(bundle_root: Path, multivar_run_root: Path, univar_output_root: Path) -> None:
+def write_bundle(
+    bundle_root: Path,
+    canonical_multivar_run_root: Path,
+    render_multivar_run_root: Path,
+    univar_output_root: Path,
+    *,
+    render_generation_mode: str,
+) -> None:
     figures_dir = bundle_root / "figures"
     rows: list[list[str]] = []
     sums: list[str] = []
@@ -73,8 +100,8 @@ def write_bundle(bundle_root: Path, multivar_run_root: Path, univar_output_root:
             label,
             filename,
             role,
-            "rendered_from_current_multivar_run",
-            str(multivar_run_root),
+            render_generation_mode,
+            str(render_multivar_run_root),
             str(path.relative_to(bundle_root.parent.parent)),
             digest,
         ])
@@ -99,7 +126,10 @@ def write_bundle(bundle_root: Path, multivar_run_root: Path, univar_output_root:
             "slug": MULTIVAR_SPEC["slug"],
             "cutoff": MULTIVAR_SPEC["cutoff"],
             "run_id": MULTIVAR_SPEC["run_id"],
-            "runtime_run_root": str(multivar_run_root),
+            "canonical_runtime_run_root": str(canonical_multivar_run_root),
+            "historical_support_render_run_root": str(render_multivar_run_root),
+            "historical_support_render_generation_mode": render_generation_mode,
+            "retained_state_summary_path": str(figures_dir / "cache" / "historical_support_state_summaries.rds"),
         },
         "univar_source": {
             "cutoff": UNIVAR_SPEC["cutoff"],
@@ -112,10 +142,13 @@ def write_bundle(bundle_root: Path, multivar_run_root: Path, univar_output_root:
 
     (bundle_root / "README.md").write_text(
         "# Historical Support From Current Models\n\n"
-        "This article-side artifact bundle regenerates the historical-support manuscript figures from current model outputs.\n\n"
+        "This article-side artifact bundle regenerates the historical-support manuscript figures from corrected current model outputs.\n\n"
         "Sources:\n"
-        f"- Historical multivariate support figures: `{multivar_run_root}`\n"
+        f"- Canonical completed multivariate run: `{canonical_multivar_run_root}`\n"
+        f"- Historical-support render run: `{render_multivar_run_root}`\n"
         f"- Historical-only univariate reference figure: `{univar_output_root / UNIVAR_SPEC['source_png']}`\n\n"
+        "Retained support contract:\n"
+        "- `figures/cache/historical_support_state_summaries.rds` preserves the corrected multivariate state summary needed by the renderer after ephemeral fit caches are cleaned from the canonical workflow root.\n\n"
         "Refresh entrypoint:\n"
         "- `scripts/refresh_current_model_output_support_figures.py`\n"
     )
@@ -146,6 +179,15 @@ def main() -> None:
         default=Path("/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_he2_exdqlm_multivar_keep_all_cutoffs_sharedspec_20260516"),
     )
     parser.add_argument(
+        "--multivar-support-run-root",
+        type=Path,
+        default=Path(
+            "/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/"
+            "multimodel_v8_he2_exdqlm_multivar_keep_historical_support_replay_20260517/"
+            "runs/multimodel_20220511_v8_he2pubgdpc1r1_exdqlm_multivar_keep_historical_support_replay"
+        ),
+    )
+    parser.add_argument(
         "--univar-runtime-root",
         type=Path,
         default=Path("/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_he2_exdqlm_univar_all_cutoffs_sharedspec_20260516"),
@@ -155,6 +197,7 @@ def main() -> None:
     article_root = args.article_root.resolve()
     workflow_root = args.workflow_root.resolve()
     multivar_runtime_root = args.multivar_runtime_root.resolve()
+    multivar_support_run_root = args.multivar_support_run_root.resolve()
     univar_runtime_root = args.univar_runtime_root.resolve()
 
     layout = build_layout(article_root)
@@ -163,30 +206,58 @@ def main() -> None:
     figures_dir = bundle_root / "figures"
     figures_dir.mkdir(parents=True, exist_ok=True)
 
-    multivar_run_root = multivar_runtime_root / "runs" / MULTIVAR_SPEC["run_id"]
+    canonical_multivar_run_root = multivar_runtime_root / "runs" / MULTIVAR_SPEC["run_id"]
     univar_output_root = (
         univar_runtime_root / "runs" / UNIVAR_SPEC["run_id"] / "post" / "outputs" / UNIVAR_SPEC["run_id"]
     )
     univar_png = univar_output_root / UNIVAR_SPEC["source_png"]
+    retained_state_summary = figures_dir / "cache" / "historical_support_state_summaries.rds"
 
-    if not multivar_run_root.exists():
-        raise FileNotFoundError(f"Missing multivariate source run: {multivar_run_root}")
+    if not canonical_multivar_run_root.exists():
+        raise FileNotFoundError(f"Missing multivariate source run: {canonical_multivar_run_root}")
     if not univar_png.exists():
         raise FileNotFoundError(f"Missing univariate source PNG: {univar_png}")
 
-    run([
+    if has_multivar_fit_contract(canonical_multivar_run_root):
+        render_multivar_run_root = canonical_multivar_run_root
+        render_generation_mode = "rendered_from_canonical_multivar_run"
+        state_summary_arg: Path | None = None
+    elif has_multivar_fit_contract(multivar_support_run_root):
+        render_multivar_run_root = multivar_support_run_root
+        render_generation_mode = "rendered_from_historical_support_replay"
+        state_summary_arg = None
+    elif retained_state_summary.exists():
+        render_multivar_run_root = canonical_multivar_run_root
+        render_generation_mode = "rendered_from_retained_state_summary"
+        state_summary_arg = retained_state_summary
+    else:
+        raise FileNotFoundError(
+            "Missing both canonical multivariate fit artifacts and the retained support replay/state-summary contract: "
+            f"canonical={canonical_multivar_run_root} support={multivar_support_run_root} state_summary={retained_state_summary}"
+        )
+
+    render_cmd = [
         "Rscript",
         str(article_root / "scripts" / "render_current_model_output_support_figures.R"),
         "--workflow-root", str(workflow_root),
-        "--run-root", str(multivar_run_root),
+        "--run-root", str(render_multivar_run_root),
         "--output-dir", str(figures_dir),
         "--cutoff-date", MULTIVAR_SPEC["cutoff"],
         "--forecast-start-date", MULTIVAR_SPEC["forecast_start"],
-    ])
+    ]
+    if state_summary_arg is not None:
+        render_cmd.extend(["--state-summary-path", str(state_summary_arg)])
+    run(render_cmd)
 
     shutil.copy2(univar_png, figures_dir / "posterior_samples_counter_valid.png")
     apply_renames(figures_dir)
-    write_bundle(bundle_root, multivar_run_root, univar_output_root)
+    write_bundle(
+        bundle_root,
+        canonical_multivar_run_root,
+        render_multivar_run_root,
+        univar_output_root,
+        render_generation_mode=render_generation_mode,
+    )
     print("Refreshed current-model output support figures successfully.")
 
 

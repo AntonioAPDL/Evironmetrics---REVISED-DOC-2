@@ -69,7 +69,7 @@ def build_current_model_output_wiring_audit(out_root: Path, fig_rows: list[dict]
     for row in fig_rows:
         md.append(f"| `{row['label']}` | {figure_numbers.get(row['label'], '')} | `{row['manuscript_path']}` | `{row['source_path']}` | {'Yes' if row['current_model_output_wired'] else 'No'} | {row['note']} |\n")
     for row in table_rows:
-        wired = row['source_class'] in CURRENT_MODEL_SOURCE_CLASSES or row['label'] == 'tab:benchmark_crps_models'
+        wired = row['source_class'] in CURRENT_MODEL_SOURCE_CLASSES
         note = row['note'] + '; now auto-included into TeX' if row['table_tex_exists'] else row['note']
         md.append(f"| `{row['label']}` | {table_numbers.get(row['label'], '')} | `{row['table_tex_path']}` | `{row['source_path']}` | {'Yes' if wired else 'No'} | {note} |\n")
     (out_root / 'CURRENT_MODEL_OUTPUT_WIRING_AUDIT.md').write_text(''.join(md))
