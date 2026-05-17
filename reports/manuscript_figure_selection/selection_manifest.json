@@ -98,7 +98,7 @@
       "source_class": "current_model_output_support",
       "current_model_output_wired": true,
       "source_path": "artifacts/historical_support_from_current_models/figures/reference_synthesis_univariate.png",
-      "sha256": "0bf7986c74b43945d2aa846f4cdc26f322b84b442a2bcac2f191210c992052e4",
+      "sha256": "295aa1017c068e5f1780f6afb21c58d95723730211d3859209c827bef65bf3ea",
       "note": "Copied from the current 2022-12-25 exdqlm_univar publication-style output bundle"
     }
   ]

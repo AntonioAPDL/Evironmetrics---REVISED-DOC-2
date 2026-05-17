@@ -30,6 +30,12 @@ if (length(missing) > 0L) {
 project_root <- normalizePath(opt[["workflow-root"]], mustWork = TRUE)
 run_root <- normalizePath(opt[["run-root"]], mustWork = TRUE)
 out_dir <- normalizePath(opt[["output-dir"]], mustWork = FALSE)
+state_summary_path_opt <- opt[["state-summary-path"]]
+state_summary_path <- if (!is.null(state_summary_path_opt) && nzchar(state_summary_path_opt)) {
+  normalizePath(state_summary_path_opt, mustWork = TRUE)
+} else {
+  NULL
+}
 setwd(project_root)
 cutoff_date <- opt[["cutoff-date"]]
 forecast_start_date <- opt[["forecast-start-date"]]
@@ -87,12 +93,19 @@ q_paths <- c(
   file.path(run_root, "fit/exdqlm_multivar/keep/q=95/outputs/DISC_variables_95_exAL_synth_DISC.RData")
 )
 
+have_q_paths <- all(file.exists(q_paths))
 missing_q <- q_paths[!file.exists(q_paths)]
-if (length(missing_q) > 0L) {
-  stop(sprintf("Missing required multivariate fit artifacts: %s", paste(missing_q, collapse = ", ")), call. = FALSE)
+if (!have_q_paths && is.null(state_summary_path)) {
+  stop(sprintf(
+    paste(
+      "Missing required multivariate fit artifacts and no retained state summary was provided:",
+      "%s"
+    ),
+    paste(missing_q, collapse = ", ")
+  ), call. = FALSE)
 }
 
-Sys.setenv(
+env_vars <- list(
   ENV_PROJECT_ROOT = project_root,
   UNIFIED_REQUIRE_RUNSCOPED_POST = "TRUE",
   UNIFIED_ALLOW_LEGACY_POST_FALLBACK = "FALSE",
@@ -110,9 +123,12 @@ Sys.setenv(
   ENV_SOIL_PATH = file.path(run_root, "inputs/shared/covariates/cov_02_SOIL.csv"),
   ENV_PCA_PATH = file.path(run_root, "inputs/shared/covariates/cov_03_PCA.csv"),
   ENV_COVARIATE_FEATURES_PATH = file.path(run_root, "inputs/shared/covariates/covariate_features.csv"),
-  UNIFIED_DISC_W_RDATA_PATHS = paste(q_paths, collapse = ","),
   UNIFIED_POST_CACHE_DIR = cache_dir
 )
+if (have_q_paths) {
+  env_vars$UNIFIED_DISC_W_RDATA_PATHS <- paste(q_paths, collapse = ",")
+}
+do.call(Sys.setenv, env_vars)
 
 source(file.path(project_root, "R/environmetrics/00_setup.R"))
 source(file.path(project_root, "R/environmetrics/00_paths.R"))
@@ -537,7 +553,31 @@ render_component_quantiles <- function(comp_df, obs_df, time_cuts, ylab, title_t
   ggsave(out_file, plot = p, width = 12, height = 6, units = "in", dpi = 350)
 }
 
-rebuild_state_cache <- !file.exists(state_cache_path)
+if (!is.null(state_summary_path)) {
+  message("Loading retained historical-support state summary...")
+  cached <- readRDS(state_summary_path)
+  xbs_retro <- cached$xbs_retro
+  q_d_50 <- cached$q_d_50
+  q_d_05 <- cached$q_d_05
+  q_d_95 <- cached$q_d_95
+  time_cuts <- cached$time_cuts
+  trend_shift_map <- cached$trend_shift_map %||% NULL
+  if (is.null(trend_shift_map)) {
+    stop(
+      sprintf(
+        "Retained historical-support state summary is missing trend_shift_map: %s",
+        state_summary_path
+      ),
+      call. = FALSE
+    )
+  }
+  if (!identical(normalizePath(state_summary_path, mustWork = TRUE), normalizePath(state_cache_path, mustWork = FALSE))) {
+    saveRDS(cached, state_cache_path)
+  }
+  rebuild_state_cache <- FALSE
+} else {
+  rebuild_state_cache <- !file.exists(state_cache_path)
+}
 
 if (!rebuild_state_cache) {
   message("Loading cached historical-support state summaries...")

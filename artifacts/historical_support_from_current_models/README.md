@@ -1,10 +1,14 @@
 # Historical Support From Current Models
 
-This article-side artifact bundle regenerates the historical-support manuscript figures from current model outputs.
+This article-side artifact bundle regenerates the historical-support manuscript figures from corrected current model outputs.
 
 Sources:
-- Historical multivariate support figures: `/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_publication_replay_representatives_20260506/20220511_exal_m_t1/runs/multimodel_20220511_v8_eps180cf1_exdqlm_multivar_keep_featurecov_cf1`
-- Historical-only univariate reference figure: `/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_quantile_featurecov_custom_discount_probe_20260422/runs/multimodel_20221225_v8_quantile_featurecov_custom_discount_probe_v1_exdqlm_univar/post/outputs/multimodel_20221225_v8_quantile_featurecov_custom_discount_probe_v1_exdqlm_univar/exdqlm_univar_synth_cutoff_window_posterior_samples.png`
+- Canonical completed multivariate run: `/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_he2_exdqlm_multivar_keep_all_cutoffs_sharedspec_20260516/runs/multimodel_20220511_v8_he2pubgdpc1r1_exdqlm_multivar_keep`
+- Historical-support render run: `/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_he2_exdqlm_multivar_keep_historical_support_replay_20260517/runs/multimodel_20220511_v8_he2pubgdpc1r1_exdqlm_multivar_keep_historical_support_replay`
+- Historical-only univariate reference figure: `/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_he2_exdqlm_univar_all_cutoffs_sharedspec_20260516/runs/multimodel_20221225_v8_he2pubgdpc1r1_exdqlm_univar/post/outputs/multimodel_20221225_v8_he2pubgdpc1r1_exdqlm_univar/exdqlm_univar_synth_cutoff_window_posterior_samples.png`
+
+Retained support contract:
+- `figures/cache/historical_support_state_summaries.rds` preserves the corrected multivariate state summary needed by the renderer after ephemeral fit caches are cleaned from the canonical workflow root.
 
 Refresh entrypoint:
 - `scripts/refresh_current_model_output_support_figures.py`

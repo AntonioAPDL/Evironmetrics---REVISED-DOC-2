@@ -54,6 +54,15 @@ def main() -> None:
         type=Path,
         default=Path('/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/exal_m_t1_setup_support_by_cutoff_v2_20260516'),
     )
+    parser.add_argument(
+        '--multivar-support-run-root',
+        type=Path,
+        default=Path(
+            '/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/'
+            'multimodel_v8_he2_exdqlm_multivar_keep_historical_support_replay_20260517/'
+            'runs/multimodel_20220511_v8_he2pubgdpc1r1_exdqlm_multivar_keep_historical_support_replay'
+        ),
+    )
     parser.add_argument('--univar-runtime-root', type=Path, default=Path('/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_he2_exdqlm_univar_all_cutoffs_sharedspec_20260516'))
     parser.add_argument(
         '--strict-current-model-support',
@@ -66,6 +75,7 @@ def main() -> None:
     workflow_root = args.workflow_root.resolve()
     runtime_root = args.runtime_root.resolve()
     setup_support_runtime_root = args.setup_support_runtime_root.resolve()
+    multivar_support_run_root = args.multivar_support_run_root.resolve()
     univar_runtime_root = args.univar_runtime_root.resolve()
 
     py = sys.executable
@@ -78,6 +88,8 @@ def main() -> None:
         str(workflow_root),
         '--multivar-runtime-root',
         str(runtime_root),
+        '--multivar-support-run-root',
+        str(multivar_support_run_root),
         '--univar-runtime-root',
         str(univar_runtime_root),
     ], article_root / 'artifacts' / 'historical_support_from_current_models' / 'refresh_status.json', strict=args.strict_current_model_support)
