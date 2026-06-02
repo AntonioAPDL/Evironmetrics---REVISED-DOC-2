@@ -5,7 +5,7 @@
 - Setup/support family refreshed from `/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/exal_m_t1_setup_support_by_cutoff_v2_20260516`.
 - Setup/support full-history contract across all cutoffs: `PASS`.
 - Setup/support GDPC contract across all cutoffs: `PASS`.
-- Live shared-spec keep outputs complete: `YES`.
+- Live shared-spec keep outputs complete: `NO`.
 - Legacy uppercase `Figures/` mirror matches lowercase canonical `figures/`: `YES`.
 
 ## Figure family conclusions
@@ -14,7 +14,7 @@
 |---|---|---|---|
 | Setup/support manuscript figures + appendix panels + forecast-context family | `updated_now` | `exal_m_t1_setup_support_by_cutoff_v2_20260516` | Full USGS/PPT/SOIL/GDPC history from `1987-05-29 -> cutoff`; retrospective support now sourced from repaired canonical shared bundles for all cutoffs. |
 | Representative keep synthesis + cutoff-wide multivariate synthesis | `updated_now` | completed keep output root `20260516` | Refreshed from the completed shared-spec keep rerun. |
-| Historical support from current models | `updated_now` | `completed_keep_outputs_20260516_via_rendered_from_historical_support_replay` | Refreshed from the corrected retained support contract using the dedicated historical-support replay root. |
+| Historical support from current models | `updated_now` | `completed_keep_outputs_20260516_via_rendered_from_retained_state_summary` | Refreshed from the corrected retained support contract using the dedicated historical-support replay root. |
 | Reference synthesis family | `updated_now` | completed univariate output root `20260516` | Refreshed from the completed shared-spec univariate rerun. |
 
 ## Per-figure status
@@ -37,10 +37,10 @@
 | `figures/forecast_context_by_cutoff/manifest.csv` | figure unaffected by corrected lineage | `unchanged_intentionally` | `n/a` | `n/a` | - |
 | `figures/manuscript/covariate_context_precip_soil_gdpc.png` | input-side / support / context figure | `updated_now` | `corrected_setup_support_v2_20260516` | `scripts/refresh_setup_support_by_cutoff_v2.py -> scripts/promote_setup_support_v2_to_disc.py -> scripts/promote_generated_figures_to_disc.py` | - |
 | `figures/manuscript/forecast_products_context.png` | input-side / support / context figure | `updated_now` | `corrected_setup_support_v2_20260516` | `scripts/refresh_setup_support_by_cutoff_v2.py -> scripts/promote_setup_support_v2_to_disc.py -> scripts/promote_generated_figures_to_disc.py` | - |
-| `figures/manuscript/historical_component_80month.png` | model-output-driven figure | `updated_now` | `completed_keep_outputs_20260516_via_rendered_from_historical_support_replay` | `scripts/refresh_current_model_output_support_figures.py -> scripts/promote_generated_figures_to_disc.py` | - |
-| `figures/manuscript/historical_summary_dry_period.png` | model-output-driven figure | `updated_now` | `completed_keep_outputs_20260516_via_rendered_from_historical_support_replay` | `scripts/refresh_current_model_output_support_figures.py -> scripts/promote_generated_figures_to_disc.py` | - |
-| `figures/manuscript/historical_summary_wet_period.png` | model-output-driven figure | `updated_now` | `completed_keep_outputs_20260516_via_rendered_from_historical_support_replay` | `scripts/refresh_current_model_output_support_figures.py -> scripts/promote_generated_figures_to_disc.py` | - |
-| `figures/manuscript/reference_synthesis_univariate.png` | model-output-driven figure | `updated_now` | `completed_keep_outputs_20260516_via_rendered_from_historical_support_replay` | `scripts/refresh_current_model_output_support_figures.py -> scripts/promote_generated_figures_to_disc.py` | - |
+| `figures/manuscript/historical_component_80month.png` | model-output-driven figure | `updated_now` | `completed_keep_outputs_20260516_via_rendered_from_retained_state_summary` | `scripts/refresh_current_model_output_support_figures.py -> scripts/promote_generated_figures_to_disc.py` | - |
+| `figures/manuscript/historical_summary_dry_period.png` | model-output-driven figure | `updated_now` | `completed_keep_outputs_20260516_via_rendered_from_retained_state_summary` | `scripts/refresh_current_model_output_support_figures.py -> scripts/promote_generated_figures_to_disc.py` | - |
+| `figures/manuscript/historical_summary_wet_period.png` | model-output-driven figure | `updated_now` | `completed_keep_outputs_20260516_via_rendered_from_retained_state_summary` | `scripts/refresh_current_model_output_support_figures.py -> scripts/promote_generated_figures_to_disc.py` | - |
+| `figures/manuscript/reference_synthesis_univariate.png` | model-output-driven figure | `updated_now` | `completed_keep_outputs_20260516_via_rendered_from_retained_state_summary` | `scripts/refresh_current_model_output_support_figures.py -> scripts/promote_generated_figures_to_disc.py` | - |
 | `figures/manuscript/representative_synthesis_multivariate.png` | model-output-driven figure | `updated_now` | `completed_keep_outputs_20260516` | `scripts/refresh_exal_m_t1_generated_assets.py -> scripts/promote_generated_figures_to_disc.py` | - |
 | `figures/manuscript/retrospective_products_context.png` | input-side / support / context figure | `updated_now` | `corrected_setup_support_v2_20260516` | `scripts/refresh_setup_support_by_cutoff_v2.py -> scripts/promote_setup_support_v2_to_disc.py -> scripts/promote_generated_figures_to_disc.py` | - |
 | `figures/manuscript/site_context_usgs.png` | input-side / support / context figure | `updated_now` | `corrected_setup_support_v2_20260516` | `scripts/refresh_setup_support_by_cutoff_v2.py -> scripts/promote_setup_support_v2_to_disc.py -> scripts/promote_generated_figures_to_disc.py` | - |
