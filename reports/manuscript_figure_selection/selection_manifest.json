@@ -54,8 +54,8 @@
       "source_class": "current_model_output_support",
       "current_model_output_wired": true,
       "source_path": "artifacts/historical_support_from_current_models/figures/historical_summary_dry_period.png",
-      "sha256": "e72ef64b9d12c54e3a2114e2bcf13ae3effae11abeb4b02e5f25825a4e71be23",
-      "note": "Rendered from the current 2022-05-11 exAL-M-T1 full-history multivariate run"
+      "sha256": "d7a9e356da67fad3b0b5111279d687d56465ae6fb0b5faaeaf435b59ee4407b4",
+      "note": "Rendered from the current 2022-05-11 exAL-M-T1 authoritative canonical-grid multivariate run or retained support replay"
     },
     {
       "label": "fig:rainy_quantile",
@@ -65,8 +65,8 @@
       "source_class": "current_model_output_support",
       "current_model_output_wired": true,
       "source_path": "artifacts/historical_support_from_current_models/figures/historical_summary_wet_period.png",
-      "sha256": "e425f0037d6d39035ca0491f2a531bfbbf251a0ec46079e78a1d04eb3842ac65",
-      "note": "Rendered from the current 2022-05-11 exAL-M-T1 full-history multivariate run"
+      "sha256": "2d4ccf013c2fbe5a9c220abb104c3410f1a635bc601443efaa2baf7b42091a4a",
+      "note": "Rendered from the current 2022-05-11 exAL-M-T1 authoritative canonical-grid multivariate run or retained support replay"
     },
     {
       "label": "fig:synth1",
@@ -76,8 +76,8 @@
       "source_class": "current_selected_model_representative",
       "current_model_output_wired": true,
       "source_path": "artifacts/representative_selected_model_2022_12_25/representative_synthesis_multivariate.png",
-      "sha256": "5ff91af827447e466c492c980c3915bae684b2fa52199cfa091901264c717fc8",
-      "note": "Corrected representative 2022-12-25 exAL-M-T1 output from the he2pubgdpc1r1 relaunch"
+      "sha256": "3c66c10cfa293badc9bea83517d6ea40b19c6754ec5cfa2c995101e54b36ca17",
+      "note": "Authoritative representative 2022-12-25 exAL-M-T1 canonical-grid output"
     },
     {
       "label": "fig:80_components",
@@ -87,8 +87,8 @@
       "source_class": "current_model_output_support",
       "current_model_output_wired": true,
       "source_path": "artifacts/historical_support_from_current_models/figures/historical_component_80month.png",
-      "sha256": "1973ed49ad179634fe62a4e2dcb37992cd7e4b3cf60b4ac04a3c1ce22ee02274",
-      "note": "Rendered from the current 2022-05-11 exAL-M-T1 full-history multivariate run"
+      "sha256": "31c3953b0a724edba290720dcc63792a033003e4eea403a620218d2aff1c2432",
+      "note": "Rendered from the current 2022-05-11 exAL-M-T1 authoritative canonical-grid multivariate run or retained support replay"
     },
     {
       "label": "fig:synth2",

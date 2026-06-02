@@ -28,15 +28,15 @@ Primary wiring audit: `reports/manuscript_asset_review/CURRENT_MODEL_OUTPUT_WIRI
 
 | Label | Role | Manuscript path | Artifact source | TeX line | Wired to current outputs? | Note |
 |---|---|---|---|---:|---|---|
-| `fig:dry_quantile` | Dry-period historical summary | `figures/manuscript/historical_summary_dry_period.png` | `artifacts/historical_support_from_current_models/figures/historical_summary_dry_period.png` | 378 | yes | Rendered from the current 2022-05-11 exAL-M-T1 full-history multivariate run |
-| `fig:rainy_quantile` | Rainy-period historical summary | `figures/manuscript/historical_summary_wet_period.png` | `artifacts/historical_support_from_current_models/figures/historical_summary_wet_period.png` | 387 | yes | Rendered from the current 2022-05-11 exAL-M-T1 full-history multivariate run |
-| `fig:80_components` | Long-cycle component summary | `figures/manuscript/historical_component_80month.png` | `artifacts/historical_support_from_current_models/figures/historical_component_80month.png` | 470 | yes | Rendered from the current 2022-05-11 exAL-M-T1 full-history multivariate run |
+| `fig:dry_quantile` | Dry-period historical summary | `figures/manuscript/historical_summary_dry_period.png` | `artifacts/historical_support_from_current_models/figures/historical_summary_dry_period.png` | 378 | yes | Rendered from the current 2022-05-11 exAL-M-T1 authoritative canonical-grid multivariate run or retained support replay |
+| `fig:rainy_quantile` | Rainy-period historical summary | `figures/manuscript/historical_summary_wet_period.png` | `artifacts/historical_support_from_current_models/figures/historical_summary_wet_period.png` | 387 | yes | Rendered from the current 2022-05-11 exAL-M-T1 authoritative canonical-grid multivariate run or retained support replay |
+| `fig:80_components` | Long-cycle component summary | `figures/manuscript/historical_component_80month.png` | `artifacts/historical_support_from_current_models/figures/historical_component_80month.png` | 470 | yes | Rendered from the current 2022-05-11 exAL-M-T1 authoritative canonical-grid multivariate run or retained support replay |
 
 ## Selected Model
 
 | Label | Role | Manuscript path | Artifact source | TeX line | Wired to current outputs? | Note |
 |---|---|---|---|---:|---|---|
-| `fig:synth1` | Representative selected-model synthesis | `figures/manuscript/representative_synthesis_multivariate.png` | `artifacts/representative_selected_model_2022_12_25/representative_synthesis_multivariate.png` | 405 | yes | Corrected representative 2022-12-25 exAL-M-T1 output from the he2pubgdpc1r1 relaunch |
+| `fig:synth1` | Representative selected-model synthesis | `figures/manuscript/representative_synthesis_multivariate.png` | `artifacts/representative_selected_model_2022_12_25/representative_synthesis_multivariate.png` | 405 | yes | Authoritative representative 2022-12-25 exAL-M-T1 canonical-grid output |
 
 ## Appendix Support
 
@@ -48,7 +48,7 @@ Primary wiring audit: `reports/manuscript_asset_review/CURRENT_MODEL_OUTPUT_WIRI
 
 | Label | Role | Generated include | TeX line | Note |
 |---|---|---|---:|---|
-| `tab:benchmark_crps_models` | Five-cutoff benchmark table | `tables/generated_tex/benchmark_crps_main_table.tex` | 355 | Generated from the frozen HE2 publication manifest plus the raw-baseline rows in the five exAL-M-T1 CRPS summaries. This remains the manuscript benchmark source pending reconciliation with the completed shared-spec exAL rerun-local synthesis CRPS outputs. |
+| `tab:benchmark_crps_models` | Five-cutoff benchmark table | `tables/generated_tex/benchmark_crps_main_table.tex` | 355 | Generated from the frozen HE2 publication manifest plus the raw-baseline rows in the five authoritative exAL-M-T1 CRPS summaries. This remains transitional until the other eight HE2 Bayesian comparison families are promoted onto the same canonical input bundle. |
 | `tab:components_23_31` | Representative covariate-effects table | `tables/generated_tex/representative_covariate_effects_table.tex` | 366 | Generated from the representative 2022-12-25 exAL-M-T1 covariate-effects export |
 | `tab:gamma_sigma_intervals1` | Appendix gamma summary | `tables/generated_tex/appendix_gamma_summary_table.tex` | 459 | Generated from the representative 2022-12-25 exAL-M-T1 gamma export |
 | `tab:gamma_sigma_intervals2` | Appendix sigma summary | `tables/generated_tex/appendix_sigma_summary_table.tex` | 461 | Generated from the representative 2022-12-25 exAL-M-T1 sigma export |

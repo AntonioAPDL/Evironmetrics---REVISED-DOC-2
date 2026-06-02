@@ -48,7 +48,7 @@
       "source_path": "artifacts/historical_support_from_current_models/figures/historical_summary_dry_period.png",
       "source_class": "current_model_output_support",
       "current_model_output_wired": true,
-      "note": "Rendered from the current 2022-05-11 exAL-M-T1 full-history multivariate run"
+      "note": "Rendered from the current 2022-05-11 exAL-M-T1 authoritative canonical-grid multivariate run or retained support replay"
     },
     {
       "label": "fig:rainy_quantile",
@@ -58,7 +58,7 @@
       "source_path": "artifacts/historical_support_from_current_models/figures/historical_summary_wet_period.png",
       "source_class": "current_model_output_support",
       "current_model_output_wired": true,
-      "note": "Rendered from the current 2022-05-11 exAL-M-T1 full-history multivariate run"
+      "note": "Rendered from the current 2022-05-11 exAL-M-T1 authoritative canonical-grid multivariate run or retained support replay"
     },
     {
       "label": "fig:synth1",
@@ -68,7 +68,7 @@
       "source_path": "artifacts/representative_selected_model_2022_12_25/representative_synthesis_multivariate.png",
       "source_class": "current_selected_model_representative",
       "current_model_output_wired": true,
-      "note": "Corrected representative 2022-12-25 exAL-M-T1 output from the he2pubgdpc1r1 relaunch"
+      "note": "Authoritative representative 2022-12-25 exAL-M-T1 canonical-grid output"
     },
     {
       "label": "fig:80_components",
@@ -78,7 +78,7 @@
       "source_path": "artifacts/historical_support_from_current_models/figures/historical_component_80month.png",
       "source_class": "current_model_output_support",
       "current_model_output_wired": true,
-      "note": "Rendered from the current 2022-05-11 exAL-M-T1 full-history multivariate run"
+      "note": "Rendered from the current 2022-05-11 exAL-M-T1 authoritative canonical-grid multivariate run or retained support replay"
     },
     {
       "label": "fig:synth2",
@@ -101,7 +101,7 @@
         "bayesian_manifest_csv": "artifacts/he2_publication_freeze/he2_bayesian_publication_manifest.csv",
         "five_run_source_root": "artifacts/five_cutoff_crps_validation_sources"
       },
-      "note": "Generated from the frozen HE2 publication manifest plus the raw-baseline rows in the five exAL-M-T1 CRPS summaries. This remains the manuscript benchmark source pending reconciliation with the completed shared-spec exAL rerun-local synthesis CRPS outputs."
+      "note": "Generated from the frozen HE2 publication manifest plus the raw-baseline rows in the five authoritative exAL-M-T1 CRPS summaries. This remains transitional until the other eight HE2 Bayesian comparison families are promoted onto the same canonical input bundle."
     },
     "tab:components_23_31": {
       "label": "tab:components_23_31",

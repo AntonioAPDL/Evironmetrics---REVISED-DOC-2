@@ -9,6 +9,7 @@ import shutil
 from pathlib import Path
 
 from article_runtime_bindings import binding_as_path, load_runtime_bindings
+from exal_m_t1_authoritative import load_authoritative_five_run_specs
 from article_repo_layout import (
     CUTOFF_MULTIVARIATE_SYNTHESIS_FILENAMES,
     CUTOFF_MULTIVARIATE_SYNTHESIS_OVERLAY_FILENAMES,
@@ -17,38 +18,13 @@ from article_repo_layout import (
     build_layout,
 )
 
-CUTOFF_SPECS = [
-    {
-        'slug': '20210123_exal_m_t1',
-        'cutoff': '2021-01-23',
-        'multivar_run_id': 'multimodel_20210123_v8_he2pubgdpc1r1_exdqlm_multivar_keep',
-        'univar_run_id': 'multimodel_20210123_v8_he2pubgdpc1r1_exdqlm_univar',
-    },
-    {
-        'slug': '20211112_exal_m_t1',
-        'cutoff': '2021-11-12',
-        'multivar_run_id': 'multimodel_20211112_v8_he2pubgdpc1r1_exdqlm_multivar_keep',
-        'univar_run_id': 'multimodel_20211112_v8_he2pubgdpc1r1_exdqlm_univar',
-    },
-    {
-        'slug': '20211221_exal_m_t1',
-        'cutoff': '2021-12-21',
-        'multivar_run_id': 'multimodel_20211221_v8_he2pubgdpc1r1_exdqlm_multivar_keep',
-        'univar_run_id': 'multimodel_20211221_v8_he2pubgdpc1r1_exdqlm_univar',
-    },
-    {
-        'slug': '20220511_exal_m_t1',
-        'cutoff': '2022-05-11',
-        'multivar_run_id': 'multimodel_20220511_v8_he2pubgdpc1r1_exdqlm_multivar_keep',
-        'univar_run_id': 'multimodel_20220511_v8_he2pubgdpc1r1_exdqlm_univar',
-    },
-    {
-        'slug': '20221225_exal_m_t1',
-        'cutoff': '2022-12-25',
-        'multivar_run_id': 'multimodel_20221225_v8_he2pubgdpc1r1_exdqlm_multivar_keep',
-        'univar_run_id': 'multimodel_20221225_v8_he2pubgdpc1r1_exdqlm_univar',
-    },
-]
+UNIVAR_RUN_ID_BY_CUTOFF = {
+    '20210123': 'multimodel_20210123_v8_he2pubgdpc1r1_exdqlm_univar',
+    '20211112': 'multimodel_20211112_v8_he2pubgdpc1r1_exdqlm_univar',
+    '20211221': 'multimodel_20211221_v8_he2pubgdpc1r1_exdqlm_univar',
+    '20220511': 'multimodel_20220511_v8_he2pubgdpc1r1_exdqlm_univar',
+    '20221225': 'multimodel_20221225_v8_he2pubgdpc1r1_exdqlm_univar',
+}
 
 MULTIVAR_FILES = [
     'exdqlm_multivar_synth_keep_cutoff_window_posterior_samples.png',
@@ -106,6 +82,23 @@ def _source_output_roots(multivar_runtime_root: Path, univar_runtime_root: Path,
         / spec['univar_run_id']
     )
     return multivar_root, univar_root
+
+
+def cutoff_specs(article_root: Path, multivar_runtime_root: Path) -> list[dict[str, str]]:
+    specs = []
+    for row in load_authoritative_five_run_specs(article_root, multivar_runtime_root):
+        cutoff_code = row['cutoff_code']
+        specs.append({
+            'slug': row['slug'],
+            'cutoff': row['cutoff'],
+            'cutoff_code': cutoff_code,
+            'multivar_run_id': row['multivar_run_id'],
+            'grid_spec_id': row['grid_spec_id'],
+            'univar_run_id': UNIVAR_RUN_ID_BY_CUTOFF[cutoff_code],
+            'source_lineage': row['source_lineage'],
+            'authoritative_manifest': row['authoritative_manifest'],
+        })
+    return specs
 
 
 def _write_bundle(
@@ -220,7 +213,7 @@ def main() -> None:
     multivar_figure_rows: list[dict[str, str | int]] = []
     reference_figure_rows: list[dict[str, str | int]] = []
 
-    for spec in CUTOFF_SPECS:
+    for spec in cutoff_specs(article_root, multivar_runtime_root):
         multivar_output_root, univar_output_root = _source_output_roots(multivar_runtime_root, univar_runtime_root, spec)
         if not multivar_output_root.exists():
             raise FileNotFoundError(f'Missing multivariate synthesis output root: {multivar_output_root}')
@@ -335,7 +328,7 @@ def main() -> None:
     _write_family_readme(
         layout.five_cutoff_main_model_synthesis_dir / 'README.md',
         title='Five-Cutoff Main Model Synthesis',
-        description='Frozen cutoff-by-cutoff multivariate synthesis bundles copied from the corrected `he2pubgdpc1r1` exAL main-model reruns.',
+        description='Frozen cutoff-by-cutoff multivariate synthesis bundles copied from the authoritative canonical-grid exAL main-model winners.',
     )
     _write_family_readme(
         layout.five_cutoff_reference_synthesis_dir / 'README.md',

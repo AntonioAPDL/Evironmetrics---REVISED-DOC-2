@@ -11,12 +11,13 @@ from pathlib import Path
 
 from article_runtime_bindings import binding_as_path, load_runtime_bindings
 from article_repo_layout import build_layout
+from exal_m_t1_authoritative import load_authoritative_five_run_specs
 
-MULTIVAR_SPEC = {
+DEFAULT_MULTIVAR_SPEC = {
     "slug": "20220511_exal_m_t1",
     "cutoff": "2022-05-11",
     "forecast_start": "2022-05-12",
-    "run_id": "multimodel_20220511_v8_he2pubgdpc1r1_exdqlm_multivar_keep",
+    "run_id": "multimodel_20220511_v8_he2grid_c02_eps060_exdqlm_multivar_keep",
 }
 
 MULTIVAR_SUPPORT_SPEC = {
@@ -117,6 +118,7 @@ def write_bundle(
     render_multivar_run_root: Path,
     univar_output_root: Path,
     *,
+    multivar_spec: dict[str, str],
     render_generation_mode: str,
     render_scale_contract: dict[str, str],
 ) -> None:
@@ -154,9 +156,9 @@ def write_bundle(
 
     metadata = {
         "multivar_source": {
-            "slug": MULTIVAR_SPEC["slug"],
-            "cutoff": MULTIVAR_SPEC["cutoff"],
-            "run_id": MULTIVAR_SPEC["run_id"],
+            "slug": multivar_spec["slug"],
+            "cutoff": multivar_spec["cutoff"],
+            "run_id": multivar_spec["run_id"],
             "canonical_runtime_run_root": str(canonical_multivar_run_root),
             "historical_support_render_run_root": str(render_multivar_run_root),
             "historical_support_render_generation_mode": render_generation_mode,
@@ -199,6 +201,19 @@ def write_bundle(
         writer.writerows(rows)
 
     (bundle_root / "SHA256SUMS.txt").write_text("\n".join(sorted(sums)) + "\n")
+
+
+def resolve_multivar_spec(article_root: Path, runtime_root: Path) -> dict[str, str]:
+    try:
+        selected = next(row for row in load_authoritative_five_run_specs(article_root, runtime_root) if row["cutoff_code"] == "20220511")
+        return {
+            "slug": selected["slug"],
+            "cutoff": selected["cutoff"],
+            "forecast_start": "2022-05-12",
+            "run_id": selected["run_id"],
+        }
+    except Exception:
+        return dict(DEFAULT_MULTIVAR_SPEC)
 
 
 def main() -> None:
@@ -244,7 +259,8 @@ def main() -> None:
     figures_dir = bundle_root / "figures"
     figures_dir.mkdir(parents=True, exist_ok=True)
 
-    canonical_multivar_run_root = multivar_runtime_root / "runs" / MULTIVAR_SPEC["run_id"]
+    multivar_spec = resolve_multivar_spec(article_root, multivar_runtime_root)
+    canonical_multivar_run_root = multivar_runtime_root / "runs" / multivar_spec["run_id"]
     univar_output_root = (
         univar_runtime_root / "runs" / UNIVAR_SPEC["run_id"] / "post" / "outputs" / UNIVAR_SPEC["run_id"]
     )
@@ -282,8 +298,8 @@ def main() -> None:
         "--workflow-root", str(workflow_root),
         "--run-root", str(render_multivar_run_root),
         "--output-dir", str(figures_dir),
-        "--cutoff-date", MULTIVAR_SPEC["cutoff"],
-        "--forecast-start-date", MULTIVAR_SPEC["forecast_start"],
+        "--cutoff-date", multivar_spec["cutoff"],
+        "--forecast-start-date", multivar_spec["forecast_start"],
         "--display-flow-scale", display_flow_scale,
         "--internal-flow-scale", internal_flow_scale,
     ]
@@ -298,6 +314,7 @@ def main() -> None:
         canonical_multivar_run_root,
         render_multivar_run_root,
         univar_output_root,
+        multivar_spec=multivar_spec,
         render_generation_mode=render_generation_mode,
         render_scale_contract={
             "display_flow_scale": display_flow_scale,
