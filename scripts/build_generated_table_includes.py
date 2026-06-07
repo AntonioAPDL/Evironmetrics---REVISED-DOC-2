@@ -272,7 +272,11 @@ def main() -> None:
     write_lines(out_root / TABLE_TEX_FILENAMES['sigma_block'], sigma_block_lines)
 
     with (out_root / 'manifest.csv').open('w', newline='') as f:
-        writer = csv.DictWriter(f, fieldnames=['table_label', 'row_label', 'source_class', 'source_note'])
+        writer = csv.DictWriter(
+            f,
+            fieldnames=['table_label', 'row_label', 'source_class', 'source_note'],
+            lineterminator='\n',
+        )
         writer.writeheader()
         writer.writerows(manifest_rows)
 
