@@ -7,7 +7,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from article_runtime_bindings import binding_as_path, load_runtime_bindings
+from article_runtime_bindings import binding_as_optional_path, binding_as_path, load_runtime_bindings
 
 def run(cmd: list[str]) -> None:
     print('+', ' '.join(cmd))
@@ -58,7 +58,18 @@ def main() -> None:
         '--multivar-support-run-root',
         type=Path,
     )
+    parser.add_argument(
+        '--authoritative-selected-support-output-root',
+        type=Path,
+        help='Workflow post/outputs directory containing compact authoritative selected-model support exports.',
+    )
     parser.add_argument('--univar-runtime-root', type=Path)
+    parser.add_argument('--corrections-root', type=Path)
+    parser.add_argument(
+        '--skip-authoritative-selected-support',
+        action='store_true',
+        help='Skip selected-output support import. The final lineage validator will normally fail until this is imported.',
+    )
     parser.add_argument(
         '--strict-current-model-support',
         action='store_true',
@@ -85,6 +96,16 @@ def main() -> None:
         if args.univar_runtime_root is not None
         else binding_as_path(bindings, 'exal_m_t1', 'univar_runtime_root')
     )
+    authoritative_selected_support_output_root = (
+        args.authoritative_selected_support_output_root.resolve()
+        if args.authoritative_selected_support_output_root is not None
+        else binding_as_optional_path(bindings, 'exal_m_t1', 'selected_support_output_root')
+    )
+    corrections_root = (
+        args.corrections_root.resolve()
+        if args.corrections_root is not None
+        else binding_as_optional_path(bindings, 'corrections_root')
+    )
 
     py = sys.executable
     run_optional([
@@ -101,6 +122,23 @@ def main() -> None:
         '--univar-runtime-root',
         str(univar_runtime_root),
     ], article_root / 'artifacts' / 'historical_support_from_current_models' / 'refresh_status.json', strict=args.strict_current_model_support)
+    if not args.skip_authoritative_selected_support:
+        if authoritative_selected_support_output_root is None:
+            raise RuntimeError(
+                'No authoritative selected-support output root configured. '
+                'Set config/runtime_bindings.json:exal_m_t1.selected_support_output_root '
+                'or pass --authoritative-selected-support-output-root.'
+            )
+        run([
+            py,
+            str(article_root / 'scripts' / 'refresh_authoritative_selected_model_support_figures.py'),
+            '--article-root',
+            str(article_root),
+            '--workflow-root',
+            str(workflow_root),
+            '--source-output-root',
+            str(authoritative_selected_support_output_root),
+        ])
     run([py, str(article_root / 'scripts' / 'refresh_exal_m_t1_generated_assets.py'), '--article-root', str(article_root), '--runtime-root', str(runtime_root)])
     run([
         py,
@@ -135,6 +173,15 @@ def main() -> None:
     run([py, str(article_root / 'scripts' / 'clean_article_legacy_assets.py'), '--article-root', str(article_root)])
     run([py, str(article_root / 'scripts' / 'build_generated_asset_index.py'), '--article-root', str(article_root)])
     run([py, str(article_root / 'scripts' / 'validate_manuscript_figure_paths.py'), '--article-root', str(article_root)])
+    lineage_cmd = [
+        py,
+        str(article_root / 'scripts' / 'validate_authoritative_output_lineage.py'),
+        '--article-root',
+        str(article_root),
+    ]
+    if corrections_root is not None:
+        lineage_cmd.extend(['--corrections-root', str(corrections_root)])
+    run(lineage_cmd)
     print('Refreshed all article-side generated assets successfully.')
 
 

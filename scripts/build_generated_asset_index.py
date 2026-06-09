@@ -9,8 +9,8 @@ from article_repo_layout import build_layout
 
 ARTIFACT_DESCRIPTIONS = {
     'five_cutoff_crps_validation_sources': 'Five-cutoff CRPS validation freeze used by the benchmark table.',
-    'representative_selected_model_2022_12_25': 'Representative selected-model bundle for the verified 2022-12-25 exAL-M-T1 rerun.',
-    'historical_support_from_current_models': 'Current-model historical-support figures used by manuscript Figures 5, 6, A1, and A2.',
+    'representative_selected_model_2022_12_25': 'Representative selected-model bundle for the verified 2022-12-25 exAL-M-T1 run, including synthesis, posterior tables, and authoritative q05/q50/q95 support figures.',
+    'historical_support_from_current_models': 'Legacy/archive current-model support bundle. It must not feed the representative selected-model posterior-output figures.',
     'five_cutoff_setup_support': 'Canonical five-cutoff setup/support figure family mirrored from the validated workflow runtime bundle.',
     'five_cutoff_main_model_synthesis': 'Corrected cutoff-wide Figure 7 family copied from the five-cutoff he2pubgdpc1r1 exAL main-model reruns.',
     'five_cutoff_reference_synthesis': 'Cutoff-wide Figure A2-style reference synthesis family copied from the current exdqlm_univar output bundles.',

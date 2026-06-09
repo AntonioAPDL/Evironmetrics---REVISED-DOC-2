@@ -9,9 +9,11 @@ from typing import Any
 
 DEFAULT_RUNTIME_BINDINGS: dict[str, Any] = {
     "workflow_root": "/data/muscat_data/jaguir26/project1_ucsc_phd",
+    "corrections_root": "/data/muscat_data/jaguir26/Corrections---Project-1",
     "exal_m_t1": {
         "keep_runtime_root": "/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_he2_exdqlm_multivar_keep_epsilon_discount_grid_20260524",
         "authoritative_keep_manifest": "/data/muscat_data/jaguir26/project1_ucsc_phd/docs/exdqlm_multivar_keep_authoritative_specs_20260601.yaml",
+        "selected_support_output_root": "/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_he2_selected_output_support_20260609/runs/multimodel_20221225_v8_he2grid_c05_eps030_exdqlm_multivar_keep_authoritative_support_r3_20260609/post/outputs/multimodel_20221225_v8_he2grid_c05_eps030_exdqlm_multivar_keep_authoritative_support_r3_20260609",
         "univar_runtime_root": "/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_he2_exdqlm_univar_all_cutoffs_sharedspec_20260516",
         "setup_support_runtime_root": "/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/exal_m_t1_setup_support_by_cutoff_v2_20260516",
         "historical_support_replay_run_root": "/data/muscat_data/jaguir26/project1_ucsc_phd_runtime/multimodel_v8_he2_exdqlm_multivar_keep_historical_support_replay_20260517/runs/multimodel_20220511_v8_he2pubgdpc1r1_exdqlm_multivar_keep_historical_support_replay",
@@ -46,3 +48,15 @@ def binding_as_path(bindings: dict[str, Any], *keys: str) -> Path:
     for key in keys:
         value = value[key]
     return Path(str(value)).expanduser().resolve()
+
+
+def binding_as_optional_path(bindings: dict[str, Any], *keys: str) -> Path | None:
+    value: Any = bindings
+    for key in keys:
+        if not isinstance(value, dict) or key not in value:
+            return None
+        value = value[key]
+    raw = str(value).strip()
+    if not raw:
+        return None
+    return Path(raw).expanduser().resolve()
