@@ -380,15 +380,15 @@ Table~\ref{tab:components_23_31} reports posterior means and 95\% credible inter
 
 The first GDPC factor remains close to zero after conditioning on precipitation and soil moisture, so its role is secondary to the local hydrometeorological covariates in this representative cutoff. Taken together, these estimates indicate that upper-tail behavior is driven mainly by the local precipitation and wetness signals, with little additional contribution from the large-scale climate factor at this origin.
 
-\subsection{Historical Behavior Across Representative Regimes}
+\subsection{Selected-Model Dynamics Across Representative Regimes}
 
-To illustrate how the selected specification behaves across contrasting hydrological conditions, we show historical quantile summaries over two representative periods: the 2012--2016 drought and the 2017--2019 wet period. These figures are included as historical summaries of the fitted specification, not as a second forecast-validation exercise and not as additional rolling-origin evidence.
+To illustrate how the selected specification behaves across contrasting hydrological conditions, we show posterior quantile dynamics from the same 2022-12-25 selected exAL-M-T1 output authority used for the synthesis illustration. The displayed windows cover the 2012--2016 drought and the 2017--2019 wet period, but the source is the common selected-model posterior-output bundle rather than a separate historical-support run. These figures are included to diagnose fitted quantile behavior, not as a second forecast-validation exercise and not as additional rolling-origin evidence.
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=450pt]{historical_summary_dry_period.png}
 \caption{
-Historical posterior mean and 95\% credible intervals of river-flow quantiles during the dry period (2012--2016), shown as a descriptive historical summary under the selected specification. Shown are the 5th (red), 50th (green), and 95th (blue) quantile models together with observed daily USGS flow (black). Horizontal dashed lines mark the official minor and major flood thresholds.
+Selected-model posterior mean and 95\% credible intervals of river-flow quantiles during the dry period (2012--2016), rendered from the same 2022-12-25 exAL-M-T1 selected-output authority as the synthesis figure. Shown are the 5th (red), 50th (green), and 95th (blue) quantile models together with observed daily USGS flow (black). Horizontal dashed lines mark the official minor and major flood thresholds.
 }
 \label{fig:dry_quantile}
 \end{figure}
@@ -397,12 +397,12 @@ Historical posterior mean and 95\% credible intervals of river-flow quantiles du
 \centering
 \includegraphics[width=450pt]{historical_summary_wet_period.png}
 \caption{
-Historical posterior mean and 95\% credible intervals of river-flow quantiles during the wet period (2017--2019), shown as a descriptive historical summary under the selected specification. Shown are the 5th (red), 50th (green), and 95th (blue) quantile models together with observed daily USGS flow (black). Horizontal dashed lines mark the official minor and major flood thresholds.
+Selected-model posterior mean and 95\% credible intervals of river-flow quantiles during the wet period (2017--2019), rendered from the same 2022-12-25 exAL-M-T1 selected-output authority as the synthesis figure. Shown are the 5th (red), 50th (green), and 95th (blue) quantile models together with observed daily USGS flow (black). Horizontal dashed lines mark the official minor and major flood thresholds.
 }
 \label{fig:rainy_quantile}
 \end{figure}
 
-Figures~\ref{fig:dry_quantile} and \ref{fig:rainy_quantile} show clear differences between the drought and wet periods in these historical summaries. During 2012--2016, the posterior bands remain comparatively narrow and the upper tail rarely approaches the flood thresholds. During 2017--2019, the upper tail widens substantially during the main winter events, and the 95th quantile exceeds the major flood stage in 2017 and 2019.
+Figures~\ref{fig:dry_quantile} and \ref{fig:rainy_quantile} show clear differences between the drought and wet periods in the selected-model posterior dynamics. During 2012--2016, the posterior bands remain comparatively narrow and the upper tail rarely approaches the flood thresholds. During 2017--2019, the upper tail widens substantially during the main winter events, and the 95th quantile exceeds the major flood stage in 2017 and 2019.
 
 The contrast between these periods is most visible in the spread between the 5th and 95th quantiles. That spread remains relatively tight under dry conditions but expands during wet-season peaks, indicating that the selected specification allocates greater predictive spread when hydrological variability increases over the historical record.
 
@@ -480,12 +480,12 @@ Tables~\ref{tab:gamma_sigma_intervals1} and \ref{tab:gamma_sigma_intervals2} pro
 \centering
 \includegraphics[width=450pt]{historical_component_80month.png}
 \caption{
-Historical posterior mean and 95\% credible intervals for the 80-month component after shifting by the posterior mean trend level, shown from 1991 to 2022 as a descriptive long-cycle summary under the selected specification. Estimates are shown for the 5th (red), 50th (green), and 95th (blue) quantiles, with observed USGS daily flow in black for reference.
+Selected-model posterior mean and 95\% credible intervals for the 80-month component after shifting by the posterior mean trend level, rendered from the same 2022-12-25 exAL-M-T1 selected-output authority as the synthesis figure. Estimates are shown for the 5th (red), 50th (green), and 95th (blue) quantiles, with observed USGS daily flow in black for reference.
 }
 \label{fig:80_components}
 \end{figure}
 
-Figure~\ref{fig:80_components} shows that the 80-month seasonal component is broadly aligned across the three representative quantiles and captures multi-year wet and dry phases in the historical record. Its role is descriptive: it summarizes the long-cycle behavior recovered by the fitted specification rather than providing additional forecast-window validation evidence.
+Figure~\ref{fig:80_components} shows that the 80-month seasonal component is broadly aligned across the three representative quantiles and captures multi-year wet and dry phases in the historical record. Its role is diagnostic: it summarizes the long-cycle behavior recovered by the selected model rather than providing additional forecast-window validation evidence.
 
 \subsection{Historical-Only Predictive Synthesis}
 \label{app:historicalsynth}
