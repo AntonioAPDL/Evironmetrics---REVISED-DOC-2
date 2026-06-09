@@ -1,0 +1,27 @@
+\begin{table*}[htbp]
+\centering
+\renewcommand{\arraystretch}{1.08}
+\begin{threeparttable}
+\caption{Targeted ablation of the selected \texttt{exAL-M-T1} specification. Entries are mean forecast-window CRPS; lower values are better, and bold marks the best ablation-row value within each cutoff.}
+\label{tab:he3_ablation_crps}
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} >{\ttfamily}l r r r r r}
+\toprule
+Ablation model & 01/23/2021 & 11/12/2021 & 12/21/2021 & 05/11/2022 & 12/25/2022 \\
+\midrule
+exAL-M-T1 (full) & \textbf{0.1397} & \textbf{0.0472} & \textbf{0.2654} & \textbf{0.0323} & \textbf{0.6655} \\
+exAL-M-T1-noTrend & 1.0516 & 0.7234 & 2.5204 & 0.5504 & 3.8662 \\
+exAL-M-noTF & 1.7361 & 1.9129 & 1.7945 & 1.5969 & 2.3674 \\
+exAL-M-T1-noH1 & 1.2786 & 1.6014 & 2.9384 & 1.1590 & 4.8122 \\
+exAL-M-T1-noH2 & 0.7269 & 1.0472 & 2.9358 & 0.8202 & 4.4503 \\
+exAL-M-T1-noH3 & 1.0828 & 1.0356 & 2.6867 & 0.7294 & 4.1448 \\
+\addlinespace[2pt]
+\multicolumn{6}{l}{\textit{Raw forecast products (reference only)}} \\
+RAW-GLOFAS & 0.4037 & 0.1696 & 0.6825 & 0.2723 & 1.5601 \\
+RAW-NWS & 0.8304 & 1.3719 & 0.2812 & 0.2837 & 0.5568 \\
+\bottomrule
+\end{tabular*}
+\begin{tablenotes}
+\item \textit{Note:} Each ablation inherits the cutoff-specific winning \texttt{exAL-M-T1} input bundle, preprocessing, likelihood, and selected winner hyperparameters, changing only the named structural component. \texttt{noH3} removes the third retained seasonal harmonic pair, where the third harmonic is the noninteger frequency \(1/6.8068493\).
+\end{tablenotes}
+\end{threeparttable}
+\end{table*}

@@ -356,6 +356,13 @@ Table~\ref{tab:benchmark_crps_models} compares the raw forecast products with ni
 
 Table~\ref{tab:benchmark_crps_models} yields a stable pattern across the five cutoffs, with one important exception at the final rolling origin. The \(U\) versus \(M\) comparison isolates whether the external source channels improve forecast skill beyond using the observation channel alone, whereas the \(T0\) versus \(T1\) comparison isolates whether carrying the transfer component into the forecast window is beneficial. Across the Bayesian variants, the two multivariate specifications with an active forecast-window transfer component, AL-M-T1 and exAL-M-T1, provide the strongest corrected forecasts overall. The exAL-M-T1 specification attains the lowest CRPS among all entries in the first four cutoffs, while AL-M-T1 is the best corrected Bayesian row at 12/25/2022. At that final cutoff, the raw NWS forecast product has the lowest CRPS in the table, so the corrected models do not uniformly dominate the operational baseline. We nevertheless use exAL-M-T1 as the reference specification for the remaining summaries because it is the selected extended-likelihood specification and has the strongest broad corrected-model performance across the rolling-origin evaluation.
 
+
+\subsection{Ablation of the Selected Specification}
+\label{subsec:he3ablation}
+
+To isolate which structural components contribute most to the selected multivariate specification, we rerun the cutoff-specific \texttt{exAL-M-T1} winners after removing one component at a time while preserving the same rolling-origin cutoffs, input bundles, preprocessing, likelihood, and winner hyperparameters.
+
+\input{tables/generated_tex/he3_ablation_crps_main_table.tex}
 \section{INTERPRETATION OF THE SELECTED SPECIFICATION}
 \label{sec:interpretation}
 

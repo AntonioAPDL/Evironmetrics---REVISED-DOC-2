@@ -132,6 +132,19 @@
         "sigma_summary_csv": "artifacts/representative_selected_model_2022_12_25/sigma_summary.csv"
       },
       "note": "Generated from the representative 2022-12-25 exAL-M-T1 sigma export"
+    },
+    "tab:he3_ablation_crps": {
+      "label": "tab:he3_ablation_crps",
+      "role": "Selected-model ablation CRPS table",
+      "table_tex_path": "tables/generated_tex/he3_ablation_crps_main_table.tex",
+      "source_class": "he3_authoritative_ablation",
+      "sources": {
+        "he3_ablation_long_csv": "artifacts/he3_exdqlm_ablation_authoritative/he3_ablation_long.csv",
+        "he3_ablation_audit_csv": "artifacts/he3_exdqlm_ablation_authoritative/audit__he3_ablation_audit.csv",
+        "he3_runtime_input_detail_csv": "artifacts/he3_exdqlm_ablation_authoritative/audit__he3_ablation_runtime_input_detail.csv",
+        "five_run_source_root": "artifacts/five_cutoff_crps_validation_sources"
+      },
+      "note": "Generated from the authoritative HE3 exDQLM multivariate ablation matrix anchored to the 20260601 exAL-M-T1 winner manifest; raw forecast references are copied from the article-side five-cutoff CRPS validation source freeze."
     }
   }
 }
