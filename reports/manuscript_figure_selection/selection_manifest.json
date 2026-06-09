@@ -87,7 +87,7 @@
       "source_class": "current_model_output_support",
       "current_model_output_wired": true,
       "source_path": "artifacts/historical_support_from_current_models/figures/historical_component_80month.png",
-      "sha256": "31c3953b0a724edba290720dcc63792a033003e4eea403a620218d2aff1c2432",
+      "sha256": "f3df8dda1048ba4d67f2ef480c80f1fe9ee44848329fb5576bb365186be6a039",
       "note": "Rendered from the current 2022-05-11 exAL-M-T1 authoritative canonical-grid multivariate run or retained support replay"
     },
     {

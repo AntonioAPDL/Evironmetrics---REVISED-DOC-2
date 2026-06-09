@@ -53,6 +53,7 @@ INTERNAL_FLOW_SCALE <- if (!is.null(opt[["internal-flow-scale"]]) && nzchar(opt[
   DISPLAY_FLOW_SCALE
 }
 STATE_INTERNAL_FLOW_SCALE <- INTERNAL_FLOW_SCALE
+COMPONENT_SUMMARY_PROBS <- c(0.975, 0.5, 0.025)
 
 convert_internal_flow_to_display <- function(x, internal_scale = STATE_INTERNAL_FLOW_SCALE, display_scale = DISPLAY_FLOW_SCALE) {
   vals <- suppressWarnings(as.numeric(x))
@@ -396,19 +397,43 @@ render_quantile_window <- function(xbs_retro, idx, title_text, out_file, ylim_ov
   ggsave(out_file, plot = p, width = 12, height = 6, units = "in", dpi = 900)
 }
 
-build_component_df <- function(component, idx, q_d_50, q_d_05, q_d_95, shift_map = NULL) {
+component_summary_indices <- function(summary_probs) {
+  probs <- suppressWarnings(as.numeric(summary_probs))
+  if (length(probs) < 3L || any(!is.finite(probs))) {
+    stop("Component summary probabilities must contain finite 2.5%, 50%, and 97.5% entries.", call. = FALSE)
+  }
+  targets <- c(Lower = 0.025, Median = 0.5, Upper = 0.975)
+  idx <- vapply(targets, function(target) which.min(abs(probs - target)), integer(1))
+  if (any(abs(probs[idx] - targets) > 1e-8)) {
+    stop(
+      sprintf(
+        "Component summary probabilities do not match the 95%% band contract: %s",
+        paste(probs, collapse = ", ")
+      ),
+      call. = FALSE
+    )
+  }
+  idx
+}
+
+build_component_df <- function(
+    component,
+    idx,
+    q_d_50,
+    q_d_05,
+    q_d_95,
+    shift_map = NULL,
+    summary_probs = COMPONENT_SUMMARY_PROBS) {
+  summary_idx <- component_summary_indices(summary_probs)
   build_quantile_df <- function(arr, component, idx, date_vec, quantile_name) {
-    vals <- arr[component, idx, , drop = FALSE]
-    vals <- matrix(vals, nrow = length(idx), ncol = dim(arr)[3])
-    qts <- t(fast_row_quantiles_t(vals, probs = c(0.025, 0.5, 0.975)))
-    colnames(qts) <- c("Lower", "Median", "Upper")
+    vals <- matrix(arr[component, idx, , drop = FALSE], nrow = length(idx), ncol = dim(arr)[3])
     shift_vec <- shift_map[[quantile_name]] %||% rep(0, length(idx))
     tibble(
       Date = as.Date(date_vec[idx]),
       Quantile = quantile_name,
-      Lower = qts[, "Lower"] + shift_vec,
-      Median = qts[, "Median"] + shift_vec,
-      Upper = qts[, "Upper"] + shift_vec
+      Lower = vals[, summary_idx[["Lower"]]] + shift_vec,
+      Median = vals[, summary_idx[["Median"]]] + shift_vec,
+      Upper = vals[, summary_idx[["Upper"]]] + shift_vec
     )
   }
 
@@ -571,6 +596,7 @@ if (!is.null(state_summary_path)) {
   q_d_95 <- cached$q_d_95
   time_cuts <- cached$time_cuts
   trend_shift_map <- cached$trend_shift_map %||% NULL
+  component_summary_probs <- cached$component_summary_probs %||% COMPONENT_SUMMARY_PROBS
   cached_internal_scale <- cached$internal_flow_scale %||% NULL
   if (is.null(trend_shift_map)) {
     stop(
@@ -615,6 +641,7 @@ if (!rebuild_state_cache) {
   q_d_95 <- cached$q_d_95
   time_cuts <- cached$time_cuts
   trend_shift_map <- cached$trend_shift_map %||% NULL
+  component_summary_probs <- cached$component_summary_probs %||% COMPONENT_SUMMARY_PROBS
   cached_internal_scale <- cached$internal_flow_scale %||% NULL
   scale_mismatch <- !is.null(cached_internal_scale) && !identical(cached_internal_scale, INTERNAL_FLOW_SCALE)
   if (is.null(trend_shift_map) || is.null(cached_internal_scale) || scale_mismatch) {
@@ -658,6 +685,7 @@ if (rebuild_state_cache) {
   q_d_50 <- fast_prepare_quantile_data(samp.theta_50_exAL_synth_DISC$samp_theta, probs = c(0.975, 0.5, 0.025), type = 7L)
   q_d_05 <- fast_prepare_quantile_data(samp.theta_5_exAL_synth_DISC$samp_theta, probs = c(0.975, 0.5, 0.025), type = 7L)
   q_d_95 <- fast_prepare_quantile_data(samp.theta_95_exAL_synth_DISC$samp_theta, probs = c(0.975, 0.5, 0.025), type = 7L)
+  component_summary_probs <- COMPONENT_SUMMARY_PROBS
   idx_component <- ceiling(TT / 10):TT
   trend_shift_map <- build_trend_mean_shift_map(
     theta_50 = samp.theta_50_exAL_synth_DISC$samp_theta,
@@ -681,6 +709,7 @@ if (rebuild_state_cache) {
       q_d_95 = q_d_95,
       time_cuts = time_cuts,
       trend_shift_map = trend_shift_map,
+      component_summary_probs = component_summary_probs,
       internal_flow_scale = STATE_INTERNAL_FLOW_SCALE,
       display_flow_scale = DISPLAY_FLOW_SCALE
     ),
@@ -718,7 +747,8 @@ comp_df <- build_component_df(
   q_d_50 = q_d_50,
   q_d_05 = q_d_05,
   q_d_95 = q_d_95,
-  shift_map = trend_shift_map
+  shift_map = trend_shift_map,
+  summary_probs = component_summary_probs
 )
 obs_df <- obs_df %>% mutate(Value = convert_internal_flow_to_display(Value))
 comp_df <- comp_df %>%
@@ -751,6 +781,7 @@ meta <- list(
   display_flow_scale = DISPLAY_FLOW_SCALE,
   internal_flow_scale = STATE_INTERNAL_FLOW_SCALE,
   component_display_contract = "80-month component shifted by posterior mean trend level",
+  component_summary_probs = as.numeric(component_summary_probs),
   time_cuts = as.integer(time_cuts),
   time_cut_dates = as.character(as.Date(timestamps[time_cuts])),
   rendered_at_utc = format(Sys.time(), tz = "UTC", usetz = TRUE)
